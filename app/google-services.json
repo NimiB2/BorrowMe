@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1096065874605",
+    "project_id": "borrowme-7edc3",
+    "storage_bucket": "borrowme-7edc3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1096065874605:android:ed32186cf27f7fc57fa424",
+        "android_client_info": {
+          "package_name": "com.project1.borrowme"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAHIzOpkv6MBSLl0X1K7WBl4OYpA_QZSbU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

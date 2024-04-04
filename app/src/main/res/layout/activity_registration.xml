@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    tools:context=".logIns.RegistrationActivity">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/registration_MTV_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/before_we_start"
+        android:gravity="center_horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/margin_size"
+        android:textSize="@dimen/login_title_size"
+        android:textStyle="bold"
+        android:textColor="@color/text_color"
+        />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/registration_MTV_notRegister"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/registration_MTV_title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/general_dimension"
+        android:layout_marginHorizontal="@dimen/general_dimension"
+        android:gravity="center"
+        android:textSize="@dimen/button_text_size"
+        android:textStyle="bold"
+        android:text="@string/choose_categories_explanation"
+        android:textColor="@color/black"
+        />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/registration_RECYCLER_categoryList"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/card_width"
+            android:layout_below="@id/registration_MTV_notRegister"
+            android:layout_marginTop="@dimen/general_dimension"
+            android:layout_centerHorizontal="true"
+            tools:listitem="@layout/category_item"
+            android:layout_marginHorizontal="@dimen/login_title_size"
+            tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            tools:spanCount="3"
+            tools:itemCount="10"
+            />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/registration_RECYCLER_categoryList"
+        android:layout_marginTop="@dimen/small_general_size"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="@dimen/general_dimension"
+        android:orientation="horizontal"
+        >
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_color"
+            android:textStyle="bold"
+            android:textSize="@dimen/button_text_size"
+            android:text="@string/number_of_categories"
+            >
+        </com.google.android.material.textview.MaterialTextView>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/registration_MTV_categoryNum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/small_general_size"
+            android:textColor="@color/text_color"
+            android:textStyle="bold"
+            android:textSize="@dimen/button_text_size"
+            android:text="0"
+            >
+        </com.google.android.material.textview.MaterialTextView>
+
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+<androidx.appcompat.widget.LinearLayoutCompat
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerHorizontal="true"
+    android:layout_marginBottom="@dimen/margin_size"
+    android:layout_alignParentBottom="true"
+    android:orientation="horizontal">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/registration_BTN_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/general_dimension"
+        android:text="@string/go_back"
+        android:textColor="@color/white"
+        android:textSize="@dimen/button_text_size"
+        android:backgroundTint="@color/text_color"
+        >
+    </com.google.android.material.button.MaterialButton>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/registration_BTN_LOGIN"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/general_dimension"
+        android:text="@string/to_finish"
+        android:textColor="@color/white"
+        android:textSize="@dimen/button_text_size"
+        android:backgroundTint="@color/text_color"
+        >
+    </com.google.android.material.button.MaterialButton>
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>
+
+
+</RelativeLayout>
+
