@@ -2,7 +2,6 @@ plugins {
     alias(libs.plugins.androidApplication)
     id("com.google.gms.google-services")
     alias(libs.plugins.googleAndroidLibrariesMapsplatformSecretsGradlePlugin)
-
 }
 
 android {
@@ -22,7 +21,7 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField("String","my_api_key","")
+        buildConfigField("String","my_api_key","\"${properties["my_api_key"]}\"")
     }
 
     buildTypes {

@@ -16,6 +16,9 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.project1.borrowme.views.HomeFragment;
+import com.project1.borrowme.views.InboxFragment;
+import com.project1.borrowme.views.ProfileFragment;
 
 public class MainActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
@@ -23,6 +26,11 @@ public class MainActivity extends AppCompatActivity {
     private MenuItem navigation_home;
     private MenuItem navigation_profile;
     private MenuItem navigation_inbox;
+
+    private HomeFragment homeFragment;
+    private InboxFragment inboxFragment;
+    private ProfileFragment profileFragment;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,12 +43,14 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
         findViews();
-        replaceFragment(new HomeFragment());
-
         initFragments();
     }
 
     private void findViews() {
+        homeFragment = new HomeFragment();
+        inboxFragment = new InboxFragment();
+        profileFragment = new ProfileFragment();
+
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         frameLayout = findViewById(R.id.main_FARM_layout);
     }
@@ -63,17 +73,12 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+        bottomNavigationView.setSelectedItemId(R.id.navigation_home);
+
     }
 
-            private void replaceFragment(Fragment fragment) {
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                FragmentTransaction transaction = fragmentManager.beginTransaction();
+    private void replaceFragment(Fragment fragment) {
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_FARM_layout, fragment).commit();
+    }
 
-
-                    transaction.replace(R.id.main_FARM_layout, fragment);
-
-
-                transaction.commit();
-            }
-
-        }
+}

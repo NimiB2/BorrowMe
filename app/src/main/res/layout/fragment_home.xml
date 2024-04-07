@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    tools:context=".HomeFragment">
+    tools:context=".views.HomeFragment">
 
     <com.google.android.material.circularreveal.CircularRevealRelativeLayout
         android:layout_width="match_parent"
@@ -18,9 +18,9 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/margin_large"
-            android:backgroundTint="@color/categoryColor"
+            android:backgroundTint="@color/buttonColor"
             android:text="@string/new_borrowing"
-            android:textColor="@color/text_color"
+            android:textColor="@color/button_text_color"
             android:textStyle="bold"
             android:textSize="@dimen/text_size_main_button_m"
             android:layout_alignParentTop="true" />
@@ -32,9 +32,9 @@
             android:layout_below="@id/home_BTN_new_borrowing"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/margin_small"
-            android:backgroundTint="@color/categoryColor"
+            android:backgroundTint="@color/smallButtonColor"
             android:text="@string/i_have_a_product"
-            android:textColor="@color/text_color"
+            android:textColor="@color/smallButton_text_color"
             android:textSize="@dimen/text_size_main_button_s"
             />
 
@@ -45,7 +45,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:textColor="@color/text_color"
+            android:textColor="@color/tittle_color"
             android:text="@string/common_products"
             android:textSize="@dimen/text_size_small"
             android:layout_below="@id/home_BTN_addItem"
@@ -68,7 +68,7 @@
             android:layout_below="@id/home_RECYLER_common_products"
             android:layout_marginTop="@dimen/margin_small"
             android:textStyle="bold"
-            android:textColor="@color/text_color"
+            android:textColor="@color/tittle_color"
             android:text="@string/my_history"
             android:textSize="@dimen/text_size_small" />
 

@@ -15,7 +15,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/margin_large"
         android:text="@string/sign_up"
-        android:textColor="@color/text_color"
+        android:textColor="@color/tittle_color"
         android:textSize="@dimen/text_size_medium"
         android:textStyle="bold" />
 
@@ -34,7 +34,7 @@
         android:autofillHints=""
         android:inputType="text"
         android:padding="@dimen/margin_xsmall"
-        android:textColor="@color/black">
+        android:textColor="@color/text_color">
 
     </EditText>
 
@@ -53,7 +53,7 @@
         android:autofillHints=""
         android:inputType="textEmailAddress"
         android:padding="@dimen/margin_xsmall"
-        android:textColor="@color/black">
+        android:textColor="@color/text_color">
 
     </EditText>
 
@@ -72,7 +72,7 @@
         android:autofillHints=""
         android:inputType="textPassword"
         android:padding="@dimen/margin_xsmall"
-        android:textColor="@color/black">
+        android:textColor="@color/text_color">
 
     </EditText>
 
@@ -84,7 +84,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/margin_medium"
         android:text="@string/get_current_location"
-        android:textColor="@color/black"
+        android:textColor="@color/text_color"
         android:checked="true"
         tools:ignore="UseSwitchCompatOrMaterialXml" />
 
@@ -103,7 +103,7 @@
         android:hint="@string/search_hint"
         android:inputType="textPostalAddress"
         android:visibility="gone"
-        android:textColor="@color/black"
+        android:textColor="@color/text_color"
         android:autofillHints=""
         />
 
@@ -114,9 +114,9 @@
         android:layout_below="@+id/signUp_ET_searchBox"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/margin_large"
-        android:backgroundTint="@color/text_color"
+        android:backgroundTint="@color/buttonColor"
         android:text="@string/sign_up_caps"
-        android:textColor="@color/white"
+        android:textColor="@color/button_text_color"
         android:textSize="@dimen/text_size_small">
 
     </com.google.android.material.button.MaterialButton>
@@ -134,7 +134,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/already_registered"
-            android:textColor="@color/black" />
+            android:textColor="@color/text_color" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/signUp_MTV_LogIn"
@@ -142,7 +142,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_xsmall"
             android:text="@string/log_in"
-            android:textColor="@color/black" />
+            android:textColor="@color/tittle_color" />
     </LinearLayout>
 
 </RelativeLayout>

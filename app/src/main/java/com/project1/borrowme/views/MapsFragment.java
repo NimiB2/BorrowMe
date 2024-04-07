@@ -1,4 +1,4 @@
-package com.project1.borrowme;
+package com.project1.borrowme.views;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,6 +15,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.project1.borrowme.R;
 
 public class MapsFragment extends Fragment implements OnMapReadyCallback {
 

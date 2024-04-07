@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:text="@string/category_title"
         android:textSize="@dimen/text_size_xsmall"
-        android:textColor="@color/black"
+        android:textColor="@color/text_color"
         android:textStyle="bold"
         android:gravity="center"
         />

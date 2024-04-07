@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    tools:context=".ProfileFragment">
+    tools:context=".views.ProfileFragment">
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
@@ -48,7 +48,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/my_location"
                 android:textStyle="bold"
-                android:textColor="@color/text_color"
+                android:textColor="@color/tittle_color"
                 android:textSize="@dimen/text_size_small" />
 
             <com.google.android.material.textview.MaterialTextView
@@ -63,7 +63,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/categories"
                 android:textStyle="bold"
-                android:textColor="@color/text_color"
+                android:textColor="@color/tittle_color"
                 android:textSize="@dimen/text_size_small"
                 android:layout_marginTop="@dimen/margin_large" />
 
@@ -85,7 +85,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/text_size_small"
-                android:textColor="@color/text_color"
+                android:textColor="@color/tittle_color"
                 android:text="@string/rating"
                 android:textStyle="italic" />
 
