@@ -1,12 +1,11 @@
 package com.project1.borrowme.logIns;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -14,15 +13,9 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textview.MaterialTextView;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -32,7 +25,7 @@ import com.project1.borrowme.R;
 import com.project1.borrowme.Utilities.MySignal;
 import com.project1.borrowme.adpters.CategoryAdapter;
 import com.project1.borrowme.data.CategoriesData;
-import com.project1.borrowme.interfaces.Callback_Category;
+import com.project1.borrowme.interfaces.CallbackCategory;
 import com.project1.borrowme.models.Category;
 import com.project1.borrowme.models.MyUser;
 
@@ -42,22 +35,19 @@ import java.util.List;
 import java.util.Map;
 
 public class RegistrationActivity extends AppCompatActivity {
-    private FirebaseAuth auth = FirebaseAuth.getInstance();
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private MyUser user = MyUser.getInstance();
-    private Callback_Category callbackCategory;
-    private final int numOfCols = 3;
-
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private final MyUser user = MyUser.getInstance();
     private String authEmail;
-    private String authPassword;
     private String authUserName;
     private String authUid;
+    private double authLatitude;
+    private double authLongitude;
+
 
     private RecyclerView registration_recyclerViewCategories;
     private MaterialButton registration_BTN_LOGIN;
     private MaterialButton registration_BTN_back;
     private MaterialTextView registration_MTV_categoryNum;
-    private CategoryAdapter adapter;
     private List<Category> categories;
 
     @Override
@@ -74,9 +64,11 @@ public class RegistrationActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
         authEmail = intent.getStringExtra("email");
-        authPassword = intent.getStringExtra("password");
         authUserName = intent.getStringExtra("userName");
-        authUid= intent.getStringExtra("uId");
+        authUid = intent.getStringExtra("uId");
+        authLatitude = intent.getDoubleExtra("latitude",1.1);
+        authLongitude = intent.getDoubleExtra("longitude",1.1);
+
 
         findViews();
         initCategories();
@@ -85,46 +77,36 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-        registration_BTN_LOGIN.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (user.getCategories().size() >= 3) {
-                    setUser(authEmail,authUserName,authUid);
-                    setDb();
-                    changeActivity(true);
-                } else {
-                    MySignal.getInstance().toast("You must select at least 3 categories");
-                }
+        registration_BTN_LOGIN.setOnClickListener(v -> {
+            if (user.getCategories().size() >= 3) {
+                setUser(authEmail, authUserName, authUid);
+                setDb();
+                changeActivity(true);
+            } else {
+                MySignal.getInstance().toast("You must select at least 3 categories");
             }
         });
 
-        registration_BTN_back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        registration_BTN_back.setOnClickListener(v -> {
+            FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
 
-                if (currentUser != null) {
-                    currentUser.delete()
-                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()) {
-                                        Log.d("User account", "User account deleted.");
-                                        changeActivity(false);
-                                    } else {
-                                        Log.e("User account", "Failed to delete user account", task.getException());
-                                    }
-                                }
-                            });
-                } else {
-                    Log.d("User account", "No user is signed in.");
-                    changeActivity(false);
-                }
+            if (currentUser != null) {
+                currentUser.delete()
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                Log.d("User account", "User account deleted.");
+                                changeActivity(false);
+                            } else {
+                                Log.e("User account", "Failed to delete user account", task.getException());
+                            }
+                        });
+            } else {
+                Log.d("User account", "No user is signed in.");
+                changeActivity(false);
             }
         });
     }
-
 
     private void changeActivity(boolean status) {
         Intent intent;
@@ -135,8 +117,6 @@ public class RegistrationActivity extends AppCompatActivity {
         }
         startActivity(intent);
         finish();
-
-
     }
 
     private void findViews() {
@@ -159,23 +139,13 @@ public class RegistrationActivity extends AppCompatActivity {
         userMap.put("categories", user.getCategories());
         userMap.put("uid", user.getUid());
         userMap.put("uEmail", user.getuEmail());
-        userMap.put("lan", user.getLan());
-        userMap.put("lat", user.getLat());
+        userMap.put("lan", authLongitude);
+        userMap.put("lat", authLatitude);
         userMap.put("uName", user.getuName());
 
         documentReference.set(userMap)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d("Firestore", "User added successfully!");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w("Firestore", "Error adding user", e);
-                    }
-                });
+                .addOnSuccessListener(aVoid -> Log.d("Firestore", "User added successfully!"))
+                .addOnFailureListener(e -> Log.w("Firestore", "Error adding user", e));
     }
 
     private void initCategories() {
@@ -184,7 +154,7 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     private void setAdapter() {
-        callbackCategory = new Callback_Category() {
+        CallbackCategory callbackCategory = new CallbackCategory() {
             @Override
             public void addCategory(Category category) {
                 user.addCategory(category);
@@ -198,13 +168,14 @@ public class RegistrationActivity extends AppCompatActivity {
             }
         };
 
-        adapter = new CategoryAdapter(categories, this, callbackCategory);
+        CategoryAdapter adapter = new CategoryAdapter(categories, this, callbackCategory);
+        int numOfCols = 3;
         registration_recyclerViewCategories.setLayoutManager(new GridLayoutManager(this, numOfCols));
         registration_recyclerViewCategories.setAdapter(adapter);
     }
 
+    @SuppressLint("DefaultLocale")
     private void updateNumCategoryText(int size) {
-        registration_MTV_categoryNum.setText(size + "");
+        registration_MTV_categoryNum.setText(String.format("%d", size));
     }
-
 }

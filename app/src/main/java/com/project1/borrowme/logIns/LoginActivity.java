@@ -58,15 +58,13 @@ public class LoginActivity extends AppCompatActivity {
         if (user == null) {
             login();
         } else {
-//            String email= user.getEmail();
 //            setTheUser(user);
-            changeActivity(true);
+            changeActivity(false);
         }
 
     }
 
     private void setTheUser(FirebaseUser user) {
-        changeActivity(false);
     }
 
     private void initViews() {

@@ -15,8 +15,8 @@
         android:text="@string/before_we_start"
         android:gravity="center_horizontal"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/margin_size"
-        android:textSize="@dimen/login_title_size"
+        android:layout_marginTop="@dimen/margin_large"
+        android:textSize="@dimen/text_size_medium"
         android:textStyle="bold"
         android:textColor="@color/text_color"
         />
@@ -27,10 +27,10 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/registration_MTV_title"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/general_dimension"
-        android:layout_marginHorizontal="@dimen/general_dimension"
+        android:layout_marginTop="@dimen/margin_small"
+        android:layout_marginHorizontal="@dimen/margin_small"
         android:gravity="center"
-        android:textSize="@dimen/button_text_size"
+        android:textSize="@dimen/text_size_small"
         android:textStyle="bold"
         android:text="@string/choose_categories_explanation"
         android:textColor="@color/black"
@@ -39,12 +39,11 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/registration_RECYCLER_categoryList"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/card_width"
+            android:layout_height="@dimen/size_medium"
             android:layout_below="@id/registration_MTV_notRegister"
-            android:layout_marginTop="@dimen/general_dimension"
+            android:layout_marginTop="@dimen/margin_small"
             android:layout_centerHorizontal="true"
             tools:listitem="@layout/category_item"
-            android:layout_marginHorizontal="@dimen/login_title_size"
             tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             tools:spanCount="3"
             tools:itemCount="10"
@@ -54,17 +53,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/registration_RECYCLER_categoryList"
-        android:layout_marginTop="@dimen/small_general_size"
+        android:layout_marginTop="@dimen/margin_xsmall"
         android:layout_alignParentStart="true"
-        android:layout_marginStart="@dimen/general_dimension"
+        android:layout_marginStart="@dimen/margin_small"
         android:orientation="horizontal"
         >
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/text_color"
+            android:layout_marginTop="@dimen/margin_xsmall"
             android:textStyle="bold"
-            android:textSize="@dimen/button_text_size"
+            android:textSize="@dimen/text_size_small"
             android:text="@string/number_of_categories"
             >
         </com.google.android.material.textview.MaterialTextView>
@@ -73,10 +73,11 @@
             android:id="@+id/registration_MTV_categoryNum"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/small_general_size"
+            android:layout_marginStart="@dimen/margin_xsmall"
             android:textColor="@color/text_color"
+            android:layout_marginTop="@dimen/margin_xsmall"
             android:textStyle="bold"
-            android:textSize="@dimen/button_text_size"
+            android:textSize="@dimen/text_size_small"
             android:text="0"
             >
         </com.google.android.material.textview.MaterialTextView>
@@ -89,7 +90,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_centerHorizontal="true"
-    android:layout_marginBottom="@dimen/margin_size"
+    android:layout_marginBottom="@dimen/margin_large"
     android:layout_alignParentBottom="true"
     android:orientation="horizontal">
 
@@ -97,10 +98,10 @@
         android:id="@+id/registration_BTN_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/general_dimension"
+        android:layout_marginHorizontal="@dimen/margin_small"
         android:text="@string/go_back"
         android:textColor="@color/white"
-        android:textSize="@dimen/button_text_size"
+        android:textSize="@dimen/text_size_small"
         android:backgroundTint="@color/text_color"
         >
     </com.google.android.material.button.MaterialButton>
@@ -109,10 +110,10 @@
         android:id="@+id/registration_BTN_LOGIN"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/general_dimension"
+        android:layout_marginHorizontal="@dimen/margin_small"
         android:text="@string/to_finish"
         android:textColor="@color/white"
-        android:textSize="@dimen/button_text_size"
+        android:textSize="@dimen/text_size_small"
         android:backgroundTint="@color/text_color"
         >
     </com.google.android.material.button.MaterialButton>

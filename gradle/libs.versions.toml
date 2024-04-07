@@ -2,6 +2,7 @@
 agp = "8.3.1"
 firebaseBom = "32.8.0"
 firebaseUiAuth = "8.2.0"
+googleMaterial = "<version>"
 junit = "4.13.2"
 junitVersion = "1.1.5"
 espressoCore = "3.5.1"
@@ -12,8 +13,14 @@ constraintlayout = "2.1.4"
 gms = "4.4.1"
 authUI = "8.0.2"
 gmsPlayServicesAuth = "20.7.0"
+places = "3.4.0"
+playServicesLocation = "21.2.0"
 playServicesMaps = "18.2.0"
 googleAndroidLibrariesMapsplatformSecretsGradlePlugin = "2.0.1"
+lifecycleLivedataKtx = "2.7.0"
+lifecycleViewmodelKtx = "2.7.0"
+navigationFragment = "2.7.7"
+navigationUi = "2.7.7"
 
 [libraries]
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
@@ -29,7 +36,14 @@ firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 firebase-authentication-ui = { module = "com.firebaseui:firebase-ui-auth", version.ref = "authUI" }
 gms-play-services-auth = { module = "com.google.android.gms:play-services-auth", version.ref = "gmsPlayServicesAuth" }
 firebase-database = { module = "com.google.firebase:firebase-firestore"}
+material-vversion = { module = "com.google.android.material:material", version.ref = "googleMaterial" }
+places = { module = "com.google.android.libraries.places:places", version.ref = "places" }
+play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "playServicesLocation" }
 play-services-maps = { module = "com.google.android.gms:play-services-maps", version.ref = "playServicesMaps" }
+lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "lifecycleLivedataKtx" }
+lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
+navigation-fragment = { group = "androidx.navigation", name = "navigation-fragment", version.ref = "navigationFragment" }
+navigation-ui = { group = "androidx.navigation", name = "navigation-ui", version.ref = "navigationUi" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

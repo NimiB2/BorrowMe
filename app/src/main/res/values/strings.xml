@@ -1,0 +1,40 @@
+<resources>
+    <string name="app_name">BorrowMe</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="log_in">Log In</string>
+    <string name="email">Email</string>
+    <string name="password">password</string>
+    <string name="log_in_caps">LOG IN</string>
+    <string name="sign_up_caps">SIGN UP</string>
+    <string name="not_registered_yet">Not registered yet?</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="full_name">Full name</string>
+    <string name="already_registered">Already registered?</string>
+    <string name="our_categories">Our categories</string>
+    <string name="choose_categories_explanation">Pick 3 categories to borrow items someday. No strings attached! 🧐</string>
+    <string name="before_we_start">Help us to help you helps others 🤝</string>
+    <string name="category_title">Category</string>
+    <string name="to_finish">To Finish 🎉</string>
+    <string name="welcome">WELCOME</string>
+    <string name="go_back">Go Back</string>
+    <string name="number_of_categories">Number of categories : </string>
+    <string name="search_hint">Add your address</string>
+    <string name="get_current_location">Use my current location</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_profile">Profile</string>
+    <string name="title_inbox">Inbox</string>
+    <string name="home_fragment">Home Fragment</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="new_borrowing">New Borrowing</string>
+    <string name="common_products">Common Products</string>
+    <string name="my_history">My History</string>
+    <string name="i_have_a_product">I have a product</string>
+    <string name="my_location">My Location</string>
+    <string name="placeholder_location">address</string>
+    <string name="categories">Categories</string>
+    <string name="rating">"My Rating "</string>
+</resources>

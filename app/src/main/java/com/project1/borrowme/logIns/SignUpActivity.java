@@ -1,39 +1,63 @@
 package com.project1.borrowme.logIns;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.SearchView;
+import android.widget.Switch;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.project1.borrowme.BuildConfig;
 import com.project1.borrowme.R;
 import com.project1.borrowme.Utilities.MySignal;
 
+import java.io.IOException;
+import java.util.List;
+
 public class SignUpActivity extends AppCompatActivity {
 
+    private final int FINE_PERMISSION_CODE = 1;
+    Location currentLocation;
+    FusedLocationProviderClient fusedLocationClient;
     private EditText signUp_ET_userName;
     private EditText signUp_ET_email;
     private EditText signUp_ET_password;
     private MaterialButton signUp_BTN_SingUp;
     private MaterialTextView signUp_MTV_LogIn;
     private FirebaseAuth auth;
+    private Switch signUp_SWITCH_location;
+    private EditText signUp_ET_searchBox;
+    private double latitude;
+    private double longitude;
 
     @Override
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
@@ -45,11 +69,45 @@ public class SignUpActivity extends AppCompatActivity {
         });
 
         auth = FirebaseAuth.getInstance();
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
         findViews();
         initViews();
     }
 
     private void initViews() {
+        initSingUp();
+        initLocation();
+        initLogIn();
+    }
+
+
+    private void initLogIn() {
+        signUp_MTV_LogIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeLogInActivity();
+            }
+        });
+    }
+
+    private void initLocation() {
+        signUp_SWITCH_location.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    // The switch is enabled/checked
+                    signUp_ET_searchBox.setVisibility(View.GONE);
+                    getCurrentLocation();
+                } else {
+                    // The switch is disabled/unchecked
+                    signUp_ET_searchBox.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+    }
+
+    private void initSingUp() {
         signUp_BTN_SingUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,7 +121,8 @@ public class SignUpActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
                                 String uId = auth.getCurrentUser().getUid();
-                                changeRegistrationActivity(email, password, userName, uId);
+                                getLocation();
+                                changeRegistrationActivity(email, password, userName, uId, latitude, longitude);
                             } else {
 
                                 if (task.getException() instanceof FirebaseAuthUserCollisionException) {
@@ -75,26 +134,96 @@ public class SignUpActivity extends AppCompatActivity {
                         }
                     });
                 }
-
             }
         });
+    }
 
-        signUp_MTV_LogIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                changeLogInActivity();
+    private void getLocation() {
+        // The switch is disabled/unchecked
+        if (signUp_SWITCH_location.isChecked()) {
+            getCurrentLocation();
+        } else getLocationByAddress();
+    }
+
+
+
+
+
+    private void getLocationByAddress() {
+        String address = signUp_ET_searchBox.getText().toString().trim();
+        if (address.isEmpty()) {
+            signUp_ET_searchBox.setError("Address cannot be empty");
+        } else {
+            Geocoder geocoder = new Geocoder(this);
+            try {
+                List<Address> addresses = geocoder.getFromLocationName(address, 1);
+                if (addresses != null && !addresses.isEmpty()) {
+                    Address result = addresses.get(0);
+                    latitude = result.getLatitude();
+                    longitude = result.getLongitude();
+                } else {
+                    signUp_ET_searchBox.setError("Address not found");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        });
+        }
 
     }
 
-    private void changeRegistrationActivity(String email, String password, String userName, String uId) {
+    private void getCurrentLocation() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, FINE_PERMISSION_CODE);
+            return;
+        }
+        Task<Location> task = fusedLocationClient.getLastLocation();
+        task.addOnSuccessListener(new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        if (location != null) {
+                            currentLocation = location;
+                            // Location retrieved successfully, update latitude and longitude
+                            latitude = currentLocation.getLatitude();
+                            longitude = currentLocation.getLongitude();
+                        } else {
+                            // Location is null, handle the case if needed
+                            MySignal.getInstance().toast("Unable to get current location");
+                        }
+                    }
+                })
+                .addOnFailureListener(this, new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Failed to get location, handle the failure if needed
+                        MySignal.getInstance().toast("Failed to get current location");
+                    }
+                });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == FINE_PERMISSION_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission granted, get current location
+                getCurrentLocation();
+            } else {
+                MySignal.getInstance().toast("Required Permission");
+            }
+        }
+    }
+
+    private void changeRegistrationActivity(String email, String password, String
+            userName, String uId, double latitude, double longitude) {
         Intent intent = new Intent(this, RegistrationActivity.class);
 
         intent.putExtra("email", email);
         intent.putExtra("password", password);
         intent.putExtra("userName", userName);
         intent.putExtra("uId", uId);
+        intent.putExtra("latitude", latitude);
+        intent.putExtra("longitude", longitude);
 
         startActivity(intent);
         finish();
@@ -105,7 +234,6 @@ public class SignUpActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
-
 
     private boolean validateInputs(String userName, String email, String password) {
         if (userName.isEmpty()) {
@@ -133,12 +261,13 @@ public class SignUpActivity extends AppCompatActivity {
         return true;
     }
 
-
     private void findViews() {
         signUp_ET_userName = findViewById(R.id.signUp_ET_userName);
         signUp_ET_email = findViewById(R.id.signUp_ET_email);
         signUp_ET_password = findViewById(R.id.signUp_ET_password);
         signUp_BTN_SingUp = findViewById(R.id.signUp_BTN_LOGIN);
         signUp_MTV_LogIn = findViewById(R.id.signUp_MTV_LogIn);
+        signUp_SWITCH_location = findViewById(R.id.signUp_SWITCH_location);
+        signUp_ET_searchBox = findViewById(R.id.signUp_ET_searchBox);
     }
 }

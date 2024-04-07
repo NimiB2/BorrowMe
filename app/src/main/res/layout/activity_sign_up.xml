@@ -8,114 +8,141 @@
     android:background="@color/background"
     tools:context=".logIns.SignUpActivity">
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/signUp_MTV_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/sign_up"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/margin_size"
-                android:textSize="@dimen/login_title_size"
-                android:textStyle="bold"
-                android:textColor="@color/text_color"
-                />
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/signUp_MTV_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/margin_large"
+        android:text="@string/sign_up"
+        android:textColor="@color/text_color"
+        android:textSize="@dimen/text_size_medium"
+        android:textStyle="bold" />
+
     <EditText
         android:id="@+id/signUp_ET_userName"
-        android:layout_width="@dimen/card_width"
+        android:layout_width="@dimen/size_medium"
         android:layout_height="wrap_content"
         android:layout_below="@+id/signUp_MTV_title"
-        android:background="@drawable/custom_edittext"
-        android:layout_marginTop="@dimen/margin_size"
-        android:layout_marginHorizontal="@dimen/small_general_size"
-        android:padding="@dimen/small_general_size"
-        android:hint="@string/full_name"
-        android:drawableLeft="@drawable/person"
-        android:drawablePadding="@dimen/small_general_size"
         android:layout_centerHorizontal="true"
-        android:textColor="@color/black"
+        android:layout_marginHorizontal="@dimen/margin_xsmall"
+        android:layout_marginTop="@dimen/margin_large"
+        android:background="@drawable/custom_edittext"
+        android:drawableLeft="@drawable/person"
+        android:drawablePadding="@dimen/margin_xsmall"
+        android:hint="@string/full_name"
+        android:autofillHints=""
         android:inputType="text"
-        android:importantForAutofill="no"
-        >
+        android:padding="@dimen/margin_xsmall"
+        android:textColor="@color/black">
+
     </EditText>
 
-            <EditText
-                android:id="@+id/signUp_ET_email"
-                android:layout_width="330dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/signUp_ET_userName"
-                android:background="@drawable/custom_edittext"
-                android:layout_marginTop="@dimen/general_dimension"
-                android:layout_marginHorizontal="@dimen/small_general_size"
-                android:layout_centerHorizontal="true"
-                android:padding="@dimen/small_general_size"
-                android:hint="@string/email"
-                android:drawableLeft="@drawable/email"
-                android:drawablePadding="@dimen/small_general_size"
-                android:textColor="@color/black"
-                android:inputType="textEmailAddress"
-                android:importantForAutofill="no"
-                >
-            </EditText>
+    <EditText
+        android:id="@+id/signUp_ET_email"
+        android:layout_width="330dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/signUp_ET_userName"
+        android:layout_centerHorizontal="true"
+        android:layout_marginHorizontal="@dimen/margin_xsmall"
+        android:layout_marginTop="@dimen/margin_small"
+        android:background="@drawable/custom_edittext"
+        android:drawableLeft="@drawable/email"
+        android:drawablePadding="@dimen/margin_xsmall"
+        android:hint="@string/email"
+        android:autofillHints=""
+        android:inputType="textEmailAddress"
+        android:padding="@dimen/margin_xsmall"
+        android:textColor="@color/black">
 
-            <EditText
-                android:id="@+id/signUp_ET_password"
-                android:layout_width="@dimen/card_width"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/signUp_ET_email"
-                android:background="@drawable/custom_edittext"
-                android:layout_marginTop="@dimen/general_dimension"
-                android:layout_marginHorizontal="@dimen/small_general_size"
-                android:padding="@dimen/small_general_size"
-                android:hint="@string/password"
-                android:drawableLeft="@drawable/lock"
-                android:layout_centerHorizontal="true"
-                android:drawablePadding="@dimen/small_general_size"
-                android:textColor="@color/black"
-                android:inputType="textPassword"
-                android:importantForAutofill="no"
-                >
-            </EditText>
+    </EditText>
 
+    <EditText
+        android:id="@+id/signUp_ET_password"
+        android:layout_width="@dimen/size_medium"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/signUp_ET_email"
+        android:layout_centerHorizontal="true"
+        android:layout_marginHorizontal="@dimen/margin_xsmall"
+        android:layout_marginTop="@dimen/margin_small"
+        android:background="@drawable/custom_edittext"
+        android:drawableLeft="@drawable/lock"
+        android:drawablePadding="@dimen/margin_xsmall"
+        android:hint="@string/password"
+        android:autofillHints=""
+        android:inputType="textPassword"
+        android:padding="@dimen/margin_xsmall"
+        android:textColor="@color/black">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/signUp_BTN_LOGIN"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/signUp_ET_password"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/top_margin"
-                android:text="@string/sign_up_caps"
-                android:textColor="@color/white"
-                android:textSize="@dimen/button_text_size"
-                android:backgroundTint="@color/text_color"
-                >
-            </com.google.android.material.button.MaterialButton>
+    </EditText>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="@dimen/small_margin_top"
-                android:layout_below="@+id/signUp_BTN_LOGIN"
-                android:layout_centerHorizontal="true"
-                >
+    <Switch
+        android:id="@+id/signUp_SWITCH_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/signUp_ET_password"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:text="@string/get_current_location"
+        android:textColor="@color/black"
+        android:checked="true"
+        tools:ignore="UseSwitchCompatOrMaterialXml" />
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/signUp_MTV_notRegister"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/already_registered"
-                    android:textColor="@color/black"
-                    />
+    <EditText
+        android:id="@+id/signUp_ET_searchBox"
+        android:layout_width="@dimen/size_medium"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/signUp_SWITCH_location"
+        android:layout_centerHorizontal="true"
+        android:layout_marginHorizontal="@dimen/margin_xsmall"
+        android:layout_marginTop="@dimen/margin_xsmall"
+        android:background="@drawable/custom_edittext"
+        android:drawablePadding="@dimen/margin_xsmall"
+        android:drawableLeft="@drawable/location"
+        android:padding="@dimen/margin_xsmall"
+        android:hint="@string/search_hint"
+        android:inputType="textPostalAddress"
+        android:visibility="gone"
+        android:textColor="@color/black"
+        android:autofillHints=""
+        />
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/signUp_MTV_LogIn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/small_general_size"
-                    android:text="@string/log_in"
-                    android:textColor="@color/black"
-                    />
-            </LinearLayout>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/signUp_BTN_LOGIN"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/signUp_ET_searchBox"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/margin_large"
+        android:backgroundTint="@color/text_color"
+        android:text="@string/sign_up_caps"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_small">
 
-        </RelativeLayout>
+    </com.google.android.material.button.MaterialButton>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/signUp_BTN_LOGIN"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/margin_xxsmall"
+        android:orientation="horizontal">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/signUp_MTV_notRegister"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/already_registered"
+            android:textColor="@color/black" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/signUp_MTV_LogIn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_xsmall"
+            android:text="@string/log_in"
+            android:textColor="@color/black" />
+    </LinearLayout>
+
+</RelativeLayout>

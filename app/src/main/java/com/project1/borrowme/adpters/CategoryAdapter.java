@@ -12,23 +12,25 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.project1.borrowme.R;
 import com.project1.borrowme.Utilities.MySignal;
-import com.project1.borrowme.interfaces.Callback_Category;
+import com.project1.borrowme.interfaces.CallbackCategory;
 import com.project1.borrowme.models.Category;
 
-import java.util.ArrayList;
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
     private static final long VIBRATION = 500;
     private List<Category> categories;
+    private WeakReference<CallbackCategory> callbackCategoryRef;
+
     private Context context;
-    private Callback_Category callbackCategory;
+    private CallbackCategory callbackCategory;
 
 
-    public CategoryAdapter(List<Category> categories, Context context, Callback_Category callbackCategory) {
+    public CategoryAdapter(List<Category> categories, Context context, CallbackCategory callbackCategory) {
         this.categories = categories;
         this.context = context;
-        this.callbackCategory = callbackCategory;
+        this.callbackCategoryRef = new WeakReference<>(callbackCategory);
     }
 
     @NonNull
@@ -47,7 +49,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         holder.imageCategory.setImageResource(categoryImage);
     }
 
-    public void setCallback(Callback_Category callbackCategory) {
+    public void setCallback(CallbackCategory callbackCategory) {
         this.callbackCategory = callbackCategory;
     }
 
@@ -55,9 +57,11 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     public int getItemCount() {
         return categories == null ? 0 : categories.size();
     }
-
     private Category getCategory(int position) {
-        return categories.get(position);
+        if (categories != null && position >= 0 && position < categories.size()) {
+            return categories.get(position);
+        }
+        return null;
     }
 
     public class CategoryViewHolder extends RecyclerView.ViewHolder {
@@ -66,33 +70,42 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
         public CategoryViewHolder(@NonNull View itemView) {
             super(itemView);
+
             imageCategory = itemView.findViewById(R.id.imageCategory);
             categoryName = itemView.findViewById(R.id.categoryName);
 
             imageCategory.setOnClickListener(v ->
             {
+                CallbackCategory callbackCategory = callbackCategoryRef.get();
                 if (callbackCategory != null) {
                     Category category = getCategory(getAdapterPosition());
-                    category.setClicked(!category.isClicked());
-                    updateUI(category,category.isClicked());
+                    if (category != null) {
+                        category.setClicked(!category.isClicked());
+                        updateUI(category, category.isClicked());
+                    }
                 }
             });
         }
 
-        private void updateUI(Category category,boolean clicked) {
-            if(clicked){
-                MySignal.getInstance().vibrate(VIBRATION);
-                MySignal.getInstance().toast(category.getName()+" has been selected successfully");
-                imageCategory.setImageAlpha(128);
-                categoryName.setAlpha(0.5f);
-                callbackCategory.addCategory(category);
-
-            } else {
-                imageCategory.setImageAlpha(255);
-                categoryName.setAlpha(1.0f);
-                callbackCategory.removeCategory(category);
-            }
-
+        private void updateUI(Category category, boolean clicked) {
+            itemView.post(() -> {
+                if (clicked) {
+                    MySignal.getInstance().vibrate(VIBRATION);
+                    imageCategory.setImageAlpha(128);
+                    categoryName.setAlpha(0.5f);
+                    CallbackCategory callbackCategory = callbackCategoryRef.get();
+                    if (callbackCategory != null) {
+                        callbackCategory.addCategory(category);
+                    }
+                } else {
+                    imageCategory.setImageAlpha(255);
+                    categoryName.setAlpha(1.0f);
+                    CallbackCategory callbackCategory = callbackCategoryRef.get();
+                    if (callbackCategory != null) {
+                        callbackCategory.removeCategory(category);
+                    }
+                }
+            });
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.project1.borrowme.logIns;
 
 import android.animation.Animator;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,6 +19,7 @@ import com.google.android.material.imageview.ShapeableImageView;
 import com.project1.borrowme.R;
 import com.project1.borrowme.logIns.LoginActivity;
 
+@SuppressLint("CustomSplashScreen")
 public class SplashActivity extends AppCompatActivity {
 
     private final int DURATION_TIME = 1650;
