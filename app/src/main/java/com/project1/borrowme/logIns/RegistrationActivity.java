@@ -42,8 +42,6 @@ public class RegistrationActivity extends AppCompatActivity {
     private String authUid;
     private double authLatitude;
     private double authLongitude;
-
-
     private RecyclerView registration_recyclerViewCategories;
     private MaterialButton registration_BTN_LOGIN;
     private MaterialButton registration_BTN_back;
@@ -89,7 +87,6 @@ public class RegistrationActivity extends AppCompatActivity {
 
         registration_BTN_back.setOnClickListener(v -> {
             FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-
 
             if (currentUser != null) {
                 currentUser.delete()
@@ -174,7 +171,6 @@ public class RegistrationActivity extends AppCompatActivity {
         registration_recyclerViewCategories.setAdapter(adapter);
     }
 
-    @SuppressLint("DefaultLocale")
     private void updateNumCategoryText(int size) {
         registration_MTV_categoryNum.setText(String.format("%d", size));
     }

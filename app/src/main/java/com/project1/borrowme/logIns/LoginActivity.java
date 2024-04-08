@@ -19,14 +19,18 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.project1.borrowme.MainActivity;
 import com.project1.borrowme.R;
+import com.project1.borrowme.Utilities.FirebaseUtil;
 import com.project1.borrowme.Utilities.MySignal;
 import com.project1.borrowme.models.MyUser;
 
 public class LoginActivity extends AppCompatActivity {
-    private MyUser myUser;
+    private MyUser myUser =MyUser.getInstance();
     private FirebaseAuth auth;
     private EditText LogIn_ET_email;
     private EditText LogIn_ET_password;
@@ -58,13 +62,21 @@ public class LoginActivity extends AppCompatActivity {
         if (user == null) {
             login();
         } else {
-//            setTheUser(user);
+            setTheUser();
             changeActivity(false);
         }
 
     }
 
-    private void setTheUser(FirebaseUser user) {
+    private void setTheUser() {
+        FirebaseUtil.getUserReference().get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+                    myUser = task.getResult().toObject(MyUser.class);
+                }
+            }
+        });
     }
 
     private void initViews() {
@@ -110,12 +122,22 @@ public class LoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success
-                            FirebaseUser user = auth.getCurrentUser();
+                            FirebaseUser currentUser = auth.getCurrentUser();
                             MySignal.getInstance().toast("Login Successful");
+                            setTheUser();
                             changeActivity(false);
+                            int x=1;
                         } else {
-                            // Sign in failed
-                            MySignal.getInstance().toast("Login Failed");
+                            if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
+                                // The password is invalid or the user does not have a password
+                                MySignal.getInstance().toast("Invalid password. Please try again.");
+                            } else if (task.getException() instanceof FirebaseAuthInvalidUserException) {
+                                // There is no user record corresponding to this identifier
+                                MySignal.getInstance().toast("Email not registered. Please sign up.");
+                            } else {
+                                // Other errors
+                                MySignal.getInstance().toast("Authentication failed. " + task.getException().getMessage());
+                            }
                         }
                     }
                 });

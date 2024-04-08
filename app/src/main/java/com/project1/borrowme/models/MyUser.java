@@ -18,6 +18,15 @@ public class MyUser {
     private MyUser() {
     }
 
+    public MyUser(Map<String, Category> categories, String uid, String uName, String uEmail, double lat, double lan) {
+        this.categories = categories;
+        this.uid = uid;
+        this.uName = uName;
+        this.uEmail = uEmail;
+        this.lat = lat;
+        this.lan = lan;
+    }
+
     public static MyUser getInstance() {
         if (instance == null) {
             synchronized (MyUser.class) {
@@ -33,6 +42,12 @@ public class MyUser {
     public Map<String, Category> getCategories() {
         return categories;
     }
+
+    public MyUser setCategories(Map<String, Category> categories) {
+        this.categories = categories;
+        return this;
+    }
+
     public MyUser addCategory(Category category) {
         this.categories.put(category.getName(), category);
         return this;

@@ -14,6 +14,12 @@ public class Category {
     public Category() {
     }
 
+    public Category(String name, int image, boolean isClicked) {
+        this.name = name;
+        this.image = image;
+        this.isClicked = isClicked;
+    }
+
     public String getName() {
         return name;
     }

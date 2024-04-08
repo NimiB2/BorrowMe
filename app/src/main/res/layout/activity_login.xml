@@ -60,7 +60,6 @@
                 android:drawablePadding="@dimen/margin_xsmall"
                 android:textColor="@color/text_color"
                 android:inputType="textEmailAddress"
-                android:importantForAutofill="no"
                >
             </EditText>
 

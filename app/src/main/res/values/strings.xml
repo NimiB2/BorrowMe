@@ -14,7 +14,7 @@
     <string name="choose_categories_explanation">Pick 3 categories to borrow items someday. No strings attached! 🧐</string>
     <string name="before_we_start">Help us to help you helps others 🤝</string>
     <string name="category_title">Category</string>
-    <string name="to_finish">To Finish 🎉</string>
+    <string name="Finish">Finish 🎉</string>
     <string name="welcome">WELCOME</string>
     <string name="go_back">Go Back</string>
     <string name="number_of_categories">Number of categories : </string>
@@ -37,4 +37,15 @@
     <string name="placeholder_location">address</string>
     <string name="categories">Categories</string>
     <string name="rating">"My Rating "</string>
+    <string name="inbox">Inbox</string>
+    <string name="user_name">User name</string>
+    <string name="new_borrow_request">New Borrow Request</string>
+    <string name="category_hint">Select the categories</string>
+    <string name="item_name_hint">Item Name</string>
+    <string name="description_hint">Description the item</string>
+    <string name="submit_request">SUBMIT</string>
+    <string name="distance_1km">1km</string>
+    <string name="distance_5km">5km</string>
+    <string name="distance_10km">10km</string>
+    <string name="_0">0</string>
 </resources>

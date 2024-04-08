@@ -76,7 +76,7 @@
 
     </EditText>
 
-    <Switch
+    <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/signUp_SWITCH_location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -86,7 +86,7 @@
         android:text="@string/get_current_location"
         android:textColor="@color/text_color"
         android:checked="true"
-        tools:ignore="UseSwitchCompatOrMaterialXml" />
+         />
 
     <EditText
         android:id="@+id/signUp_ET_searchBox"

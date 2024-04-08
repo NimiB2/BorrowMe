@@ -8,7 +8,7 @@
     android:background="@color/background"
     tools:context=".MainActivity">
 
-    <androidx.appcompat.widget.LinearLayoutCompat
+    <RelativeLayout
         android:id="@+id/main_LAYOUT_top_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -26,7 +26,19 @@
 
         </com.google.android.material.textview.MaterialTextView>
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/main_BTN_logout"
+            android:layout_width="@dimen/margin_small"
+            android:layout_height="@dimen/margin_small"
+            android:src="@drawable/logout"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="@dimen/margin_small"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="@dimen/margin_small"
+            />
+
+
+    </RelativeLayout>
 
     <FrameLayout
         android:id="@+id/main_FARM_layout"
