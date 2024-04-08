@@ -30,7 +30,7 @@ import com.project1.borrowme.Utilities.MySignal;
 import com.project1.borrowme.models.MyUser;
 
 public class LoginActivity extends AppCompatActivity {
-    private MyUser myUser =MyUser.getInstance();
+    private MyUser myUser ;
     private FirebaseAuth auth;
     private EditText LogIn_ET_email;
     private EditText LogIn_ET_password;
@@ -62,21 +62,35 @@ public class LoginActivity extends AppCompatActivity {
         if (user == null) {
             login();
         } else {
-            setTheUser();
-            changeActivity(false);
+            getTheUser();
         }
 
     }
 
-    private void setTheUser() {
+    private void getTheUser() {
         FirebaseUtil.getUserReference().get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if(task.isSuccessful()){
-                    myUser = task.getResult().toObject(MyUser.class);
+                    MyUser fetchedUser = task.getResult().toObject(MyUser.class);
+                    setUser(fetchedUser);
                 }
             }
         });
+    }
+
+    private void setUser(MyUser fetchedUser) {
+        if (fetchedUser != null) {
+            myUser =MyUser.getInstance();
+            myUser.setUid(fetchedUser.getUid());
+            myUser.setuName(fetchedUser.getuName());
+            myUser.setuEmail(fetchedUser.getuEmail());
+            myUser.setLat(fetchedUser.getLat());
+            myUser.setLan(fetchedUser.getLan());
+            myUser.setCategories(fetchedUser.getCategories());
+
+            changeActivity(false);
+        }
     }
 
     private void initViews() {
@@ -124,9 +138,7 @@ public class LoginActivity extends AppCompatActivity {
                             // Sign in success
                             FirebaseUser currentUser = auth.getCurrentUser();
                             MySignal.getInstance().toast("Login Successful");
-                            setTheUser();
-                            changeActivity(false);
-                            int x=1;
+                            getTheUser();
                         } else {
                             if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
                                 // The password is invalid or the user does not have a password

@@ -29,8 +29,6 @@ import com.project1.borrowme.views.InboxFragment;
 import com.project1.borrowme.views.ProfileFragment;
 
 public class MainActivity extends AppCompatActivity {
-    private MyUser myUser = MyUser.getInstance();
-    
     private AppCompatImageButton main_BTN_logout;
     private BottomNavigationView bottomNavigationView;
     private FrameLayout frameLayout;
@@ -55,8 +53,9 @@ public class MainActivity extends AppCompatActivity {
         findViews();
         initViews();
         initFragments();
-        int x=1;
     }
+
+
 
     private void initViews() {
         main_BTN_logout.setOnClickListener(new View.OnClickListener() {
@@ -68,10 +67,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void logOut() {
+        MyUser.getInstance().resetUser();
         FirebaseAuth.getInstance().signOut();
 
         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
         startActivity(intent);
         finish();
     }

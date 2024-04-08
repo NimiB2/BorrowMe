@@ -13,6 +13,7 @@ import android.widget.RatingBar;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textview.MaterialTextView;
 import com.project1.borrowme.R;
+import com.project1.borrowme.models.MyUser;
 
 public class ProfileFragment extends Fragment {
     private ShapeableImageView profile_IMG_settings;
@@ -20,6 +21,7 @@ public class ProfileFragment extends Fragment {
     private MaterialTextView profile_TV_user_location;
     private RecyclerView profile_RECYCLER_categories;
     private RatingBar profile_RB_rating;
+    private MaterialTextView profile_MTV_name;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -28,9 +30,16 @@ public class ProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
         findViews(view);
-
+        initViews(view);
 
         return view;
+    }
+
+    private void initViews(View view) {
+        String name=MyUser.getInstance().getuName();
+        if(name!=null){
+            profile_MTV_name.setText(name);
+        }
     }
 
     private void findViews(View view) {
@@ -39,5 +48,6 @@ public class ProfileFragment extends Fragment {
         profile_TV_user_location = view.findViewById(R.id.profile_TV_user_location);
         profile_RECYCLER_categories = view.findViewById(R.id.profile_RECYCLER_categories);
         profile_RB_rating = view.findViewById(R.id.profile_RB_rating);
+        profile_MTV_name= view.findViewById(R.id.profile_MTV_name);
     }
 }

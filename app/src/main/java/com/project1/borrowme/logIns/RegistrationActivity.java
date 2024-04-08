@@ -1,6 +1,5 @@
 package com.project1.borrowme.logIns;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -36,7 +35,7 @@ import java.util.Map;
 
 public class RegistrationActivity extends AppCompatActivity {
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private final MyUser user = MyUser.getInstance();
+    private final MyUser myUser = MyUser.getInstance();
     private String authEmail;
     private String authUserName;
     private String authUid;
@@ -76,7 +75,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
     private void initViews() {
         registration_BTN_LOGIN.setOnClickListener(v -> {
-            if (user.getCategories().size() >= 3) {
+            if (myUser.getCategories().size() >= 3) {
                 setUser(authEmail, authUserName, authUid);
                 setDb();
                 changeActivity(true);
@@ -124,21 +123,21 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     private void setUser(String authEmail, String authUserName, String authUid) {
-        user.setUid(authUid);
-        user.setuEmail(authEmail);
-        user.setuName(authUserName);
+        myUser.setUid(authUid);
+        myUser.setuEmail(authEmail);
+        myUser.setuName(authUserName);
     }
 
     private void setDb() {
         CollectionReference reference = db.collection("users");
         DocumentReference documentReference = reference.document(authUid);
         Map<String, Object> userMap = new HashMap<>();
-        userMap.put("categories", user.getCategories());
-        userMap.put("uid", user.getUid());
-        userMap.put("uEmail", user.getuEmail());
+        userMap.put("categories", myUser.getCategories());
+        userMap.put("uid", myUser.getUid());
+        userMap.put("uEmail", myUser.getuEmail());
         userMap.put("lan", authLongitude);
         userMap.put("lat", authLatitude);
-        userMap.put("uName", user.getuName());
+        userMap.put("uName", myUser.getuName());
 
         documentReference.set(userMap)
                 .addOnSuccessListener(aVoid -> Log.d("Firestore", "User added successfully!"))
@@ -154,14 +153,14 @@ public class RegistrationActivity extends AppCompatActivity {
         CallbackCategory callbackCategory = new CallbackCategory() {
             @Override
             public void addCategory(Category category) {
-                user.addCategory(category);
-                updateNumCategoryText(user.getCategories().size());
+                myUser.addCategory(category);
+                updateNumCategoryText(myUser.getCategories().size());
             }
 
             @Override
             public void removeCategory(Category category) {
-                user.removeCategory(category.getName());
-                updateNumCategoryText(user.getCategories().size());
+                myUser.removeCategory(category.getName());
+                updateNumCategoryText(myUser.getCategories().size());
             }
         };
 

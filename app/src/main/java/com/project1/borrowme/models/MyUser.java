@@ -115,4 +115,13 @@ public class MyUser {
         this.lan = lan;
         return this;
     }
+
+    public void resetUser() {
+        this.uid = null;
+        this.uName = null;
+        this.uEmail = null;
+        this.lat = 0;
+        this.lan = 0;
+        this.categories.clear();
+    }
 }

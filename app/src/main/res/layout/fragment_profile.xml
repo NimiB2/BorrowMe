@@ -27,18 +27,40 @@
                 android:layout_alignParentStart="true"
                 android:src="@drawable/settings"
                 />
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginEnd="@dimen/margin_small"
+            android:layout_alignParentEnd="true"
+            >
+
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/profile_IMG_profile_picture"
                 android:layout_width="@dimen/image_size"
                 android:layout_height="@dimen/image_size"
                 android:src="@drawable/farmerprofile"
-                android:layout_marginEnd="@dimen/margin_small"
-                android:layout_alignParentEnd="true"
                 android:background="@drawable/profile_image_background"
                 android:scaleType="centerCrop"
                 style="@style/CircularImageView"
                 />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/profile_MTV_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/user_name"
+                android:layout_gravity="center"
+                android:textSize="@dimen/text_size_small"
+                android:layout_marginTop="@dimen/margin_xsmall"
+                android:textStyle="bold"
+                android:textColor="@color/tittle_color"
+                >
+
+            </com.google.android.material.textview.MaterialTextView>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
         </RelativeLayout>
 
         <androidx.appcompat.widget.LinearLayoutCompat
