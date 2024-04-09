@@ -147,28 +147,6 @@ public class RegistrationActivity extends AppCompatActivity {
                 .addOnFailureListener(e -> Log.w("Firestore", "Error adding user", e));
     }
 
-//    private void setUser(String authEmail, String authUserName, String authUid) {
-//        myUser.setUid(authUid);
-//        myUser.setuEmail(authEmail);
-//        myUser.setuName(authUserName);
-//    }
-//
-//    private void setDb() {
-//        CollectionReference reference = db.collection("users");
-//        DocumentReference documentReference = reference.document(authUid);
-//        Map<String, Object> userMap = new HashMap<>();
-//        userMap.put("categories", myUser.getCategories());
-//        userMap.put("uid", myUser.getUid());
-//        userMap.put("uEmail", myUser.getuEmail());
-//        userMap.put("lan", authLongitude);
-//        userMap.put("lat", authLatitude);
-//        userMap.put("uName", myUser.getuName());
-//
-//        documentReference.set(userMap)
-//                .addOnSuccessListener(aVoid -> Log.d("Firestore", "User added successfully!"))
-//                .addOnFailureListener(e -> Log.w("Firestore", "Error adding user", e));
-//    }
-
     private void updateCategories(Map<String, Category> selectedCategories){
         this.selectedCategories = selectedCategories;
     }

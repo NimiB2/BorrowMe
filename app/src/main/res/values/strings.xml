@@ -51,4 +51,6 @@
     <string name="change_password">Change Your Password</string>
     <string name="manage_categories">Manage Your Categories</string>
     <string name="save_changes">SAVE</string>
+    <string name="new_password">New password</string>
+    <string name="save_new_password">SAVE NEW PASSWORD</string>
 </resources>

@@ -66,37 +66,10 @@ public class LoginActivity extends AppCompatActivity {
             login();
         } else {
             changeActivity(false);
-
-//            getTheUser();
         }
 
     }
 
-//    private void getTheUser() {
-//        FirebaseUtil.getUserReference().get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                if(task.isSuccessful()){
-//                    MyUser fetchedUser = task.getResult().toObject(MyUser.class);
-//                    setUser(fetchedUser);
-//                }
-//            }
-//        });
-//    }
-//
-//    private void setUser(MyUser fetchedUser) {
-//        if (fetchedUser != null) {
-//            myUser =MyUser.getInstance();
-//            myUser.setUid(fetchedUser.getUid());
-//            myUser.setuName(fetchedUser.getuName());
-//            myUser.setuEmail(fetchedUser.getuEmail());
-//            myUser.setLat(fetchedUser.getLat());
-//            myUser.setLan(fetchedUser.getLan());
-//            myUser.setCategories(fetchedUser.getCategories());
-//
-//            changeActivity(false);
-//        }
-//    }
 
     private void initViews() {
         LogIn_BTN_LOGIN.setOnClickListener(new View.OnClickListener() {
@@ -145,7 +118,6 @@ public class LoginActivity extends AppCompatActivity {
                             MySignal.getInstance().toast("Login Successful");
                             changeActivity(false);
 
-//                            getTheUser();
                         } else {
                             if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
                                 // The password is invalid or the user does not have a password

@@ -6,6 +6,7 @@ import com.project1.borrowme.adpters.CategoryAdapter;
 
 public class Category {
     private String name;
+
     private int image;
 
     private boolean isClicked = false;

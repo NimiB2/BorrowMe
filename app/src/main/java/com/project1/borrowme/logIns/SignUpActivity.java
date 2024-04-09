@@ -8,13 +8,9 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Looper;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.CompoundButton;
-import android.widget.EditText;
-import android.widget.SearchView;
-import android.widget.Switch;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -30,11 +26,7 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.libraries.places.api.Places;
-import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textfield.TextInputEditText;
@@ -42,8 +34,8 @@ import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
-import com.project1.borrowme.BuildConfig;
 import com.project1.borrowme.R;
+import com.project1.borrowme.Utilities.FirebaseUtil;
 import com.project1.borrowme.Utilities.MySignal;
 
 import java.io.IOException;
@@ -62,8 +54,8 @@ public class SignUpActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private SwitchMaterial signUp_SWITCH_location;
     private TextInputEditText signUp_ET_searchBox;
-    private double latitude= 34.8007048 ;
-    private double longitude=32.1027879;
+    private double latitude = 34.8007048;
+    private double longitude = 32.1027879;
 
 
     @Override
@@ -85,7 +77,7 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-        initSingUp();
+        initSignUp();
         initLocation();
         initLogIn();
     }
@@ -116,32 +108,39 @@ public class SignUpActivity extends AppCompatActivity {
         });
     }
 
-    private void initSingUp() {
-        signUp_BTN_SingUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String userName = signUp_ET_userName.getText().toString().trim();
-                String email = signUp_ET_email.getText().toString().trim();
-                String password = signUp_ET_password.getText().toString().trim();
+    private void initSignUp() {
+        signUp_BTN_SingUp.setOnClickListener(v -> {
+            initiateSignUp();
+        });
+    }
+    private void initiateSignUp() {
+        // Extract input values
+        String userName = signUp_ET_userName.getText().toString().trim();
+        String email = signUp_ET_email.getText().toString().trim();
+        String password = signUp_ET_password.getText().toString().trim();
 
-                if (validateInputs(userName, email, password)) {
-                    auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                String uId = auth.getCurrentUser().getUid();
-                                getLocation();
-                                changeRegistrationActivity(email, password, userName, uId, latitude, longitude);
-                            } else {
+        // Validate inputs and proceed if valid
+        if (FirebaseUtil.validateUserName(signUp_ET_userName) &&
+                FirebaseUtil.validateEmail(signUp_ET_email) &&
+                FirebaseUtil.validatePassword(signUp_ET_password)) {
+            createUserWithEmail(email, password, userName);
+        }
+    }
 
-                                if (task.getException() instanceof FirebaseAuthUserCollisionException) {
-                                    signUp_ET_email.setError("Email is already in use");
-                                } else {
-                                    MySignal.getInstance().toast("SingUp Failed");
-                                }
-                            }
-                        }
-                    });
+    private void createUserWithEmail(String email, String password, String userName) {
+        auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
+
+            if (task.isSuccessful()) {
+                // User successfully created, proceed with additional setup
+                String uId = auth.getCurrentUser().getUid();
+                getLocation(); // Ensure this method properly handles location fetching
+                changeRegistrationActivity(email, password, userName, uId, latitude, longitude);
+            } else {
+                // Handle failure, such as email already in use or other errors
+                if (task.getException() instanceof FirebaseAuthUserCollisionException) {
+                    signUp_ET_email.setError("Email is already in use");
+                } else {
+                    MySignal.getInstance().toast("SignUp Failed");
                 }
             }
         });
@@ -153,9 +152,6 @@ public class SignUpActivity extends AppCompatActivity {
             getCurrentLocation();
         } else getLocationByAddress();
     }
-
-
-
 
 
     private void getLocationByAddress() {
@@ -258,8 +254,8 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private boolean validateInputs(String userName, String email, String password) {
-        if (userName.isEmpty()) {
-            signUp_ET_userName.setError("Name cannot be empty");
+        if (userName.isEmpty() || userName.length() < 3) {
+            signUp_ET_userName.setError("Username must be at least 3 characters");
             return false;
         }
         if (email.isEmpty()) {

@@ -30,7 +30,7 @@ public class MyUser {
         this.lan = lan;
     }
 
-    public static MyUser init() {
+    public static MyUser getInstance() {
         if (instance == null) {
             synchronized (MyUser.class) {
                 if (instance == null) {
@@ -41,9 +41,9 @@ public class MyUser {
         return instance;
     }
 
-    public static MyUser getInstance(){
-        return instance;
-    }
+//     public static MyUser getInstance(){
+//        return instance;
+//    }
 
 
     public Map<String, Category> getCategories() {

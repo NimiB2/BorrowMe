@@ -39,8 +39,8 @@
         android:layout_height="0dp"
         android:layout_above="@id/registration_LAYOUT_buttons"
         android:layout_below="@id/registration_MTV_notRegister"
-        android:layout_marginBottom="@dimen/margin_medium"
-        android:layout_marginTop="@dimen/margin_medium"/>
+        android:layout_marginBottom="@dimen/size_xsmall"
+        android:layout_marginTop="@dimen/size_xsmall"/>
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/registration_LAYOUT_buttons"

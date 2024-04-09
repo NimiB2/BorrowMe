@@ -112,7 +112,8 @@
         android:backgroundTint="@color/buttonColor"
         android:text="@string/sign_up_caps"
         android:textColor="@color/button_text_color"
-        android:textSize="@dimen/text_size_main_button_s">
+        android:textSize="@dimen/text_size_main_button_s"
+        >
 
     </com.google.android.material.button.MaterialButton>
 
