@@ -19,7 +19,7 @@
         android:textSize="@dimen/text_size_large"
         android:textStyle="bold" />
 
-    <EditText
+    <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/signUp_ET_userName"
         android:layout_width="@dimen/size_medium"
         android:layout_height="wrap_content"
@@ -27,7 +27,6 @@
         android:layout_centerHorizontal="true"
         android:layout_marginHorizontal="@dimen/margin_xsmall"
         android:layout_marginTop="@dimen/size_xsmall"
-        android:autofillHints=""
         android:background="@drawable/custom_edittext"
         android:drawableLeft="@drawable/person"
         android:drawablePadding="@dimen/margin_xsmall"
@@ -36,9 +35,9 @@
         android:padding="@dimen/margin_xsmall"
         android:textColor="@color/text_color">
 
-    </EditText>
+    </com.google.android.material.textfield.TextInputEditText>
 
-    <EditText
+    <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/signUp_ET_email"
         android:layout_width="330dp"
         android:layout_height="wrap_content"
@@ -46,7 +45,6 @@
         android:layout_centerHorizontal="true"
         android:layout_marginHorizontal="@dimen/margin_xsmall"
         android:layout_marginTop="@dimen/margin_small"
-        android:autofillHints=""
         android:background="@drawable/custom_edittext"
         android:drawableLeft="@drawable/email"
         android:drawablePadding="@dimen/margin_xsmall"
@@ -55,9 +53,9 @@
         android:padding="@dimen/margin_xsmall"
         android:textColor="@color/text_color">
 
-    </EditText>
+    </com.google.android.material.textfield.TextInputEditText>
 
-    <EditText
+    <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/signUp_ET_password"
         android:layout_width="@dimen/size_medium"
         android:layout_height="wrap_content"
@@ -65,7 +63,6 @@
         android:layout_centerHorizontal="true"
         android:layout_marginHorizontal="@dimen/margin_xsmall"
         android:layout_marginTop="@dimen/margin_small"
-        android:autofillHints=""
         android:background="@drawable/custom_edittext"
         android:drawableLeft="@drawable/lock"
         android:drawablePadding="@dimen/margin_xsmall"
@@ -74,7 +71,7 @@
         android:padding="@dimen/margin_xsmall"
         android:textColor="@color/text_color">
 
-    </EditText>
+    </com.google.android.material.textfield.TextInputEditText>
 
     <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/signUp_SWITCH_location"
@@ -88,7 +85,7 @@
         android:textColor="@color/text_color"
         android:textSize="@dimen/text_size_xsmall" />
 
-    <EditText
+    <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/signUp_ET_searchBox"
         android:layout_width="@dimen/size_medium"
         android:layout_height="wrap_content"
@@ -96,7 +93,6 @@
         android:layout_centerHorizontal="true"
         android:layout_marginHorizontal="@dimen/margin_xsmall"
         android:layout_marginTop="@dimen/margin_xsmall"
-        android:autofillHints=""
         android:background="@drawable/custom_edittext"
         android:drawableLeft="@drawable/location"
         android:drawablePadding="@dimen/margin_xsmall"

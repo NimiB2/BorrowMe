@@ -17,6 +17,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,10 +33,10 @@ import com.project1.borrowme.Utilities.MySignal;
 import com.project1.borrowme.models.MyUser;
 
 public class LoginActivity extends AppCompatActivity {
-    private MyUser myUser ;
+   // private MyUser myUser ;
     private FirebaseAuth auth;
-    private AppCompatEditText LogIn_ET_email;
-    private AppCompatEditText LogIn_ET_password;
+    private TextInputEditText LogIn_ET_email;
+    private TextInputEditText LogIn_ET_password;
     private MaterialButton LogIn_BTN_LOGIN;
     private MaterialTextView LogIn_MTV_singUp;
 
@@ -64,36 +65,38 @@ public class LoginActivity extends AppCompatActivity {
         if (user == null) {
             login();
         } else {
-            getTheUser();
-        }
-
-    }
-
-    private void getTheUser() {
-        FirebaseUtil.getUserReference().get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()){
-                    MyUser fetchedUser = task.getResult().toObject(MyUser.class);
-                    setUser(fetchedUser);
-                }
-            }
-        });
-    }
-
-    private void setUser(MyUser fetchedUser) {
-        if (fetchedUser != null) {
-            myUser =MyUser.getInstance();
-            myUser.setUid(fetchedUser.getUid());
-            myUser.setuName(fetchedUser.getuName());
-            myUser.setuEmail(fetchedUser.getuEmail());
-            myUser.setLat(fetchedUser.getLat());
-            myUser.setLan(fetchedUser.getLan());
-            myUser.setCategories(fetchedUser.getCategories());
-
             changeActivity(false);
+
+//            getTheUser();
         }
+
     }
+
+//    private void getTheUser() {
+//        FirebaseUtil.getUserReference().get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                if(task.isSuccessful()){
+//                    MyUser fetchedUser = task.getResult().toObject(MyUser.class);
+//                    setUser(fetchedUser);
+//                }
+//            }
+//        });
+//    }
+//
+//    private void setUser(MyUser fetchedUser) {
+//        if (fetchedUser != null) {
+//            myUser =MyUser.getInstance();
+//            myUser.setUid(fetchedUser.getUid());
+//            myUser.setuName(fetchedUser.getuName());
+//            myUser.setuEmail(fetchedUser.getuEmail());
+//            myUser.setLat(fetchedUser.getLat());
+//            myUser.setLan(fetchedUser.getLan());
+//            myUser.setCategories(fetchedUser.getCategories());
+//
+//            changeActivity(false);
+//        }
+//    }
 
     private void initViews() {
         LogIn_BTN_LOGIN.setOnClickListener(new View.OnClickListener() {
@@ -140,7 +143,9 @@ public class LoginActivity extends AppCompatActivity {
                             // Sign in success
                             FirebaseUser currentUser = auth.getCurrentUser();
                             MySignal.getInstance().toast("Login Successful");
-                            getTheUser();
+                            changeActivity(false);
+
+//                            getTheUser();
                         } else {
                             if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
                                 // The password is invalid or the user does not have a password

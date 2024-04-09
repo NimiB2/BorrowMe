@@ -11,7 +11,7 @@
     android:layout_height="match_parent"
     android:fillViewport="true">
 
-    <LinearLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -54,7 +54,7 @@
             android:layout_marginTop="@dimen/margin_small"
             android:hint="@string/category_hint">
 
-            <AutoCompleteTextView
+            <androidx.appcompat.widget.AppCompatAutoCompleteTextView
                 android:id="@+id/newBorrow_ACTV_category"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -86,19 +86,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_medium"
+            android:layout_gravity="center"
             android:text="@string/get_current_location"
             android:checked="true"
             android:buttonTint="@color/bottom_nav_color"
             android:textColor="@color/text_color"
             />
 
-        <EditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/signUp_ET_searchBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_xsmall"
             android:background="@drawable/custom_edittext"
             android:drawableLeft="@drawable/location"
+            android:layout_gravity="center"
             android:drawablePadding="@dimen/margin_xsmall"
             android:hint="@string/search_hint"
             android:inputType="textPostalAddress"
@@ -107,7 +109,7 @@
             android:visibility="gone"
             android:autofillHints="" />
 
-        <LinearLayout
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/distance_options_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -115,7 +117,7 @@
             android:orientation="horizontal"
             android:gravity="center">
 
-            <RadioButton
+            <com.google.android.material.radiobutton.MaterialRadioButton
                 android:id="@+id/radio_distance_1km"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -124,7 +126,7 @@
                 android:buttonTint="@color/bottom_nav_color"
                 />
 
-            <RadioButton
+            <com.google.android.material.radiobutton.MaterialRadioButton
                 android:id="@+id/radio_distance_5km"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -135,7 +137,7 @@
 
                 />
 
-            <RadioButton
+            <com.google.android.material.radiobutton.MaterialRadioButton
                 android:id="@+id/radio_distance_10km"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -144,7 +146,7 @@
                 android:buttonTint="@color/bottom_nav_color"
                 />
 
-        </LinearLayout>
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
 
         <!-- Submit Button -->
@@ -158,7 +160,7 @@
             android:textStyle="bold"
             android:textSize="@dimen/text_size_small"
             android:textColor="@color/button_text_color" />
-    </LinearLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 </ScrollView>
 
     <androidx.appcompat.widget.AppCompatImageButton

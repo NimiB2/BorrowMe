@@ -3,14 +3,15 @@ package com.project1.borrowme.logIns;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.FrameLayout;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textview.MaterialTextView;
@@ -25,23 +26,24 @@ import com.project1.borrowme.Utilities.MySignal;
 import com.project1.borrowme.adpters.CategoryAdapter;
 import com.project1.borrowme.data.CategoriesData;
 import com.project1.borrowme.interfaces.CallbackCategory;
+import com.project1.borrowme.interfaces.CategorySelectionListener;
 import com.project1.borrowme.models.Category;
 import com.project1.borrowme.models.MyUser;
+import com.project1.borrowme.views.CategoriesFragment;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class RegistrationActivity extends AppCompatActivity {
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private final MyUser myUser = MyUser.getInstance();
+    //private final MyUser myUser = MyUser.getInstance();
+    private Map<String, Category> selectedCategories;
     private String authEmail;
     private String authUserName;
     private String authUid;
     private double authLatitude= 34.8007048 ;
     private double authLongitude =32.1027879;
-    private RecyclerView registration_recyclerViewCategories;
+    private FrameLayout registration_fragment_container;
     private MaterialButton registration_BTN_LOGIN;
     private MaterialButton registration_BTN_back;
     private MaterialTextView registration_MTV_categoryNum;
@@ -68,14 +70,22 @@ public class RegistrationActivity extends AppCompatActivity {
 
         findViews();
         initCategories();
-        setAdapter();
+        initFragment();
         initViews();
+    }
+
+
+
+    private void initCategories() {
+        categories = new HashMap<>();
+        categories = CategoriesData.getCategories();
     }
 
     private void initViews() {
         registration_BTN_LOGIN.setOnClickListener(v -> {
-            if (myUser.getCategories().size() >= 3) {
-                setUser(authEmail, authUserName, authUid);
+
+            if (selectedCategories != null && selectedCategories.size() >= 3) {
+                //setUser(authEmail, authUserName, authUid);
                 setDb();
                 changeActivity(true);
             } else {
@@ -115,61 +125,73 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     private void findViews() {
-        registration_recyclerViewCategories = findViewById(R.id.registration_RECYCLER_categoryList);
+        registration_fragment_container = findViewById(R.id.registration_fragment_container);
         registration_BTN_LOGIN = findViewById(R.id.registration_BTN_LOGIN);
         registration_BTN_back = findViewById(R.id.registration_BTN_back);
-        registration_MTV_categoryNum = findViewById(R.id.registration_MTV_categoryNum);
-    }
-
-    private void setUser(String authEmail, String authUserName, String authUid) {
-        myUser.setUid(authUid);
-        myUser.setuEmail(authEmail);
-        myUser.setuName(authUserName);
+        registration_MTV_categoryNum = findViewById(R.id.MTV_categoryNum);
     }
 
     private void setDb() {
         CollectionReference reference = db.collection("users");
         DocumentReference documentReference = reference.document(authUid);
         Map<String, Object> userMap = new HashMap<>();
-        userMap.put("categories", myUser.getCategories());
-        userMap.put("uid", myUser.getUid());
-        userMap.put("uEmail", myUser.getuEmail());
+        userMap.put("categories", selectedCategories);
+        userMap.put("uid", authUid);
+        userMap.put("uEmail", authEmail);
         userMap.put("lan", authLongitude);
         userMap.put("lat", authLatitude);
-        userMap.put("uName", myUser.getuName());
+        userMap.put("uName", authUserName);
 
         documentReference.set(userMap)
                 .addOnSuccessListener(aVoid -> Log.d("Firestore", "User added successfully!"))
                 .addOnFailureListener(e -> Log.w("Firestore", "Error adding user", e));
     }
 
-    private void initCategories() {
-        categories= new HashMap<>();
-        categories = CategoriesData.getCategories();
+//    private void setUser(String authEmail, String authUserName, String authUid) {
+//        myUser.setUid(authUid);
+//        myUser.setuEmail(authEmail);
+//        myUser.setuName(authUserName);
+//    }
+//
+//    private void setDb() {
+//        CollectionReference reference = db.collection("users");
+//        DocumentReference documentReference = reference.document(authUid);
+//        Map<String, Object> userMap = new HashMap<>();
+//        userMap.put("categories", myUser.getCategories());
+//        userMap.put("uid", myUser.getUid());
+//        userMap.put("uEmail", myUser.getuEmail());
+//        userMap.put("lan", authLongitude);
+//        userMap.put("lat", authLatitude);
+//        userMap.put("uName", myUser.getuName());
+//
+//        documentReference.set(userMap)
+//                .addOnSuccessListener(aVoid -> Log.d("Firestore", "User added successfully!"))
+//                .addOnFailureListener(e -> Log.w("Firestore", "Error adding user", e));
+//    }
+
+    private void updateCategories(Map<String, Category> selectedCategories){
+        this.selectedCategories = selectedCategories;
     }
-
-    private void setAdapter() {
-        CallbackCategory callbackCategory = new CallbackCategory() {
+    private void initFragment() {
+        CategoriesFragment categoriesFragment = new CategoriesFragment();
+        CategorySelectionListener listener = new CategorySelectionListener() {
             @Override
-            public void addCategory(Category category) {
-                myUser.addCategory(category);
-                updateNumCategoryText(myUser.getCategories().size());
-            }
-
-            @Override
-            public void removeCategory(Category category) {
-                myUser.removeCategory(category.getName());
-                updateNumCategoryText(myUser.getCategories().size());
+            public void onCategorySelectionUpdated(Map<String, Category> selectedCategories) {
+                updateCategories(selectedCategories);
             }
         };
 
-        CategoryAdapter adapter = new CategoryAdapter(categories, this, callbackCategory);
-        int numOfCols = 3;
-        registration_recyclerViewCategories.setLayoutManager(new GridLayoutManager(this, numOfCols));
-        registration_recyclerViewCategories.setAdapter(adapter);
+        categoriesFragment.setSelectionListener(listener);
+
+
+        if (categories != null) {
+            categoriesFragment.initCategories(categories);
+        }
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.registration_fragment_container,categoriesFragment)
+                .commit();
     }
 
-    private void updateNumCategoryText(int size) {
-        registration_MTV_categoryNum.setText(String.format("%d", size));
-    }
 }

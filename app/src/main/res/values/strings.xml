@@ -48,4 +48,7 @@
     <string name="distance_5km">5km</string>
     <string name="distance_10km">10km</string>
     <string name="_0">0</string>
+    <string name="change_password">Change Your Password</string>
+    <string name="manage_categories">Manage Your Categories</string>
+    <string name="save_changes">SAVE</string>
 </resources>

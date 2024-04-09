@@ -24,8 +24,6 @@ import java.util.Map;
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
     private static final long VIBRATION = 500;
     private List<Category> categories = new ArrayList<>();
-    private WeakReference<CallbackCategory> callbackCategoryRef;
-
     private Context context;
     private CallbackCategory callbackCategory;
 
@@ -33,7 +31,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     public CategoryAdapter(Map<String, Category> categories, Context context, CallbackCategory callbackCategory) {
         this.categories = new ArrayList<>(categories.values());
         this.context = context;
-        this.callbackCategoryRef = new WeakReference<>(callbackCategory);
+        this.callbackCategory = callbackCategory;
     }
 
     @NonNull
@@ -46,6 +44,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     @Override
     public void onBindViewHolder(@NonNull CategoryViewHolder holder, int position) {
         Category category = categories.get(position);
+
         if (category != null) {
             String categoryName = category.getName();
             int categoryImage = category.getImage();
@@ -83,11 +82,12 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
             imageCategory.setOnClickListener(v ->
             {
-                CallbackCategory callbackCategory = callbackCategoryRef.get();
                 if (callbackCategory != null) {
                     Category category = getCategory(getAdapterPosition());
+
                     if (category != null) {
                         category.setClicked(!category.isClicked());
+
                         updateUI(category, category.isClicked());
                     }
                 }
@@ -100,17 +100,15 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
                     MySignal.getInstance().vibrate(VIBRATION);
                     imageCategory.setImageAlpha(128);
                     categoryName.setAlpha(0.5f);
-                    CallbackCategory callbackCategory = callbackCategoryRef.get();
-                    if (callbackCategory != null) {
-                        callbackCategory.addCategory(category);
-                    }
+
+                    callbackCategory.addCategory(category);
+
                 } else {
                     imageCategory.setImageAlpha(255);
                     categoryName.setAlpha(1.0f);
-                    CallbackCategory callbackCategory = callbackCategoryRef.get();
-                    if (callbackCategory != null) {
-                        callbackCategory.removeCategory(category);
-                    }
+
+                    callbackCategory.removeCategory(category);
+
                 }
             });
         }

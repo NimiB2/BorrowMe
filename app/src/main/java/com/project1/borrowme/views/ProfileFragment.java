@@ -1,12 +1,18 @@
 package com.project1.borrowme.views;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,23 +20,22 @@ import android.widget.RatingBar;
 
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textview.MaterialTextView;
+import com.project1.borrowme.MainActivity;
 import com.project1.borrowme.R;
+import com.project1.borrowme.SettingsFragment;
 import com.project1.borrowme.adpters.CategoryAdapter;
-import com.project1.borrowme.data.CategoriesData;
 import com.project1.borrowme.interfaces.CallbackCategory;
 import com.project1.borrowme.models.Category;
 import com.project1.borrowme.models.MyUser;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class ProfileFragment extends Fragment {
     MyUser myUser = MyUser.getInstance();
     private Map<String, Category> categories = new HashMap<>();
 
-    private ShapeableImageView profile_IMG_settings;
+    private AppCompatImageButton profile_IMB_settings;
     private ShapeableImageView profile_IMG_profile_picture;
     private MaterialTextView profile_TV_user_location;
     private RecyclerView profile_RECYCLER_categories;
@@ -56,8 +61,21 @@ public class ProfileFragment extends Fragment {
             initCategories();
             setAdapter(context);
         }
+
+        profile_IMB_settings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeToSettingsFragment();
+            }
+        });
     }
 
+    private void changeToSettingsFragment() {
+        Fragment settingsFragment = new SettingsFragment();
+
+        FragmentTransaction fragmentTransaction =getActivity().getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.main_FARM_layout,settingsFragment).commit();
+    }
 
 
     private void initCategories() {
@@ -83,12 +101,9 @@ public class ProfileFragment extends Fragment {
         });
         profile_RECYCLER_categories.setAdapter(adapter);
     }
-
-
-
-
+    
     private void findViews(View view) {
-        profile_IMG_settings = view.findViewById(R.id.profile_IMG_settings);
+        profile_IMB_settings = view.findViewById(R.id.profile_IMB_settings);
         profile_IMG_profile_picture = view.findViewById(R.id.profile_IMG_profile_picture);
         profile_TV_user_location = view.findViewById(R.id.profile_TV_user_location);
         profile_RECYCLER_categories = view.findViewById(R.id.profile_RECYCLER_categories);

@@ -37,6 +37,7 @@ import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.switchmaterial.SwitchMaterial;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -53,14 +54,14 @@ public class SignUpActivity extends AppCompatActivity {
     private final int FINE_PERMISSION_CODE = 1;
     Location currentLocation;
     FusedLocationProviderClient fusedLocationClient;
-    private EditText signUp_ET_userName;
-    private EditText signUp_ET_email;
-    private EditText signUp_ET_password;
+    private TextInputEditText signUp_ET_userName;
+    private TextInputEditText signUp_ET_email;
+    private TextInputEditText signUp_ET_password;
     private MaterialButton signUp_BTN_SingUp;
     private MaterialTextView signUp_MTV_LogIn;
     private FirebaseAuth auth;
     private SwitchMaterial signUp_SWITCH_location;
-    private EditText signUp_ET_searchBox;
+    private TextInputEditText signUp_ET_searchBox;
     private double latitude= 34.8007048 ;
     private double longitude=32.1027879;
 

@@ -19,12 +19,13 @@
             android:orientation="horizontal"
             android:paddingHorizontal="@dimen/margin_small">
 
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/profile_IMG_settings"
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/profile_IMB_settings"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_marginTop="@dimen/margin_small"
+                android:background="?attr/selectableItemBackgroundBorderless"
                 android:src="@drawable/settings" />
 
             <androidx.appcompat.widget.LinearLayoutCompat

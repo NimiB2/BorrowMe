@@ -1,5 +1,6 @@
 package com.project1.borrowme.models;
 
+import android.content.Context;
 import android.net.Uri;
 
 import com.project1.borrowme.Utilities.MySignal;
@@ -29,7 +30,7 @@ public class MyUser {
         this.lan = lan;
     }
 
-    public static MyUser getInstance() {
+    public static MyUser init() {
         if (instance == null) {
             synchronized (MyUser.class) {
                 if (instance == null) {
@@ -37,6 +38,10 @@ public class MyUser {
                 }
             }
         }
+        return instance;
+    }
+
+    public static MyUser getInstance(){
         return instance;
     }
 

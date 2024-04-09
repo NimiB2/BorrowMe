@@ -29,6 +29,7 @@ import com.project1.borrowme.views.InboxFragment;
 import com.project1.borrowme.views.ProfileFragment;
 
 public class MainActivity extends AppCompatActivity {
+    private MyUser myUser;
     private AppCompatImageButton main_BTN_logout;
     private BottomNavigationView bottomNavigationView;
     private FrameLayout frameLayout;
@@ -51,9 +52,40 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
         findViews();
+        getTheUser();
         initViews();
         initFragments();
     }
+
+    private void getTheUser() {
+        FirebaseUtil.getUserReference().get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+
+                    MyUser fetchedUser = task.getResult().toObject(MyUser.class);
+                    setUser(fetchedUser);
+                }
+            }
+        });
+    }
+
+    private void setUser(MyUser fetchedUser) {
+        if (fetchedUser != null) {
+            myUser =MyUser.getInstance();
+
+            myUser.setUid(fetchedUser.getUid());
+            myUser.setuName(fetchedUser.getuName());
+            myUser.setuEmail(fetchedUser.getuEmail());
+            myUser.setLat(fetchedUser.getLat());
+            myUser.setLan(fetchedUser.getLan());
+            myUser.setCategories(fetchedUser.getCategories());
+
+        }
+    }
+
+
+
 
 
 
@@ -110,8 +142,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void replaceFragment(Fragment fragment) {
+    public void replaceFragment(Fragment fragment) {
         getSupportFragmentManager().beginTransaction().replace(R.id.main_FARM_layout, fragment).commit();
     }
-
 }

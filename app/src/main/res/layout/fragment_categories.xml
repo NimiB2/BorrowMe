@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    tools:context=".views.CategoriesFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/fragment_RECYCLER_categoryList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fadeScrollbars="true"
+        android:fadingEdgeLength="@dimen/image_size"
+        android:requiresFadingEdge="vertical"
+        tools:listitem="@layout/category_item"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="@dimen/margin_xxsmall"
+        android:layout_above="@id/fragment_LAYOUT_num_of_cate"
+        tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        tools:spanCount="3"
+        tools:itemCount="13"/>
+
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/fragment_LAYOUT_num_of_cate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal"
+        >
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_color"
+            android:textStyle="bold"
+            android:textSize="@dimen/text_size_main_button_s"
+            android:text="@string/number_of_categories"
+            >
+        </com.google.android.material.textview.MaterialTextView>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/MTV_categoryNum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_xsmall"
+            android:textColor="@color/tittle_color"
+            android:textStyle="bold"
+            android:textSize="@dimen/text_size_main_button_s"
+            android:text="@string/_0"
+            >
+        </com.google.android.material.textview.MaterialTextView>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+    </RelativeLayout>
+
+
+</FrameLayout>
