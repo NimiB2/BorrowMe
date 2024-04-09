@@ -3,8 +3,9 @@
     <!-- Sizes -->
     <dimen name="size_large">380dp</dimen>
     <dimen name="size_medium">330dp</dimen>
+    <dimen name="size_regular">300dp</dimen>
     <dimen name="size_small">200dp</dimen>
-    <dimen name="image_size">100dp</dimen>
+    <dimen name="image_size">130dp</dimen>
     <dimen name="size_xsmall">60dp</dimen>
 
     <!-- Margins -->
@@ -12,13 +13,16 @@
     <dimen name="margin_medium">30dp</dimen>
     <dimen name="margin_small">20dp</dimen>
     <dimen name="margin_xsmall">10dp</dimen>
-    <dimen name="margin_xxsmall">5dp</dimen>
+    <dimen name="margin_xxsmall">8dp</dimen>
+    <dimen name="margin_xxxsmall">5dp</dimen>
+
 
     <!-- Stroke -->
     <dimen name="stroke_width">3dp</dimen>
 
     <!-- Text Sizes -->
     <dimen name="text_size_large">60sp</dimen>
+    <dimen name="text_size_regular">50sp</dimen>
     <dimen name="text_size_medium">40sp</dimen>
     <dimen name="text_size_main_button_m">27sp</dimen>
     <dimen name="text_size_main_button_s">22sp</dimen>

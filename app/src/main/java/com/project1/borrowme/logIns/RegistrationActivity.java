@@ -39,14 +39,13 @@ public class RegistrationActivity extends AppCompatActivity {
     private String authEmail;
     private String authUserName;
     private String authUid;
-    private double authLatitude;
-    private double authLongitude;
+    private double authLatitude= 34.8007048 ;
+    private double authLongitude =32.1027879;
     private RecyclerView registration_recyclerViewCategories;
     private MaterialButton registration_BTN_LOGIN;
     private MaterialButton registration_BTN_back;
     private MaterialTextView registration_MTV_categoryNum;
-    private List<Category> categories;
-
+    private Map<String, Category> categories ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -145,7 +144,7 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     private void initCategories() {
-        categories = new ArrayList<>();
+        categories= new HashMap<>();
         categories = CategoriesData.getCategories();
     }
 

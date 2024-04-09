@@ -61,8 +61,9 @@ public class SignUpActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private SwitchMaterial signUp_SWITCH_location;
     private EditText signUp_ET_searchBox;
-    private double latitude;
-    private double longitude;
+    private double latitude= 34.8007048 ;
+    private double longitude=32.1027879;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

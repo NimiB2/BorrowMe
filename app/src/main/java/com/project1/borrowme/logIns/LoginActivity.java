@@ -9,6 +9,7 @@ import android.widget.EditText;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatEditText;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -23,6 +24,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.project1.borrowme.App;
 import com.project1.borrowme.MainActivity;
 import com.project1.borrowme.R;
 import com.project1.borrowme.Utilities.FirebaseUtil;
@@ -32,8 +34,8 @@ import com.project1.borrowme.models.MyUser;
 public class LoginActivity extends AppCompatActivity {
     private MyUser myUser ;
     private FirebaseAuth auth;
-    private EditText LogIn_ET_email;
-    private EditText LogIn_ET_password;
+    private AppCompatEditText LogIn_ET_email;
+    private AppCompatEditText LogIn_ET_password;
     private MaterialButton LogIn_BTN_LOGIN;
     private MaterialTextView LogIn_MTV_singUp;
 

@@ -16,6 +16,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.imageview.ShapeableImageView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.project1.borrowme.MainActivity;
 import com.project1.borrowme.R;
 import com.project1.borrowme.logIns.LoginActivity;
 
@@ -136,8 +138,14 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void changeActivity() {
-        startActivity(new Intent(this, LoginActivity.class));
-        finish();
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+        }else{
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
+        }
+
     }
 
     private void findViews() {

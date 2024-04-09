@@ -16,19 +16,22 @@ import com.project1.borrowme.interfaces.CallbackCategory;
 import com.project1.borrowme.models.Category;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
     private static final long VIBRATION = 500;
-    private List<Category> categories;
+    private List<Category> categories = new ArrayList<>();
     private WeakReference<CallbackCategory> callbackCategoryRef;
 
     private Context context;
     private CallbackCategory callbackCategory;
 
 
-    public CategoryAdapter(List<Category> categories, Context context, CallbackCategory callbackCategory) {
-        this.categories = categories;
+    public CategoryAdapter(Map<String, Category> categories, Context context, CallbackCategory callbackCategory) {
+        this.categories = new ArrayList<>(categories.values());
         this.context = context;
         this.callbackCategoryRef = new WeakReference<>(callbackCategory);
     }
@@ -42,11 +45,14 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
     @Override
     public void onBindViewHolder(@NonNull CategoryViewHolder holder, int position) {
-        String categoryName = categories.get(position).getName();
-        int categoryImage = categories.get(position).getImage();
+        Category category = categories.get(position);
+        if (category != null) {
+            String categoryName = category.getName();
+            int categoryImage = category.getImage();
 
-        holder.categoryName.setText(categoryName);
-        holder.imageCategory.setImageResource(categoryImage);
+            holder.categoryName.setText(categoryName);
+            holder.imageCategory.setImageResource(categoryImage);
+        }
     }
 
     public void setCallback(CallbackCategory callbackCategory) {
@@ -57,8 +63,9 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     public int getItemCount() {
         return categories == null ? 0 : categories.size();
     }
+
     private Category getCategory(int position) {
-        if (categories != null && position >= 0 && position < categories.size()) {
+        if (position >= 0 && position < categories.size()) {
             return categories.get(position);
         }
         return null;

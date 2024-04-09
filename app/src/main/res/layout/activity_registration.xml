@@ -31,7 +31,6 @@
         android:layout_marginHorizontal="@dimen/margin_small"
         android:gravity="center"
         android:textSize="@dimen/text_size_small"
-        android:textStyle="bold"
         android:text="@string/choose_categories_explanation"
         android:textColor="@color/text_color"
         />
@@ -39,10 +38,13 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/registration_RECYCLER_categoryList"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/size_medium"
+            android:layout_height="@dimen/size_regular"
             android:layout_below="@id/registration_MTV_notRegister"
-            android:layout_marginTop="@dimen/margin_small"
+            android:layout_marginTop="@dimen/margin_medium"
             android:layout_centerHorizontal="true"
+            android:fadeScrollbars="true"
+            android:fadingEdgeLength="@dimen/image_size"
+            android:requiresFadingEdge="vertical"
             tools:listitem="@layout/category_item"
             tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             tools:spanCount="3"
@@ -52,8 +54,8 @@
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/registration_RECYCLER_categoryList"
-        android:layout_marginTop="@dimen/margin_xsmall"
+        android:layout_above="@id/registration_LAYOUT_buttons"
+        android:layout_marginBottom="@dimen/margin_medium"
         android:layout_alignParentStart="true"
         android:layout_marginStart="@dimen/margin_small"
         android:orientation="horizontal"
@@ -64,7 +66,7 @@
             android:textColor="@color/text_color"
             android:layout_marginTop="@dimen/margin_xsmall"
             android:textStyle="bold"
-            android:textSize="@dimen/text_size_small"
+            android:textSize="@dimen/text_size_main_button_s"
             android:text="@string/number_of_categories"
             >
         </com.google.android.material.textview.MaterialTextView>
@@ -77,7 +79,7 @@
             android:textColor="@color/tittle_color"
             android:layout_marginTop="@dimen/margin_xsmall"
             android:textStyle="bold"
-            android:textSize="@dimen/text_size_small"
+            android:textSize="@dimen/text_size_main_button_s"
             android:text="@string/_0"
             >
         </com.google.android.material.textview.MaterialTextView>
@@ -87,6 +89,7 @@
     </androidx.appcompat.widget.LinearLayoutCompat>
 
 <androidx.appcompat.widget.LinearLayoutCompat
+    android:id="@+id/registration_LAYOUT_buttons"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_centerHorizontal="true"

@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/tittle_color"
-        android:padding="@dimen/margin_xxsmall">
+        android:padding="@dimen/margin_xxxsmall">
 
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="wrap_content"
@@ -21,8 +21,9 @@
             android:text="@string/app_name"
             android:textStyle="bold"
             android:textColor="@color/background"
-            android:layout_marginStart="@dimen/margin_small"
-            android:textSize="@dimen/text_size_xsmall">
+            android:layout_marginVertical="@dimen/margin_xxxsmall"
+            android:layout_marginStart="@dimen/margin_medium"
+            android:textSize="@dimen/text_size_small">
 
         </com.google.android.material.textview.MaterialTextView>
 
@@ -31,6 +32,7 @@
             android:layout_width="@dimen/margin_small"
             android:layout_height="@dimen/margin_small"
             android:src="@drawable/logout"
+            android:layout_marginVertical="@dimen/margin_xxxsmall"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="@dimen/margin_small"
             android:background="?attr/selectableItemBackgroundBorderless"

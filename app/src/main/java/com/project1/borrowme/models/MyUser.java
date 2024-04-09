@@ -2,6 +2,8 @@ package com.project1.borrowme.models;
 
 import android.net.Uri;
 
+import com.project1.borrowme.Utilities.MySignal;
+
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -58,7 +60,11 @@ public class MyUser {
     }
 
     public void removeCategory(String categoryName) {
-        this.categories.remove(categoryName);
+        if(categories.size()>1){
+            this.categories.remove(categoryName);
+        }else{
+            MySignal.getInstance().toast("You must have at least one category");
+        }
     }
 
 

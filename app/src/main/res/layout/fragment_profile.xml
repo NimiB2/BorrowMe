@@ -6,66 +6,64 @@
     android:background="@color/background"
     tools:context=".views.ProfileFragment">
 
-    <androidx.appcompat.widget.LinearLayoutCompat
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
         <RelativeLayout
+            android:id="@+id/profile_LAYOUT_setting_image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_marginTop="@dimen/margin_small"
-            android:paddingHorizontal="@dimen/margin_small"
-            >
+            android:orientation="horizontal"
+            android:paddingHorizontal="@dimen/margin_small">
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/profile_IMG_settings"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_small"
                 android:layout_alignParentStart="true"
-                android:src="@drawable/settings"
-                />
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginEnd="@dimen/margin_small"
-            android:layout_alignParentEnd="true"
-            >
+                android:layout_marginTop="@dimen/margin_small"
+                android:src="@drawable/settings" />
 
-
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/profile_IMG_profile_picture"
-                android:layout_width="@dimen/image_size"
-                android:layout_height="@dimen/image_size"
-                android:src="@drawable/farmerprofile"
-                android:background="@drawable/profile_image_background"
-                android:scaleType="centerCrop"
-                style="@style/CircularImageView"
-                />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/profile_MTV_name"
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/user_name"
-                android:layout_gravity="center"
-                android:textSize="@dimen/text_size_small"
-                android:layout_marginTop="@dimen/margin_xsmall"
-                android:textStyle="bold"
-                android:textColor="@color/tittle_color"
-                >
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="@dimen/margin_small"
+                android:orientation="vertical">
 
-            </com.google.android.material.textview.MaterialTextView>
-        </androidx.appcompat.widget.LinearLayoutCompat>
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/profile_IMG_profile_picture"
+                    style="@style/CircularImageView"
+                    android:layout_width="@dimen/image_size"
+                    android:layout_height="@dimen/image_size"
+                    android:background="@drawable/profile_image_background"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/farmerprofile" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/profile_MTV_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/margin_small"
+                    android:text="@string/user_name"
+                    android:textColor="@color/tittle_color"
+                    android:textSize="@dimen/text_size_small"
+                    android:textStyle="bold">
+
+                </com.google.android.material.textview.MaterialTextView>
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
         </RelativeLayout>
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/profile_LAYOUT_setting_image"
             android:orientation="vertical"
             android:padding="@dimen/margin_xsmall">
 
@@ -74,9 +72,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/my_location"
-                android:textStyle="bold"
                 android:textColor="@color/tittle_color"
-                android:textSize="@dimen/text_size_small" />
+                android:textSize="@dimen/text_size_small"
+                android:textStyle="bold" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/profile_TV_user_location"
@@ -88,47 +86,52 @@
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_large"
                 android:text="@string/categories"
-                android:textStyle="bold"
                 android:textColor="@color/tittle_color"
                 android:textSize="@dimen/text_size_small"
-                android:layout_marginTop="@dimen/margin_large" />
+                android:textStyle="bold" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/profile_RECYCLER_categories"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_xsmall"
-                android:orientation="horizontal" />
+                android:layout_marginTop="@dimen/margin_medium"
+                android:fadeScrollbars="true"
+                android:fadingEdgeLength="@dimen/size_small"
+                android:orientation="horizontal"
+                android:padding="@dimen/margin_xsmall"
+                android:requiresFadingEdge="horizontal" />
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_marginTop="@dimen/size_xsmall">
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/margin_large"
+            android:gravity="center">
 
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/text_size_small"
-                android:textColor="@color/tittle_color"
                 android:text="@string/rating"
+                android:textColor="@color/tittle_color"
+                android:textSize="@dimen/text_size_small"
                 android:textStyle="italic" />
 
             <RatingBar
                 android:id="@+id/profile_RB_rating"
+                style="?android:attr/ratingBarStyleIndicator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:numStars="5"
+                android:progressTint="@color/Progress_bars"
                 android:rating="2.5"
-                android:stepSize="0.5"
                 android:scaleX="0.6"
                 android:scaleY="0.6"
-                style="?android:attr/ratingBarStyleIndicator"
-                android:progressTint="@color/Progress_bars" />
+                android:stepSize="0.5" />
         </androidx.appcompat.widget.LinearLayoutCompat>
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
+    </RelativeLayout>
 
 </FrameLayout>

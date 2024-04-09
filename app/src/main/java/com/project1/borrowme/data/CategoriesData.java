@@ -4,6 +4,8 @@ import com.project1.borrowme.R;
 import com.project1.borrowme.models.Category;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CategoriesData {
 
@@ -39,13 +41,13 @@ public class CategoriesData {
             R.drawable.gardening
     };
 
-    public static ArrayList<Category> getCategories() {
-        ArrayList<Category> categories = new ArrayList<>();
+    public static  Map<String, Category> getCategories() {
+        Map<String, Category> categories = new HashMap<>();
         for (int i = 0; i < names.length; i++) {
-            categories.add(new Category()
+            Category category = new Category()
                     .setName(names[i])
-                    .setImage(images[i])
-            );
+                    .setImage(images[i]);
+            categories.put(names[i], category);
         }
         return categories;
     }
