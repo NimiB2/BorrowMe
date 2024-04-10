@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/background"
     tools:context=".views.HomeFragment">
 
@@ -17,59 +18,26 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/margin_large"
+            android:layout_marginTop="@dimen/size_xsmall"
             android:backgroundTint="@color/buttonColor"
             android:text="@string/new_borrowing"
             android:textColor="@color/button_text_color"
             android:textStyle="bold"
             android:textSize="@dimen/text_size_main_button_m"
+           android:paddingHorizontal="@dimen/margin_large"
+            app:cornerRadius="@dimen/margin_xsmall"
             android:layout_alignParentTop="true" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/home_BTN_addItem"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/home_BTN_new_borrowing"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/margin_small"
-            android:backgroundTint="@color/smallButtonColor"
-            android:text="@string/i_have_a_product"
-            android:textColor="@color/smallButton_text_color"
-            android:textSize="@dimen/text_size_main_button_s"
-            />
-
-
-        <!-- List of Common Products -->
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/home_MTV_common_products"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:textColor="@color/tittle_color"
-            android:text="@string/common_products"
-            android:textSize="@dimen/text_size_small"
-            android:layout_below="@id/home_BTN_addItem"
-            android:layout_marginTop="@dimen/margin_medium" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/home_RECYLER_common_products"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/home_MTV_common_products"
-            android:layout_marginTop="@dimen/margin_xsmall"
-            android:orientation="horizontal"
-            />
 
         <!-- List of Old Borrowings -->
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/home_MTV_borrowings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/home_RECYLER_common_products"
-            android:layout_marginTop="@dimen/margin_small"
+            android:layout_below="@id/home_BTN_new_borrowing"
+            android:layout_marginTop="@dimen/margin_large"
             android:textStyle="bold"
             android:textColor="@color/tittle_color"
-            android:text="@string/my_history"
+            android:text="Where have we been until now? 🫣"
             android:textSize="@dimen/text_size_small" />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -77,7 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/home_MTV_borrowings"
-            android:layout_marginTop="@dimen/margin_xsmall"
+            android:layout_marginTop="@dimen/margin_medium"
             android:orientation="horizontal"
             />
 

@@ -38,21 +38,28 @@ public class SettingsFragment extends Fragment {
     private MyUser myUser;
     private Map<String, Category> categories;
     private Map<String, Category> selectedCategories;
+
     private AppCompatImageButton settings_IMG_back;
+
     private TextInputEditText settings_ET_username;
     private TextInputEditText settings_ET_email;
     private MaterialButton settings_BTN_saveChanges;
-    private MaterialButton settings_BTN_showChangePassword;
+
+    private SwitchMaterial settings_SWITCH_changePassword;
     private TextInputEditText settings_ET_newPassword;
     private MaterialButton settings_BTN_saveNewPassword;
-    private MaterialButton settings_BTN_manageCategories;
-    private MaterialButton settings_BTN_saveNewCategories;
-    private FrameLayout settings_fragment_container;
 
-    private MaterialButton settings_BTN_showChangeLocation;
+    private SwitchMaterial settings_SWITCH_changeLocation;
     private SwitchMaterial settings_SWITCH_location;
     private TextInputEditText settings_ET_address_search;
     private MaterialButton settings_BTN_saveNewLocation;
+
+
+    private SwitchMaterial settings_SWITCH_manageCategories;
+    private MaterialButton settings_BTN_saveNewCategories;
+    private FrameLayout settings_fragment_container;
+
+
 
 
     @Override
@@ -129,13 +136,13 @@ public class SettingsFragment extends Fragment {
 
         settings_BTN_saveChanges.setOnClickListener(v -> saveUserDetails());
 
-        settings_BTN_showChangePassword.setOnClickListener(v -> togglePasswordVisibility());
+        settings_SWITCH_changePassword.setOnClickListener(v -> togglePasswordVisibility());
         settings_BTN_saveNewPassword.setOnClickListener(v -> changePassword());
 
-        settings_BTN_showChangeLocation.setOnClickListener(v -> toggleLocationVisibility());
+        settings_SWITCH_changeLocation.setOnClickListener(v -> toggleLocationVisibility());
         settings_BTN_saveNewLocation.setOnClickListener(v -> changeLocation());
 
-        settings_BTN_manageCategories.setOnClickListener(v -> toggleCategoriesListVisibility());
+        settings_SWITCH_manageCategories.setOnClickListener(v -> toggleCategoriesListVisibility());
 
         settings_BTN_saveNewCategories.setOnClickListener(v -> changeCategories());
     }
@@ -182,7 +189,6 @@ public class SettingsFragment extends Fragment {
 
         if (LocationClicked) {
             settings_SWITCH_location.setVisibility(View.VISIBLE);
-            settings_ET_address_search.setVisibility(View.VISIBLE);
             settings_BTN_saveNewLocation.setVisibility(View.VISIBLE);
             toggleSwitchVisibility();
 
@@ -227,18 +233,18 @@ public class SettingsFragment extends Fragment {
             if (categoriesListIsClicked) {
                 settings_ET_username.setVisibility(View.GONE);
                 settings_BTN_saveChanges.setVisibility(View.GONE);
-                settings_BTN_showChangePassword.setVisibility(View.GONE);
+                settings_SWITCH_changePassword.setVisibility(View.GONE);
                 settings_ET_newPassword.setVisibility(View.GONE);
                 settings_BTN_saveNewPassword.setVisibility(View.GONE);
-                settings_BTN_showChangeLocation.setVisibility(View.GONE);
+                settings_SWITCH_changeLocation.setVisibility(View.GONE);
                 settings_SWITCH_location.setVisibility(View.GONE);
                 settings_ET_address_search.setVisibility(View.GONE);
                 settings_BTN_saveNewLocation.setVisibility(View.GONE);
             } else {
                 settings_ET_username.setVisibility(View.VISIBLE);
                 settings_BTN_saveChanges.setVisibility(View.VISIBLE);
-                settings_BTN_showChangePassword.setVisibility(View.VISIBLE);
-                settings_BTN_showChangeLocation.setVisibility(View.VISIBLE);
+                settings_SWITCH_changePassword.setVisibility(View.VISIBLE);
+                settings_SWITCH_changeLocation.setVisibility(View.VISIBLE);
             }
         }
 
@@ -309,15 +315,15 @@ public class SettingsFragment extends Fragment {
             settings_ET_email = view.findViewById(R.id.settings_ET_email);
             settings_BTN_saveChanges = view.findViewById(R.id.settings_BTN_saveChanges);
 
-            settings_BTN_showChangePassword = view.findViewById(R.id.settings_BTN_showChangePassword);
+            settings_SWITCH_changePassword = view.findViewById(R.id.settings_SWITCH_changePassword);
             settings_ET_newPassword = view.findViewById(R.id.settings_ET_newPassword);
             settings_BTN_saveNewPassword = view.findViewById(R.id.settings_BTN_saveNewPassword);
 
-            settings_BTN_manageCategories = view.findViewById(R.id.settings_BTN_manageCategories);
+            settings_SWITCH_manageCategories = view.findViewById(R.id.settings_SWITCH_manageCategories);
             settings_fragment_container = view.findViewById(R.id.settings_fragment_container);
             settings_BTN_saveNewCategories = view.findViewById(R.id.settings_BTN_saveNewCategories);
 
-            settings_BTN_showChangeLocation = view.findViewById(R.id.settings_BTN_showChangeLocation);
+            settings_SWITCH_changeLocation = view.findViewById(R.id.settings_SWITCH_changeLocation);
             settings_SWITCH_location = view.findViewById(R.id.settings_SWITCH_location);
             settings_ET_address_search = view.findViewById(R.id.settings_ET_address_search);
             settings_BTN_saveNewLocation = view.findViewById(R.id.settings_BTN_saveNewLocation);

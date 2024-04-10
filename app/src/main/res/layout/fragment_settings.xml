@@ -3,200 +3,217 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/background"
     tools:context=".SettingsFragment">
 
-    <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/settings_IMG_back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_small"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:src="@drawable/arrow_back" />
-
-    <androidx.appcompat.widget.LinearLayoutCompat
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="@dimen/margin_medium">
+        android:fillViewport="true">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/settings_ET_username"
-            android:layout_width="@dimen/size_medium"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/signUp_MTV_title"
-            android:layout_centerHorizontal="true"
-            android:layout_marginHorizontal="@dimen/margin_xsmall"
-            android:background="@drawable/custom_edittext"
-            android:drawableLeft="@drawable/person"
-            android:drawablePadding="@dimen/margin_xsmall"
-            android:hint="@string/full_name"
-            android:inputType="text"
-            android:padding="@dimen/margin_xsmall"
-            android:textColor="@color/text_color" />
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/settings_ET_email"
-            android:layout_width="330dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/signUp_ET_userName"
-            android:layout_centerHorizontal="true"
-            android:layout_marginHorizontal="@dimen/margin_xsmall"
-            android:layout_marginTop="@dimen/margin_small"
-            android:background="@drawable/custom_edittext"
-            android:drawableLeft="@drawable/email"
-            android:drawablePadding="@dimen/margin_xsmall"
-            android:hint="@string/email"
-            android:inputType="textEmailAddress"
-            android:padding="@dimen/margin_xsmall"
-            android:textColor="@color/text_color"
-            android:visibility="gone" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/settings_BTN_saveChanges"
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_small"
-            android:backgroundTint="@color/buttonColor"
-            android:text="@string/save_changes"
-            android:textColor="@color/button_text_color"
-            android:textSize="@dimen/text_size_main_button_s"
-            android:textStyle="bold" />
+            android:orientation="vertical"
+            android:padding="@dimen/margin_medium">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/settings_BTN_showChangePassword"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/size_xsmall"
-            android:backgroundTint="@color/smallButtonColor"
-            android:text="@string/change_password"
-            android:textColor="@color/smallButton_text_color"
-            android:textSize="@dimen/text_size_xsmall" />
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/settings_ET_newPassword"
-            android:layout_width="@dimen/size_medium"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/signUp_ET_email"
-            android:layout_centerHorizontal="true"
-            android:layout_marginHorizontal="@dimen/margin_xsmall"
-            android:layout_marginTop="@dimen/margin_small"
-            android:background="@drawable/custom_edittext"
-            android:drawableLeft="@drawable/lock"
-            android:drawablePadding="@dimen/margin_xsmall"
-            android:hint="@string/password"
-            android:inputType="textPassword"
-            android:padding="@dimen/margin_xsmall"
-            android:textColor="@color/text_color"
-            android:visibility="gone"
-            />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/settings_BTN_saveNewPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_small"
-            android:backgroundTint="@color/buttonColor"
-            android:text="@string/save_new_password"
-            android:textColor="@color/button_text_color"
-            android:textSize="@dimen/text_size_main_button_s"
-            android:textStyle="bold"
-            android:visibility="gone" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/settings_BTN_showChangeLocation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/margin_medium"
-            android:backgroundTint="@color/smallButtonColor"
-            android:text="@string/change_location"
-            android:textColor="@color/smallButton_text_color"
-            android:textSize="@dimen/text_size_xsmall" />
-
-        <com.google.android.material.switchmaterial.SwitchMaterial
-            android:id="@+id/settings_SWITCH_location"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/signUp_ET_password"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/margin_medium"
-            android:checked="true"
-            android:text="@string/get_current_location"
-            android:textColor="@color/text_color"
-            android:textSize="@dimen/text_size_xsmall"
-            android:visibility="gone"
-            />
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/settings_ET_address_search"
-            android:layout_width="@dimen/size_medium"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/signUp_SWITCH_location"
-            android:layout_centerHorizontal="true"
-            android:layout_marginHorizontal="@dimen/margin_xsmall"
-            android:layout_marginTop="@dimen/margin_xsmall"
-            android:background="@drawable/custom_edittext"
-            android:drawableLeft="@drawable/location"
-            android:drawablePadding="@dimen/margin_xsmall"
-            android:hint="@string/search_hint"
-            android:inputType="textPostalAddress"
-            android:padding="@dimen/margin_xsmall"
-            android:textColor="@color/text_color"
-            android:visibility="gone"
-            />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/settings_BTN_saveNewLocation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_small"
-            android:backgroundTint="@color/buttonColor"
-            android:text="@string/save_new_location"
-            android:textColor="@color/button_text_color"
-            android:textSize="@dimen/text_size_main_button_s"
-            android:textStyle="bold"
-            android:visibility="gone" />
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/settings_BTN_manageCategories"
+            <com.google.android.material.textview.MaterialTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/margin_medium"
-                android:backgroundTint="@color/smallButtonColor"
-                android:text="@string/manage_categories"
-                android:textColor="@color/smallButton_text_color"
-                android:textSize="@dimen/text_size_xsmall" />
+                android:text="@string/settings_title"
+                android:layout_marginBottom="@dimen/margin_small"
+                android:textSize="@dimen/text_size_medium"
+                android:textColor="@color/tittle_color"
+                android:textStyle="bold"/>
 
-            <FrameLayout
-                android:id="@+id/settings_fragment_container"
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/settings_IMG_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_small"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/arrow_back"
+                />
+
+            <!-- Separation Line -->
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_above="@id/settings_BTN_saveNewCategories"
-                android:layout_below="@id/settings_BTN_manageCategories"
-                android:layout_marginTop="@dimen/size_xsmall"
-                android:layout_marginBottom="@dimen/size_xsmall" />
+                android:layout_height="1dp"
+                android:background="@color/tittle_color"
+                android:layout_marginVertical="@dimen/margin_small"
+                />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/settings_BTN_saveNewCategories"
+            <!-- Username Change -->
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/settings_ET_username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="@dimen/margin_xsmall"
-                android:backgroundTint="@color/buttonColor"
-                android:text="@string/update_your_categories"
-                android:textColor="@color/button_text_color"
-                android:textSize="@dimen/text_size_main_button_s"
-                android:textStyle="bold"
-                android:visibility="gone" />
-        </RelativeLayout>
+                android:layout_marginHorizontal="@dimen/margin_xsmall"
+                android:background="@drawable/custom_edittext"
+                android:drawableStart="@drawable/person"
+                android:drawablePadding="@dimen/margin_xsmall"
+                android:hint="@string/full_name"
+                android:inputType="text"
+                android:padding="@dimen/margin_xsmall"
+                android:textColor="@color/text_color"/>
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
+            <!-- Email, hidden initially -->
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/settings_ET_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_xsmall"
+                android:layout_marginTop="@dimen/margin_small"
+                android:background="@drawable/custom_edittext"
+                android:drawableStart="@drawable/email"
+                android:drawablePadding="@dimen/margin_xsmall"
+                android:hint="@string/email"
+                android:inputType="textEmailAddress"
+                android:padding="@dimen/margin_xsmall"
+                android:textColor="@color/text_color"
+                android:visibility="gone"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/settings_BTN_saveChanges"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_small"
+                android:backgroundTint="@color/buttonColor"
+                android:text="@string/save_changes"
+                android:textColor="@color/button_text_color"
+                android:textSize="@dimen/text_size_small"
+                android:textStyle="bold"/>
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/settings_SWITCH_changePassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/change_password"
+                android:textColor="@color/text_color"
+                android:layout_marginTop="@dimen/margin_small"/>
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/settings_ET_newPassword"
+                android:layout_width="@dimen/size_medium"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/signUp_ET_email"
+                android:layout_centerHorizontal="true"
+                android:layout_marginHorizontal="@dimen/margin_xsmall"
+                android:layout_marginTop="@dimen/margin_small"
+                android:background="@drawable/custom_edittext"
+                android:drawableLeft="@drawable/lock"
+                android:drawablePadding="@dimen/margin_xsmall"
+                android:hint="@string/password"
+                android:inputType="textPassword"
+                android:padding="@dimen/margin_xsmall"
+                android:textColor="@color/text_color"
+                android:visibility="gone"
+                />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/settings_BTN_saveNewPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_small"
+                android:backgroundTint="@color/buttonColor"
+                android:text="@string/save_new_password"
+                android:textColor="@color/button_text_color"
+                android:textSize="@dimen/text_size_small"
+                android:textStyle="bold"
+                android:visibility="gone"
+                />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/settings_SWITCH_changeLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/change_location"
+                android:textColor="@color/text_color"
+                android:layout_marginTop="@dimen/margin_small"/>
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/settings_SWITCH_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/signUp_ET_password"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:checked="true"
+                android:text="@string/get_current_location"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/text_size_xsmall"
+                android:visibility="gone"
+                />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/settings_ET_address_search"
+                android:layout_width="@dimen/size_medium"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/margin_xsmall"
+                android:background="@drawable/custom_edittext"
+                android:drawableLeft="@drawable/location"
+                android:drawablePadding="@dimen/margin_xsmall"
+                android:hint="@string/search_hint"
+                android:inputType="textPostalAddress"
+                android:padding="@dimen/margin_xsmall"
+                android:textColor="@color/text_color"
+                android:visibility="gone"
+                />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/settings_BTN_saveNewLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_small"
+                android:backgroundTint="@color/buttonColor"
+                android:text="@string/save_new_location"
+                android:textColor="@color/button_text_color"
+                android:textSize="@dimen/text_size_small"
+                android:textStyle="bold"
+                android:visibility="gone"
+                />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/settings_SWITCH_manageCategories"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/manage_categories"
+                android:textColor="@color/text_color"
+                android:layout_marginTop="@dimen/margin_small"/>
+
+                <FrameLayout
+                    android:id="@+id/settings_fragment_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_above="@id/settings_BTN_saveNewCategories"
+                    android:layout_below="@id/settings_SWITCH_manageCategories"
+                    android:layout_marginTop="@dimen/size_xsmall"
+                    android:layout_marginBottom="@dimen/size_xsmall"
+                    />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/settings_BTN_saveNewCategories"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="@dimen/margin_xsmall"
+                    android:backgroundTint="@color/buttonColor"
+                    android:text="@string/update_your_categories"
+                    android:textColor="@color/button_text_color"
+                    android:textSize="@dimen/text_size_small"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    />
+            </RelativeLayout>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </ScrollView>
 </FrameLayout>

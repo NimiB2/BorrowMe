@@ -29,7 +29,7 @@
     <string name="title_notifications">Notifications</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="new_borrowing">New Borrowing</string>
+    <string name="new_borrowing">Lets Do It !</string>
     <string name="common_products">Common Products</string>
     <string name="my_history">My History</string>
     <string name="i_have_a_product">I have a product</string>
@@ -56,4 +56,5 @@
     <string name="save_new_password">SAVE NEW PASSWORD</string>
     <string name="save_new_location">SAVE NEW LOCATION</string>
     <string name="update_your_categories">UPDATE YOUR CATEGORIES</string>
+    <string name="settings_title">SETTINGS</string>
 </resources>
