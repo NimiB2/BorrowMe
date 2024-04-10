@@ -64,13 +64,13 @@ public class MainActivity extends AppCompatActivity {
                 if(task.isSuccessful()){
 
                     MyUser fetchedUser = task.getResult().toObject(MyUser.class);
-                    setUser(fetchedUser);
+                    setUser(fetchedUser,task.getResult());
                 }
             }
         });
     }
 
-    private void setUser(MyUser fetchedUser) {
+    private void setUser(MyUser fetchedUser, DocumentSnapshot document) {
         if (fetchedUser != null) {
             myUser =MyUser.getInstance();
 
@@ -81,13 +81,11 @@ public class MainActivity extends AppCompatActivity {
             myUser.setLan(fetchedUser.getLan());
             myUser.setCategories(fetchedUser.getCategories());
 
+            String photoUriString = document.getString("photo");
+            myUser.setPhoto(photoUriString);
+
         }
     }
-
-
-
-
-
 
     private void initViews() {
         main_BTN_logout.setOnClickListener(new View.OnClickListener() {

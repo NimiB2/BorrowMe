@@ -6,7 +6,9 @@ import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.net.Uri;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Patterns;
 
 import androidx.core.app.ActivityCompat;
@@ -19,6 +21,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.project1.borrowme.models.Category;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -102,5 +105,22 @@ public class FirebaseUtil {
                 });
     }
 
+    public static void updateUserCategories(Map<String, Category> selectedCategories) {
+        getUserReference()
+                .update("categories", selectedCategories)
+                .addOnSuccessListener(aVoid -> Log.d("Firestore", "Categories updated successfully!"))
+                .addOnFailureListener(e -> Log.w("Firestore", "Error updating categories", e));
+    }
+    public static void updateUserPhotoUri(Uri photoUri) {
+        if (photoUri != null) {
+            String uriString = photoUri.toString();
+            Map<String, Object> userData = new HashMap<>();
+            userData.put("photo", uriString);
+
+            getUserReference().update(userData)
+                    .addOnSuccessListener(aVoid -> Log.d("FirebaseUtil", "Photo URI updated successfully"))
+                    .addOnFailureListener(e -> Log.e("FirebaseUtil", "Error updating photo URI", e));
+        }
+    }
 }
 

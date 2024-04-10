@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/background"
     tools:context=".views.ProfileFragment">
 
@@ -17,7 +18,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_small"
             android:orientation="horizontal"
-            android:paddingHorizontal="@dimen/margin_small">
+            android:paddingHorizontal="@dimen/margin_xsmall"
+            >
 
             <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/profile_IMB_settings"
@@ -28,6 +30,7 @@
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:src="@drawable/settings" />
 
+
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -36,21 +39,41 @@
                 android:orientation="vertical">
 
 
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/profile_IMG_profile_picture"
-                    style="@style/CircularImageView"
-                    android:layout_width="@dimen/image_size"
-                    android:layout_height="@dimen/image_size"
-                    android:background="@drawable/profile_image_background"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/farmerprofile" />
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    >
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/profile_IMG_profile_picture"
+                        style="@style/CircularImageView"
+                        android:layout_width="@dimen/image_size"
+                        android:layout_height="@dimen/image_size"
+                        android:layout_marginBottom="@dimen/margin_medium"
+                        android:layout_marginEnd="@dimen/margin_xxsmall"
+                        android:background="@drawable/profile_image_background"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/farmerprofile" />
+
+                    <!-- Floating Action Button -->
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/profile_FAB_change_image"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|end"
+                        android:src="@drawable/cloud_upload"
+                        android:backgroundTint="@color/fui_transparent"
+                        android:importantForAccessibility="no" />
+
+                </FrameLayout>
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/profile_MTV_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/margin_small"
+                    android:layout_marginTop="@dimen/margin_xsmall"
                     android:text="@string/user_name"
                     android:textColor="@color/tittle_color"
                     android:textSize="@dimen/text_size_small"
@@ -74,7 +97,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/my_location"
                 android:textColor="@color/tittle_color"
-                android:textSize="@dimen/text_size_small"
+                android:textSize="@dimen/text_size_main_button_s"
                 android:textStyle="bold" />
 
             <com.google.android.material.textview.MaterialTextView
@@ -90,7 +113,7 @@
                 android:layout_marginTop="@dimen/margin_large"
                 android:text="@string/categories"
                 android:textColor="@color/tittle_color"
-                android:textSize="@dimen/text_size_small"
+                android:textSize="@dimen/text_size_main_button_s"
                 android:textStyle="bold" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -117,7 +140,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/text_color"
                     android:textStyle="bold"
-                    android:textSize="@dimen/text_size_main_button_s"
+                    android:textSize="@dimen/text_size_small"
                     android:text="@string/number_of_categories"
                     >
                 </com.google.android.material.textview.MaterialTextView>

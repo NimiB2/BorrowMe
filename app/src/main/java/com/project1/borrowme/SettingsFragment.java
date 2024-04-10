@@ -148,8 +148,11 @@ public class SettingsFragment extends Fragment {
     }
 
     private void changeCategories() {
+
         if (selectedCategories != null && !selectedCategories.isEmpty()) {
+
             myUser.setCategories(selectedCategories);
+            FirebaseUtil.updateUserCategories(myUser.getCategories());
             MySignal.getInstance().toast("Categories updated successfully!");
         } else {
             MySignal.getInstance().toast("You must select at least 1 categories.");
@@ -254,6 +257,7 @@ public class SettingsFragment extends Fragment {
 
                 // Update Firebase Auth Password
                 FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
                 if (firebaseUser != null) {
                     firebaseUser.updatePassword(newPassword)
                             .addOnSuccessListener(aVoid -> {

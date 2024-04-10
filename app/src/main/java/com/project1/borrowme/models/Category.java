@@ -10,7 +10,6 @@ public class Category {
     private int image;
 
     private boolean isClicked = false;
-    //private LinkedHashSet<Item> items = new LinkedHashSet<>();
 
     public Category() {
     }

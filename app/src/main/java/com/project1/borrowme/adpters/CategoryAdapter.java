@@ -103,12 +103,15 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
                     MySignal.getInstance().vibrate(VIBRATION);
                     imageCategory.setImageAlpha(255);
                     categoryName.setAlpha(1.0f);
+                    itemView.setBackgroundColor(ContextCompat.getColor(context, R.color.background));
+
                     callbackCategory.addCategory(category);
 
 
                 } else {
                     imageCategory.setImageAlpha(128);
                     categoryName.setAlpha(0.5f);
+                    itemView.setBackgroundColor(ContextCompat.getColor(context, R.color.backgroundUnclicked));
 
                     callbackCategory.removeCategory(category);
 
