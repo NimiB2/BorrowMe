@@ -53,4 +53,5 @@
     <string name="save_changes">SAVE</string>
     <string name="new_password">New password</string>
     <string name="save_new_password">SAVE NEW PASSWORD</string>
+    <string name="update_your_categories">UPDATE YOUR CATEGORIES</string>
 </resources>

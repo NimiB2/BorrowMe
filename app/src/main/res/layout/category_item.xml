@@ -3,19 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_width="@dimen/category_item_size"
+    android:layout_height="@dimen/category_item_size"
     android:orientation="vertical"
-    android:gravity="center_horizontal"
+    android:gravity="center"
     android:layout_marginHorizontal="@dimen/margin_medium"
     android:background="@color/background"
+    android:layout_marginTop="@dimen/margin_small"
     >
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/imageCategory"
         android:layout_width="@dimen/size_xsmall"
         android:layout_height="@dimen/size_xsmall"
         android:src="@drawable/logo_brm"
-        android:layout_marginTop="@dimen/margin_small"
         android:foregroundGravity="center_horizontal"
         />
 
@@ -24,7 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/category_title"
-        android:textSize="@dimen/text_size_xsmall"
+        android:textSize="@dimen/text_size_small"
         android:textColor="@color/text_color"
         android:textStyle="bold"
         android:gravity="center"

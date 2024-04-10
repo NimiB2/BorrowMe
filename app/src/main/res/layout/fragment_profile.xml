@@ -103,6 +103,38 @@
                 android:orientation="horizontal"
                 android:padding="@dimen/margin_xsmall"
                 android:requiresFadingEdge="horizontal" />
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/profile_LAYOUT_num_of_cate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_small"
+                android:layout_gravity="center_horizontal"
+                android:orientation="horizontal"
+                >
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_color"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/text_size_main_button_s"
+                    android:text="@string/number_of_categories"
+                    >
+                </com.google.android.material.textview.MaterialTextView>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/profile_MTV_categoryNum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_xsmall"
+                    android:textColor="@color/tittle_color"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/text_size_main_button_s"
+                    android:text="@string/_0"
+                    >
+                </com.google.android.material.textview.MaterialTextView>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.appcompat.widget.LinearLayoutCompat

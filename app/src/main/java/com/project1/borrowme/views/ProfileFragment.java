@@ -34,7 +34,7 @@ import java.util.Map;
 public class ProfileFragment extends Fragment {
     MyUser myUser = MyUser.getInstance();
     private Map<String, Category> categories = new HashMap<>();
-
+    private MaterialTextView profile_MTV_categoryNum;
     private AppCompatImageButton profile_IMB_settings;
     private ShapeableImageView profile_IMG_profile_picture;
     private MaterialTextView profile_TV_user_location;
@@ -58,6 +58,7 @@ public class ProfileFragment extends Fragment {
 
         if (myUser != null) {
             profile_MTV_name.setText(myUser.getuName());
+            profile_MTV_categoryNum.setText(String.format("%d", myUser.getCategories().size()));
             initCategories();
             setAdapter(context);
         }
@@ -73,14 +74,15 @@ public class ProfileFragment extends Fragment {
     private void changeToSettingsFragment() {
         Fragment settingsFragment = new SettingsFragment();
 
-        FragmentTransaction fragmentTransaction =getActivity().getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.main_FARM_layout,settingsFragment).commit();
+        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.main_FARM_layout, settingsFragment).commit();
     }
 
 
     private void initCategories() {
         categories = myUser.getCategories();
     }
+
     private void setAdapter(Context context) {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
         linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
@@ -101,7 +103,7 @@ public class ProfileFragment extends Fragment {
         });
         profile_RECYCLER_categories.setAdapter(adapter);
     }
-    
+
     private void findViews(View view) {
         profile_IMB_settings = view.findViewById(R.id.profile_IMB_settings);
         profile_IMG_profile_picture = view.findViewById(R.id.profile_IMG_profile_picture);
@@ -109,5 +111,6 @@ public class ProfileFragment extends Fragment {
         profile_RECYCLER_categories = view.findViewById(R.id.profile_RECYCLER_categories);
         profile_RB_rating = view.findViewById(R.id.profile_RB_rating);
         profile_MTV_name = view.findViewById(R.id.profile_MTV_name);
+        profile_MTV_categoryNum= view.findViewById(R.id.profile_MTV_categoryNum);
     }
 }

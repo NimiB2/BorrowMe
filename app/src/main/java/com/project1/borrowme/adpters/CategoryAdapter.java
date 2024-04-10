@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.project1.borrowme.R;
@@ -51,6 +52,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
             holder.categoryName.setText(categoryName);
             holder.imageCategory.setImageResource(categoryImage);
+            holder.updateUI(category, category.isClicked());
+
         }
     }
 
@@ -98,14 +101,14 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
             itemView.post(() -> {
                 if (clicked) {
                     MySignal.getInstance().vibrate(VIBRATION);
-                    imageCategory.setImageAlpha(128);
-                    categoryName.setAlpha(0.5f);
-
-                    callbackCategory.addCategory(category);
-
-                } else {
                     imageCategory.setImageAlpha(255);
                     categoryName.setAlpha(1.0f);
+                    callbackCategory.addCategory(category);
+
+
+                } else {
+                    imageCategory.setImageAlpha(128);
+                    categoryName.setAlpha(0.5f);
 
                     callbackCategory.removeCategory(category);
 

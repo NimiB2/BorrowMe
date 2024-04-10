@@ -25,6 +25,7 @@ import java.util.Map;
 
 public class CategoriesFragment extends Fragment {
     //private final MyUser myUser = MyUser.getInstance();
+    private final int NUM_OF_COLS = 3;
     private RecyclerView recyclerViewCategories;
     private MaterialTextView MTV_categoryNum;
     private CallbackCategory callbackCategory;
@@ -40,18 +41,12 @@ public class CategoriesFragment extends Fragment {
         View view= inflater.inflate(R.layout.fragment_categories, container, false);
 
         findViews(view);
+        updateNumCategoryText(MyUser.getInstance().getCategories().size());
         setAdapter(getContext());
 
 
         return view;
     }
-
-
-    public void setCallback(CallbackCategory callbackCategory) {
-        if (callbackCategory != null)
-            this.callbackCategory = callbackCategory;
-    }
-
 
 
     private void notifySelectionUpdated() {
@@ -83,7 +78,7 @@ public class CategoriesFragment extends Fragment {
         });
 
 
-        recyclerViewCategories.setLayoutManager(new GridLayoutManager(getActivity(), 3));
+        recyclerViewCategories.setLayoutManager(new GridLayoutManager(getActivity(), NUM_OF_COLS));
         recyclerViewCategories.setAdapter(adapter);
     }
 

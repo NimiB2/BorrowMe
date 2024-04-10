@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
@@ -41,6 +42,7 @@ public class SettingsFragment extends Fragment {
     private TextInputEditText settings_ET_newPassword;
     private MaterialButton settings_BTN_saveNewPassword;
     private MaterialButton settings_BTN_manageCategories;
+    private MaterialButton settings_BTN_saveNewCategories;
     private FrameLayout settings_fragment_container;
 
 
@@ -51,9 +53,10 @@ public class SettingsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
 
         findViews(view);
+        initViews();
         initCategories();
         initFragment();
-        initViews();
+
         return view;
     }
 
@@ -78,34 +81,31 @@ public class SettingsFragment extends Fragment {
         }
     }
 
-
     private void updateCategories(Map<String, Category> selectedCategories) {
-        myUser.setCategories(selectedCategories);
+        this.selectedCategories = selectedCategories;
     }
 
     private void initFragment() {
+        FragmentManager fragmentManager = getChildFragmentManager();
         CategoriesFragment categoriesFragment = new CategoriesFragment();
-        CategorySelectionListener listener = new CategorySelectionListener() {
-            @Override
-            public void onCategorySelectionUpdated(Map<String, Category> selectedCategories) {
-                if (myUser.getCategories().size() > 1) {
-                    updateCategories(selectedCategories);
-                } else {
-                    MySignal.getInstance().toast("MUST HAVE AT LEAST 1 CATEGORY");
-                }
-            }
-        };
-
-        categoriesFragment.setSelectionListener(listener);
 
 
         if (categories != null) {
             categoriesFragment.initCategories(categories);
         }
-        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.settings_fragment_container, categoriesFragment, "CATEGORIES_FRAGMENT_TAG").commit();
+        CategorySelectionListener listener = new CategorySelectionListener() {
+            @Override
+            public void onCategorySelectionUpdated(Map<String, Category> selectedCategories) {
+                updateCategories(selectedCategories);
 
+            }
+        };
+        categoriesFragment.setSelectionListener(listener);
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.settings_fragment_container, categoriesFragment);
+        fragmentTransaction.commit();
     }
+
 
     private void initViews() {
         myUser = MyUser.getInstance();
@@ -123,18 +123,43 @@ public class SettingsFragment extends Fragment {
         settings_BTN_showChangePassword.setOnClickListener(v -> togglePasswordVisibility(!passwordIsClicked));
         settings_BTN_saveNewPassword.setOnClickListener(v -> changePassword());
 
-        settings_BTN_manageCategories.setOnClickListener(v -> toggleCategoriesListVisibility(categoriesListIsClicked));
+        settings_BTN_manageCategories.setOnClickListener(v -> toggleCategoriesListVisibility(!categoriesListIsClicked));
+
+        settings_BTN_saveNewCategories.setOnClickListener(v -> {
+            if (selectedCategories != null && !selectedCategories.isEmpty()) {
+                myUser.setCategories(selectedCategories);
+                MySignal.getInstance().toast("Categories updated successfully!");
+            } else {
+                MySignal.getInstance().toast("You must select at least 1 categories.");
+            }
+        });
     }
 
     private void togglePasswordVisibility(boolean show) {
+        passwordIsClicked = !passwordIsClicked;
+
         settings_ET_newPassword.setVisibility(show ? View.VISIBLE : View.GONE);
         settings_BTN_saveNewPassword.setVisibility(show ? View.VISIBLE : View.GONE);
-        passwordIsClicked = !passwordIsClicked;
+
     }
 
     private void toggleCategoriesListVisibility(boolean show) {
-        settings_fragment_container.setVisibility(show ? View.VISIBLE : View.GONE);
         categoriesListIsClicked = !categoriesListIsClicked;
+
+        settings_fragment_container.setVisibility(show ? View.VISIBLE : View.GONE);
+        settings_BTN_saveNewCategories.setVisibility(show ? View.VISIBLE : View.GONE);
+
+        if (show) {
+            settings_ET_username.setVisibility(View.GONE);
+            settings_BTN_saveChanges.setVisibility(View.GONE);
+            settings_BTN_showChangePassword.setVisibility(View.GONE);
+            settings_ET_newPassword.setVisibility(View.GONE);
+            settings_BTN_saveNewPassword.setVisibility(View.GONE);
+        } else {
+            settings_ET_username.setVisibility(View.VISIBLE);
+            settings_BTN_saveChanges.setVisibility(View.VISIBLE);
+            settings_BTN_showChangePassword.setVisibility(View.VISIBLE);
+        }
     }
 
     private void changePassword() {
@@ -154,7 +179,6 @@ public class SettingsFragment extends Fragment {
             }
         }
     }
-
 
     private void saveUserDetails() {
         if (FirebaseUtil.validateUserName(settings_ET_username) && FirebaseUtil.validateEmail(settings_ET_email)) {
@@ -198,7 +222,6 @@ public class SettingsFragment extends Fragment {
 
     }
 
-
     private void findViews(View view) {
         settings_IMG_back = view.findViewById(R.id.settings_IMG_back);
         settings_ET_username = view.findViewById(R.id.settings_ET_username);
@@ -209,5 +232,6 @@ public class SettingsFragment extends Fragment {
         settings_BTN_saveNewPassword = view.findViewById(R.id.settings_BTN_saveNewPassword);
         settings_BTN_manageCategories = view.findViewById(R.id.settings_BTN_manageCategories);
         settings_fragment_container = view.findViewById(R.id.settings_fragment_container);
+        settings_BTN_saveNewCategories= view.findViewById(R.id.settings_BTN_saveNewCategories);
     }
 }
