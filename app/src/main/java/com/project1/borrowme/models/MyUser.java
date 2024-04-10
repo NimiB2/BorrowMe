@@ -15,6 +15,8 @@ public class MyUser {
     private String uid;
     private String uName;
     private String uEmail;
+    private String photoUriString;
+    private Uri uPhoto;
     private double lat;
     private double lan;
 
@@ -41,9 +43,6 @@ public class MyUser {
         return instance;
     }
 
-//     public static MyUser getInstance(){
-//        return instance;
-//    }
 
 
     public Map<String, Category> getCategories() {
@@ -100,14 +99,17 @@ public class MyUser {
         return this;
     }
 
-//    public Uri getPhoto() {
-//        return photo;
-//    }
-//
-//    public MyUser setPhoto(Uri photo) {
-//        this.photo = photo;
-//        return this;
-//    }
+    public Uri getPhoto() {
+        return photoUriString != null ? Uri.parse(photoUriString) : null;
+    }
+
+    public MyUser setPhoto(String photoUriString) {
+        this.photoUriString = photoUriString;
+        return this;
+    }
+    public String getPhotoAsString() {
+        return photoUriString;
+    }
 
     public double getLat() {
         return lat;
