@@ -1,5 +1,7 @@
 package com.project1.borrowme.logIns;
 
+import static java.security.AccessController.getContext;
+
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -42,8 +44,8 @@ import java.io.IOException;
 import java.util.List;
 
 public class SignUpActivity extends AppCompatActivity {
-
     private final int FINE_PERMISSION_CODE = 1;
+
     Location currentLocation;
     FusedLocationProviderClient fusedLocationClient;
     private TextInputEditText signUp_ET_userName;
@@ -54,7 +56,7 @@ public class SignUpActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private SwitchMaterial signUp_SWITCH_location;
     private TextInputEditText signUp_ET_searchBox;
-    private double latitude = 34.8007048;
+    private double latitude = 32.8007048;
     private double longitude = 32.1027879;
 
 
@@ -99,7 +101,8 @@ public class SignUpActivity extends AppCompatActivity {
                 if (isChecked) {
                     // The switch is enabled/checked
                     signUp_ET_searchBox.setVisibility(View.GONE);
-                    getCurrentLocation();
+                    String uId = auth.getCurrentUser().getUid();
+                    getLocation(uId);
                 } else {
                     // The switch is disabled/unchecked
                     signUp_ET_searchBox.setVisibility(View.VISIBLE);
@@ -133,7 +136,7 @@ public class SignUpActivity extends AppCompatActivity {
             if (task.isSuccessful()) {
                 // User successfully created, proceed with additional setup
                 String uId = auth.getCurrentUser().getUid();
-                getLocation(); // Ensure this method properly handles location fetching
+                getLocation(uId);
                 changeRegistrationActivity(email, password, userName, uId, latitude, longitude);
             } else {
                 // Handle failure, such as email already in use or other errors
@@ -146,91 +149,43 @@ public class SignUpActivity extends AppCompatActivity {
         });
     }
 
-    private void getLocation() {
+    private void getLocation(String uId) {
         // The switch is disabled/unchecked
         if (signUp_SWITCH_location.isChecked()) {
-            getCurrentLocation();
-        } else getLocationByAddress();
+            getCurrentLocation(uId);
+        } else getLocationByAddress(uId);
     }
 
 
-    private void getLocationByAddress() {
-        String address = signUp_ET_searchBox.getText().toString().trim();
-        if (address.isEmpty()) {
-            signUp_ET_searchBox.setError("Address cannot be empty");
+    private void getLocationByAddress(String uId) {
+        String address = signUp_ET_searchBox.getText().toString().trim(); // Correctly obtain the address from the input
+        Address locationAddress = FirebaseUtil.fetchLocationFromAddress(SignUpActivity.this, address);
+        if (locationAddress != null) {
+            double latitude = locationAddress.getLatitude();
+            double longitude = locationAddress.getLongitude();
+            FirebaseUtil.updateUserLocation(uId, latitude, longitude);
         } else {
-            Geocoder geocoder = new Geocoder(this);
-            try {
-                List<Address> addresses = geocoder.getFromLocationName(address, 1);
-                if (addresses != null && !addresses.isEmpty()) {
-                    Address result = addresses.get(0);
-                    latitude = result.getLatitude();
-                    longitude = result.getLongitude();
-                } else {
-                    signUp_ET_searchBox.setError("Address not found");
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            // Address not found
         }
-
     }
 
-    private void getCurrentLocation() {
+    private void getCurrentLocation(String uId) {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, FINE_PERMISSION_CODE);
+            // Request for permissions
+            ActivityCompat.requestPermissions(SignUpActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, FINE_PERMISSION_CODE);
             return;
         }
-        fusedLocationClient.getLastLocation().addOnSuccessListener(this, location -> {
+        FirebaseUtil.fetchCurrentLocation(SignUpActivity.this, location -> {
             if (location != null) {
-                // Got last known location
-                latitude = location.getLatitude();
-                longitude = location.getLongitude();
+                double latitude = location.getLatitude();
+                double longitude = location.getLongitude();
+                FirebaseUtil.updateUserLocation(uId, latitude, longitude);
             } else {
-                // Location is null, request new location data
-                requestNewLocationData();
+                // Handle location is null
             }
         });
     }
 
-
-    private void requestNewLocationData() {
-        LocationRequest locationRequest = LocationRequest.create();
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        locationRequest.setInterval(10000); // 10 seconds
-        locationRequest.setFastestInterval(5000); // 5 seconds
-        locationRequest.setNumUpdates(1);
-
-        LocationCallback locationCallback = new LocationCallback() {
-            @Override
-            public void onLocationResult(LocationResult locationResult) {
-                Location location = locationResult.getLastLocation();
-                latitude = location.getLatitude();
-                longitude = location.getLongitude();
-            }
-        };
-
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, FINE_PERMISSION_CODE);
-            return;
-        }
-
-        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == FINE_PERMISSION_CODE) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Permission granted, get current location
-                getCurrentLocation();
-            } else {
-                MySignal.getInstance().toast("Required Permission");
-            }
-        }
-    }
 
     private void changeRegistrationActivity(String email, String password, String
             userName, String uId, double latitude, double longitude) {
@@ -253,31 +208,31 @@ public class SignUpActivity extends AppCompatActivity {
         finish();
     }
 
-    private boolean validateInputs(String userName, String email, String password) {
-        if (userName.isEmpty() || userName.length() < 3) {
-            signUp_ET_userName.setError("Username must be at least 3 characters");
-            return false;
-        }
-        if (email.isEmpty()) {
-            signUp_ET_email.setError("Email cannot be empty");
-            return false;
-        }
-
-        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            signUp_ET_email.setError("Email is not valid");
-            return false;
-        }
-        if (password.isEmpty()) {
-            signUp_ET_password.setError("Password cannot be empty");
-            return false;
-        }
-        if (password.length() < 6) {
-            signUp_ET_password.setError("Password must be at least 6 characters");
-            return false;
-        }
-
-        return true;
-    }
+//    private boolean validateInputs(String userName, String email, String password) {
+//        if (userName.isEmpty() || userName.length() < 3) {
+//            signUp_ET_userName.setError("Username must be at least 3 characters");
+//            return false;
+//        }
+//        if (email.isEmpty()) {
+//            signUp_ET_email.setError("Email cannot be empty");
+//            return false;
+//        }
+//
+//        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+//            signUp_ET_email.setError("Email is not valid");
+//            return false;
+//        }
+//        if (password.isEmpty()) {
+//            signUp_ET_password.setError("Password cannot be empty");
+//            return false;
+//        }
+//        if (password.length() < 6) {
+//            signUp_ET_password.setError("Password must be at least 6 characters");
+//            return false;
+//        }
+//
+//        return true;
+//    }
 
     private void findViews() {
         signUp_ET_userName = findViewById(R.id.signUp_ET_userName);

@@ -49,9 +49,11 @@
     <string name="distance_10km">10km</string>
     <string name="_0">0</string>
     <string name="change_password">Change Your Password</string>
+    <string name="change_location">Change Your Location</string>
     <string name="manage_categories">Manage Your Categories</string>
     <string name="save_changes">SAVE</string>
     <string name="new_password">New password</string>
     <string name="save_new_password">SAVE NEW PASSWORD</string>
+    <string name="save_new_location">SAVE NEW LOCATION</string>
     <string name="update_your_categories">UPDATE YOUR CATEGORIES</string>
 </resources>
