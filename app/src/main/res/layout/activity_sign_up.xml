@@ -85,28 +85,29 @@
         android:textColor="@color/text_color"
         android:textSize="@dimen/text_size_xsmall" />
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/signUp_ET_searchBox"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/signUp_CARD_search"
         android:layout_width="@dimen/size_medium"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/signUp_SWITCH_location"
+        android:layout_height="@dimen/margin_large"
         android:layout_centerHorizontal="true"
-        android:layout_marginHorizontal="@dimen/margin_xsmall"
+        app:cardCornerRadius="@dimen/margin_xsmall"
+        android:layout_below="@id/signUp_SWITCH_location"
         android:layout_marginTop="@dimen/margin_xsmall"
-        android:background="@drawable/custom_edittext"
-        android:drawableLeft="@drawable/location"
-        android:drawablePadding="@dimen/margin_xsmall"
-        android:hint="@string/search_hint"
-        android:inputType="textPostalAddress"
-        android:padding="@dimen/margin_xsmall"
-        android:textColor="@color/text_color"
-        android:visibility="gone" />
+        android:visibility="gone">
+
+        <fragment android:id="@+id/signUp_FRAGMENT_autoComplete"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+            />
+
+    </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/signUp_BTN_LOGIN"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/signUp_ET_searchBox"
+        android:layout_below="@+id/signUp_CARD_search"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/margin_large"
         android:backgroundTint="@color/buttonColor"

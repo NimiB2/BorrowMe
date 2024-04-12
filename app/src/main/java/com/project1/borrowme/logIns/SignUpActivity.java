@@ -1,18 +1,13 @@
 package com.project1.borrowme.logIns;
 
-import static java.security.AccessController.getContext;
+import static android.content.ContentValues.TAG;
 
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
 import android.os.Bundle;
-import android.os.Looper;
-import android.util.Patterns;
+import android.util.Log;
 import android.view.View;
-import android.widget.CompoundButton;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -22,32 +17,31 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textview.MaterialTextView;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.project1.borrowme.BuildConfig;
 import com.project1.borrowme.R;
 import com.project1.borrowme.Utilities.FirebaseUtil;
 import com.project1.borrowme.Utilities.MySignal;
+import com.project1.borrowme.interfaces.LocationFetchListener;
 
-import java.io.IOException;
-import java.util.List;
+import java.util.Arrays;
 
 public class SignUpActivity extends AppCompatActivity {
-    private final int FINE_PERMISSION_CODE = 1;
-
-    Location currentLocation;
-    FusedLocationProviderClient fusedLocationClient;
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
+    private FusedLocationProviderClient fusedLocationClient;
     private TextInputEditText signUp_ET_userName;
     private TextInputEditText signUp_ET_email;
     private TextInputEditText signUp_ET_password;
@@ -55,9 +49,9 @@ public class SignUpActivity extends AppCompatActivity {
     private MaterialTextView signUp_MTV_LogIn;
     private FirebaseAuth auth;
     private SwitchMaterial signUp_SWITCH_location;
-    private TextInputEditText signUp_ET_searchBox;
-    private double latitude = 32.8007048;
-    private double longitude = 32.1027879;
+    private MaterialCardView signUp_CARD_search;
+    private double longitude ;
+    private double latitude ;
 
 
     @Override
@@ -71,16 +65,44 @@ public class SignUpActivity extends AppCompatActivity {
             return insets;
         });
 
-        auth = FirebaseAuth.getInstance();
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        auth = FirebaseAuth.getInstance();
+        if(!Places.isInitialized()){
+            Places.initialize(getApplicationContext(), BuildConfig.my_api_key);
+        }
 
         findViews();
         initViews();
+        autoCompleteInit();
+    }
+
+    private void autoCompleteInit() {
+        AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
+                getSupportFragmentManager().findFragmentById(R.id.signUp_FRAGMENT_autoComplete);
+
+        // Set the type of place data to return.
+        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG));
+
+        // Handle the response when a place is selected.
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(@NonNull Place place) {
+                Log.i(TAG, "Place: " + place.getName() + ", " + place.getId());
+                // Save the selected location's latitude and longitude
+                latitude = place.getLatLng().latitude;
+                longitude = place.getLatLng().longitude;
+            }
+
+            @Override
+            public void onError(@NonNull Status status) {
+                Log.i(TAG, "An error occurred: " + status);
+            }
+        });
     }
 
     private void initViews() {
         initSignUp();
-        initLocation();
+        initLocationButtonsVisibility();
         initLogIn();
     }
 
@@ -94,19 +116,14 @@ public class SignUpActivity extends AppCompatActivity {
         });
     }
 
-    private void initLocation() {
-        signUp_SWITCH_location.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    // The switch is enabled/checked
-                    signUp_ET_searchBox.setVisibility(View.GONE);
-                    String uId = auth.getCurrentUser().getUid();
-                    getLocation(uId);
-                } else {
-                    // The switch is disabled/unchecked
-                    signUp_ET_searchBox.setVisibility(View.VISIBLE);
-                }
+    private void initLocationButtonsVisibility() {
+        signUp_SWITCH_location.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                // Hide search box when using current location
+                signUp_CARD_search.setVisibility(View.GONE);
+            } else {
+                // Show search box when manual location is needed
+                signUp_CARD_search.setVisibility(View.VISIBLE);
             }
         });
     }
@@ -136,8 +153,20 @@ public class SignUpActivity extends AppCompatActivity {
             if (task.isSuccessful()) {
                 // User successfully created, proceed with additional setup
                 String uId = auth.getCurrentUser().getUid();
-                getLocation(uId);
-                changeRegistrationActivity(email, password, userName, uId, latitude, longitude);
+                LocationFetchListener locationFetchListener = new LocationFetchListener() {
+                    @Override
+                    public void onLocationFetched(double lat, double lon) {
+                        changeRegistrationActivity(email, password, userName, uId, lat, lon);
+                    }
+
+                    @Override
+                    public void onLocationFetchFailed() {
+                        runOnUiThread(() -> MySignal.getInstance().toast( "Failed to fetch location. Please ensure your location services are enabled, or enter a valid address."));
+                    };
+                };
+
+                getLocation(locationFetchListener);
+
             } else {
                 // Handle failure, such as email already in use or other errors
                 if (task.getException() instanceof FirebaseAuthUserCollisionException) {
@@ -149,43 +178,60 @@ public class SignUpActivity extends AppCompatActivity {
         });
     }
 
-    private void getLocation(String uId) {
+    private void getLocation(LocationFetchListener locationFetchListener) {
         // The switch is disabled/unchecked
         if (signUp_SWITCH_location.isChecked()) {
-            getCurrentLocation(uId);
-        } else getLocationByAddress(uId);
-    }
-
-
-    private void getLocationByAddress(String uId) {
-        String address = signUp_ET_searchBox.getText().toString().trim(); // Correctly obtain the address from the input
-        Address locationAddress = FirebaseUtil.fetchLocationFromAddress(SignUpActivity.this, address);
-        if (locationAddress != null) {
-            double latitude = locationAddress.getLatitude();
-            double longitude = locationAddress.getLongitude();
-            FirebaseUtil.updateUserLocation(uId, latitude, longitude);
+            getCurrentLocation(locationFetchListener);
         } else {
-            // Address not found
+            if (latitude != 0 && longitude != 0) {
+                locationFetchListener.onLocationFetched(latitude, longitude);
+            } else {
+                locationFetchListener.onLocationFetchFailed();
+            }
         }
     }
 
-    private void getCurrentLocation(String uId) {
+
+//    private void getLocationByAddress(String address, LocationFetchListener listener) {
+//        Geocoder geocoder = new Geocoder(SignUpActivity.this);
+//        try {
+//            List<Address> addresses = geocoder.getFromLocationName(address, 1);
+//            if (addresses != null && !addresses.isEmpty()) {
+//                Address location = addresses.get(0);
+//                listener.onLocationFetched(location.getLatitude(), location.getLongitude());
+//            } else {
+//                listener.onLocationFetchFailed();
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            listener.onLocationFetchFailed();
+//        }
+//    }
+
+    private void getCurrentLocation(LocationFetchListener listener) {
+        checkLocationPermission();
+
+        fusedLocationClient.getLastLocation()
+                .addOnSuccessListener(this, location -> {
+                    if (location != null) {
+                        listener.onLocationFetched(location.getLatitude(), location.getLongitude());
+                    } else {
+                        listener.onLocationFetchFailed();
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("LocationError", "Failed to get location: ", e);
+                    listener.onLocationFetchFailed();
+                });
+    }
+
+
+    private void checkLocationPermission() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // Request for permissions
-            ActivityCompat.requestPermissions(SignUpActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, FINE_PERMISSION_CODE);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
             return;
         }
-        FirebaseUtil.fetchCurrentLocation(SignUpActivity.this, location -> {
-            if (location != null) {
-                double latitude = location.getLatitude();
-                double longitude = location.getLongitude();
-                FirebaseUtil.updateUserLocation(uId, latitude, longitude);
-            } else {
-                // Handle location is null
-            }
-        });
     }
-
 
     private void changeRegistrationActivity(String email, String password, String
             userName, String uId, double latitude, double longitude) {
@@ -208,32 +254,6 @@ public class SignUpActivity extends AppCompatActivity {
         finish();
     }
 
-//    private boolean validateInputs(String userName, String email, String password) {
-//        if (userName.isEmpty() || userName.length() < 3) {
-//            signUp_ET_userName.setError("Username must be at least 3 characters");
-//            return false;
-//        }
-//        if (email.isEmpty()) {
-//            signUp_ET_email.setError("Email cannot be empty");
-//            return false;
-//        }
-//
-//        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-//            signUp_ET_email.setError("Email is not valid");
-//            return false;
-//        }
-//        if (password.isEmpty()) {
-//            signUp_ET_password.setError("Password cannot be empty");
-//            return false;
-//        }
-//        if (password.length() < 6) {
-//            signUp_ET_password.setError("Password must be at least 6 characters");
-//            return false;
-//        }
-//
-//        return true;
-//    }
-
     private void findViews() {
         signUp_ET_userName = findViewById(R.id.signUp_ET_userName);
         signUp_ET_email = findViewById(R.id.signUp_ET_email);
@@ -241,6 +261,6 @@ public class SignUpActivity extends AppCompatActivity {
         signUp_BTN_SingUp = findViewById(R.id.signUp_BTN_LOGIN);
         signUp_MTV_LogIn = findViewById(R.id.signUp_MTV_LogIn);
         signUp_SWITCH_location = findViewById(R.id.signUp_SWITCH_location);
-        signUp_ET_searchBox = findViewById(R.id.signUp_ET_searchBox);
+        signUp_CARD_search= findViewById(R.id.signUp_CARD_search);
     }
 }

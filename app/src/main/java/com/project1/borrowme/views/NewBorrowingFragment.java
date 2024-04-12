@@ -50,7 +50,7 @@ public class NewBorrowingFragment extends Fragment {
         newBorrow_ACTV_category=view.findViewById(R.id.newBorrow_ACTV_category);
         newBorrow_ET_description=view.findViewById(R.id.newBorrow_ET_description);
         signUp_SWITCH_location=view.findViewById(R.id.signUp_SWITCH_location);
-        signUp_ET_searchBox=view.findViewById(R.id.signUp_ET_searchBox);
+        signUp_ET_searchBox=view.findViewById(R.id.signUp_FRAGMENT_autoComplete);
         radio_distance_1km=view.findViewById(R.id.radio_distance_1km);
         radio_distance_5km=view.findViewById(R.id.radio_distance_5km);
         radio_distance_10km=view.findViewById(R.id.radio_distance_10km);

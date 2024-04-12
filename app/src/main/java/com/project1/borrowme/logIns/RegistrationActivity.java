@@ -36,13 +36,12 @@ import java.util.Map;
 
 public class RegistrationActivity extends AppCompatActivity {
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
-    //private final MyUser myUser = MyUser.getInstance();
     private Map<String, Category> selectedCategories;
     private String authEmail;
     private String authUserName;
     private String authUid;
-    private double authLatitude= 34.8007048 ;
-    private double authLongitude =32.1027879;
+    private double authLatitude;
+    private double authLongitude;
     private FrameLayout registration_fragment_container;
     private MaterialButton registration_BTN_LOGIN;
     private MaterialButton registration_BTN_back;
