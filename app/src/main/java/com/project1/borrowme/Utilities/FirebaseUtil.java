@@ -69,42 +69,7 @@ public class FirebaseUtil {
         return true;
     }
 
-    public static void fetchCurrentLocation(Context context, OnSuccessListener<Location> onSuccessListener) {
-        FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(context);
-        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        fusedLocationClient.getLastLocation().addOnSuccessListener(onSuccessListener);
-    }
 
-    public static Address fetchLocationFromAddress(Context context, String addressInput) {
-        Geocoder geocoder = new Geocoder(context);
-        List<Address> addresses;
-        try {
-            addresses = geocoder.getFromLocationName(addressInput, 1);
-            if (!addresses.isEmpty()) {
-                return addresses.get(0); // Returning the first result
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null; // Address not found or error occurred
-    }
-
-    public static void updateUserLocation(String userId, double latitude, double longitude) {
-        Map<String, Object> locationData = new HashMap<>();
-        locationData.put("latitude", latitude);
-        locationData.put("longitude", longitude);
-
-        FirebaseFirestore.getInstance().collection("users").document(userId)
-                .update(locationData)
-                .addOnSuccessListener(aVoid -> {
-                    // Log success or inform the user
-                })
-                .addOnFailureListener(e -> {
-                    // Handle failure
-                });
-    }
 
     public static void updateUserCategories(Map<String, Category> selectedCategories) {
         currentUserDetails()

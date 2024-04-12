@@ -20,6 +20,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.project1.borrowme.Utilities.FirebaseUtil;
+import com.project1.borrowme.Utilities.LocationManagerUtil;
 import com.project1.borrowme.Utilities.MySignal;
 import com.project1.borrowme.data.CategoriesData;
 import com.project1.borrowme.interfaces.CategorySelectionListener;
@@ -54,7 +55,7 @@ public class SettingsFragment extends Fragment {
     private TextInputEditText settings_ET_address_search;
     private MaterialButton settings_BTN_saveNewLocation;
 
-
+    private LocationManagerUtil locationManagerUtil;
     private SwitchMaterial settings_SWITCH_manageCategories;
     private MaterialButton settings_BTN_saveNewCategories;
     private FrameLayout settings_fragment_container;
@@ -72,6 +73,7 @@ public class SettingsFragment extends Fragment {
         initViews();
         initCategories();
         initFragment();
+        locationManagerUtil = new LocationManagerUtil(requireContext(), autocompleteFragment, this);
 
         return view;
     }
@@ -160,31 +162,7 @@ public class SettingsFragment extends Fragment {
     }
 
     private void changeLocation() {
-        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid(); // Ensure you have a valid user ID
 
-        if (settings_SWITCH_location.isChecked()) {
-            // Get current location and update
-            FirebaseUtil.fetchCurrentLocation(getActivity(), location -> {
-                if (location != null) {
-                    double latitude = location.getLatitude();
-                    double longitude = location.getLongitude();
-                    FirebaseUtil.updateUserLocation(userId, latitude, longitude);
-                    MySignal.getInstance().toast("Location updated successfully!");
-                } else {
-                    MySignal.getInstance().toast("Failed to get current location.");
-                }
-            });
-        } else {
-            // Get location from address and update
-            String addressInput = settings_ET_address_search.getText().toString().trim();
-            Address address = FirebaseUtil.fetchLocationFromAddress(getActivity(), addressInput);
-            if (address != null) {
-                FirebaseUtil.updateUserLocation(userId, address.getLatitude(), address.getLongitude());
-                MySignal.getInstance().toast("Location updated successfully!");
-            } else {
-                MySignal.getInstance().toast("Address not found.");
-            }
-        }
     }
 
     private void toggleLocationVisibility() {
