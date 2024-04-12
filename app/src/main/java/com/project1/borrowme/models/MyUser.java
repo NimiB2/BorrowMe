@@ -15,21 +15,11 @@ public class MyUser {
     private String uid;
     private String uName;
     private String uEmail;
-    private String photoUriString;
-    private Uri uPhoto;
     private double lat;
     private double lan;
+    private Uri profileImageUri;
 
     private MyUser() {
-    }
-
-    public MyUser(Map<String, Category> categories, String uid, String uName, String uEmail, double lat, double lan) {
-        this.categories = categories;
-        this.uid = uid;
-        this.uName = uName;
-        this.uEmail = uEmail;
-        this.lat = lat;
-        this.lan = lan;
     }
 
     public static MyUser getInstance() {
@@ -59,9 +49,7 @@ public class MyUser {
         return this;
     }
 
-    public Category getCategoryByName(String categoryName) {
-        return this.categories.get(categoryName);
-    }
+
 
     public void removeCategory(String categoryName) {
         if(categories.size()>1){
@@ -99,17 +87,6 @@ public class MyUser {
         return this;
     }
 
-    public Uri getPhoto() {
-        return photoUriString != null ? Uri.parse(photoUriString) : null;
-    }
-
-    public MyUser setPhoto(String photoUriString) {
-        this.photoUriString = photoUriString;
-        return this;
-    }
-    public String getPhotoAsString() {
-        return photoUriString;
-    }
 
     public double getLat() {
         return lat;
@@ -127,6 +104,14 @@ public class MyUser {
     public MyUser setLan(double lan) {
         this.lan = lan;
         return this;
+    }
+
+    public Uri getProfileImageUri() {
+        return profileImageUri;
+    }
+
+    public void setProfileImageUri(Uri profileImageUri) {
+        this.profileImageUri = profileImageUri;
     }
 
     public void resetUser() {

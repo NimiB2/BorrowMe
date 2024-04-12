@@ -294,7 +294,7 @@ public class SettingsFragment extends Fragment {
 //                    // Handle failure
 //                });
             // Update Firestore Document
-            FirebaseUtil.getUserReference().update("uName", userName, "uEmail", userEmail)
+            FirebaseUtil.currentUserDetails().update("uName", userName, "uEmail", userEmail)
                     .addOnSuccessListener(aVoid -> {
                         MySignal.getInstance().toast("Updated successfully");
                     })

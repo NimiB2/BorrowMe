@@ -11,23 +11,20 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RatingBar;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textview.MaterialTextView;
-import com.project1.borrowme.MainActivity;
 import com.project1.borrowme.R;
 import com.project1.borrowme.SettingsFragment;
 import com.project1.borrowme.Utilities.FirebaseUtil;
@@ -65,32 +62,12 @@ public class ProfileFragment extends Fragment {
         return view;
     }
 
-    private void registerResult() {
-        resultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
-            @Override
-            public void onActivityResult(ActivityResult result) {
-                try {
-                    Uri imageUri = result.getData().getData();
-                    profile_IMG_profile_picture.setImageURI(imageUri);
-                    myUser.setPhoto(imageUri.toString());
-                    FirebaseUtil.updateUserPhotoUri(imageUri);
-                } catch (Exception e) {
-                    MySignal.getInstance().toast("No Image Selected");
-                }
-            }
-        });
-    }
-
     private void initViews(Context context) {
 
         if (myUser != null) {
             profile_MTV_name.setText(myUser.getuName());
-            String photoUriString = myUser.getPhotoAsString();
+            setProfilePic(myUser.getProfileImageUri());
 
-            if (photoUriString != null && !photoUriString.isEmpty()) {
-                Uri photoUri = Uri.parse(photoUriString);
-                profile_IMG_profile_picture.setImageURI(photoUri);
-            }
             profile_MTV_categoryNum.setText(String.format("%d", myUser.getCategories().size()));
             initCategories();
             setAdapter(context);
@@ -114,6 +91,33 @@ public class ProfileFragment extends Fragment {
     private void pickImage() {
         Intent intent = new Intent(MediaStore.ACTION_PICK_IMAGES);
         resultLauncher.launch(intent);
+    }
+
+    private void registerResult() {
+        resultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+            @Override
+            public void onActivityResult(ActivityResult result) {
+                try {
+                    Uri imageUri = result.getData().getData();
+                    if (imageUri != null) {
+                        FirebaseUtil.getCurrentProfilePicStorageRef().putFile(imageUri);
+                        myUser.setProfileImageUri(imageUri);
+                        setProfilePic(imageUri);
+                    }
+
+                } catch (Exception e) {
+                    MySignal.getInstance().toast("No Image Selected");
+                }
+            }
+        });
+    }
+
+    private void setProfilePic(Uri imageUri) {
+        if (imageUri != null) {
+            Glide.with(this).load(imageUri).into(profile_IMG_profile_picture);
+        } else {
+            profile_IMG_profile_picture.setImageResource(R.drawable.farmerprofile);
+        }
     }
 
     private void changeToSettingsFragment() {

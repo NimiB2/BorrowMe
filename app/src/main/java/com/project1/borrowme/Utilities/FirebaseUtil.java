@@ -18,9 +18,10 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.project1.borrowme.models.Category;
 
 import java.io.IOException;
@@ -30,7 +31,7 @@ import java.util.Map;
 
 public class FirebaseUtil {
 
-    public static DocumentReference getUserReference() {
+    public static DocumentReference currentUserDetails() {
         return FirebaseFirestore.getInstance().collection("users").document(currentUserId());
     }
 
@@ -106,21 +107,15 @@ public class FirebaseUtil {
     }
 
     public static void updateUserCategories(Map<String, Category> selectedCategories) {
-        getUserReference()
+        currentUserDetails()
                 .update("categories", selectedCategories)
                 .addOnSuccessListener(aVoid -> Log.d("Firestore", "Categories updated successfully!"))
                 .addOnFailureListener(e -> Log.w("Firestore", "Error updating categories", e));
     }
-    public static void updateUserPhotoUri(Uri photoUri) {
-        if (photoUri != null) {
-            String uriString = photoUri.toString();
-            Map<String, Object> userData = new HashMap<>();
-            userData.put("photo", uriString);
 
-            getUserReference().update(userData)
-                    .addOnSuccessListener(aVoid -> Log.d("FirebaseUtil", "Photo URI updated successfully"))
-                    .addOnFailureListener(e -> Log.e("FirebaseUtil", "Error updating photo URI", e));
-        }
+    public static StorageReference getCurrentProfilePicStorageRef(){
+        return FirebaseStorage.getInstance().getReference().child("profile_pic")
+                .child(FirebaseUtil.currentUserId());
     }
 }
 

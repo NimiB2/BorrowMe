@@ -1,6 +1,7 @@
 package com.project1.borrowme;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +22,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.storage.StorageReference;
 import com.project1.borrowme.Utilities.FirebaseUtil;
 import com.project1.borrowme.logIns.LoginActivity;
 import com.project1.borrowme.models.MyUser;
@@ -58,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getTheUser() {
-        FirebaseUtil.getUserReference().get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        FirebaseUtil.currentUserDetails().get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if(task.isSuccessful()){
@@ -80,11 +82,17 @@ public class MainActivity extends AppCompatActivity {
             myUser.setLat(fetchedUser.getLat());
             myUser.setLan(fetchedUser.getLan());
             myUser.setCategories(fetchedUser.getCategories());
-
-            String photoUriString = document.getString("photo");
-            myUser.setPhoto(photoUriString);
-
+            fetchAndSetUserProfileImage(myUser);
         }
+    }
+
+    private void fetchAndSetUserProfileImage(MyUser myUser) {
+        StorageReference profilePicRef = FirebaseUtil.getCurrentProfilePicStorageRef();
+        profilePicRef.getDownloadUrl()
+                .addOnSuccessListener(myUser::setProfileImageUri)
+                .addOnFailureListener(e -> {
+                    MyUser.getInstance().setProfileImageUri(null);
+                });
     }
 
     private void initViews() {

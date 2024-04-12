@@ -47,6 +47,8 @@ dependencies {
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
+    implementation (libs.glide)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -61,6 +63,7 @@ dependencies {
 
     implementation(libs.firebase.database)
     implementation (libs.material.vversion)
+    implementation(libs.firebase.storage)
 
     // googleMaps
     implementation (libs.play.services.maps)

@@ -54,7 +54,7 @@
                         android:layout_marginEnd="@dimen/margin_xxsmall"
                         android:background="@drawable/profile_image_background"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/farmerprofile" />
+                        />
 
                     <!-- Floating Action Button -->
                     <com.google.android.material.floatingactionbutton.FloatingActionButton
