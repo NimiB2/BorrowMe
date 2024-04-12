@@ -16,7 +16,6 @@
             android:id="@+id/profile_LAYOUT_setting_image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_small"
             android:orientation="horizontal"
             android:paddingHorizontal="@dimen/margin_xsmall"
             >
@@ -76,7 +75,7 @@
                     android:layout_marginTop="@dimen/margin_xsmall"
                     android:text="@string/user_name"
                     android:textColor="@color/tittle_color"
-                    android:textSize="@dimen/text_size_small"
+                    android:textSize="@dimen/text_size_main_button_s"
                     android:textStyle="bold">
 
                 </com.google.android.material.textview.MaterialTextView>
@@ -97,7 +96,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/my_location"
                 android:textColor="@color/tittle_color"
-                android:textSize="@dimen/text_size_main_button_s"
+                android:textSize="@dimen/text_size_main_button_m"
                 android:textStyle="bold" />
 
             <com.google.android.material.textview.MaterialTextView
@@ -105,6 +104,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_xsmall"
+                android:textSize="@dimen/text_size_small"
                 android:text="@string/placeholder_location" />
 
             <com.google.android.material.textview.MaterialTextView
@@ -113,7 +113,7 @@
                 android:layout_marginTop="@dimen/margin_large"
                 android:text="@string/categories"
                 android:textColor="@color/tittle_color"
-                android:textSize="@dimen/text_size_main_button_s"
+                android:textSize="@dimen/text_size_main_button_m"
                 android:textStyle="bold" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -140,7 +140,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/text_color"
                     android:textStyle="bold"
-                    android:textSize="@dimen/text_size_small"
+                    android:textSize="@dimen/text_size_main_button_s"
                     android:text="@string/number_of_categories"
                     >
                 </com.google.android.material.textview.MaterialTextView>

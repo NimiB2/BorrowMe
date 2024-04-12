@@ -2,6 +2,8 @@ package com.project1.borrowme.views;
 
 import android.content.Context;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -34,7 +36,10 @@ import com.project1.borrowme.interfaces.CallbackCategory;
 import com.project1.borrowme.models.Category;
 import com.project1.borrowme.models.MyUser;
 
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class ProfileFragment extends Fragment {
@@ -58,14 +63,19 @@ public class ProfileFragment extends Fragment {
 
         findViews(view);
         registerResult();
-        initViews(getContext());
+        try {
+            initViews(getContext());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         return view;
     }
 
-    private void initViews(Context context) {
+    private void initViews(Context context) throws IOException {
 
         if (myUser != null) {
             profile_MTV_name.setText(myUser.getuName());
+            setAddress();
             setProfilePic(myUser.getProfileImageUri());
 
             profile_MTV_categoryNum.setText(String.format("%d", myUser.getCategories().size()));
@@ -88,6 +98,19 @@ public class ProfileFragment extends Fragment {
         });
     }
 
+    private void setAddress() throws IOException {
+        Geocoder geocoder = new Geocoder(requireContext(), Locale.getDefault());
+        double latitude = myUser.getLat();
+        double longitude = myUser.getLan();
+        List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
+        if (!addresses.isEmpty()) {
+            Address address = addresses.get(0);
+            String location = address.getAddressLine(0);
+            profile_TV_user_location.setText(location);
+        } else {
+            throw new IOException("No address found for coordinates: " + latitude + ", " + longitude);
+        }
+    }
     private void pickImage() {
         Intent intent = new Intent(MediaStore.ACTION_PICK_IMAGES);
         resultLauncher.launch(intent);

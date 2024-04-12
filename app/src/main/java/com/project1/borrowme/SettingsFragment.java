@@ -15,6 +15,7 @@ import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
@@ -52,15 +53,17 @@ public class SettingsFragment extends Fragment {
 
     private SwitchMaterial settings_SWITCH_changeLocation;
     private SwitchMaterial settings_SWITCH_location;
-    private TextInputEditText settings_ET_address_search;
+
+    private MaterialCardView settings_CARD_search;
+
     private MaterialButton settings_BTN_saveNewLocation;
 
-    private LocationManagerUtil locationManagerUtil;
+
     private SwitchMaterial settings_SWITCH_manageCategories;
     private MaterialButton settings_BTN_saveNewCategories;
     private FrameLayout settings_fragment_container;
 
-
+    private LocationManagerUtil locationManagerUtil;
 
 
     @Override
@@ -73,7 +76,7 @@ public class SettingsFragment extends Fragment {
         initViews();
         initCategories();
         initFragment();
-        locationManagerUtil = new LocationManagerUtil(requireContext(), autocompleteFragment, this);
+
 
         return view;
     }
@@ -175,7 +178,7 @@ public class SettingsFragment extends Fragment {
 
         } else {
             settings_SWITCH_location.setVisibility(View.GONE);
-            settings_ET_address_search.setVisibility(View.GONE);
+            settings_CARD_search.setVisibility(View.GONE);
             settings_BTN_saveNewLocation.setVisibility(View.GONE);
         }
 
@@ -187,10 +190,10 @@ public class SettingsFragment extends Fragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     // The switch is enabled/checked
-                    settings_ET_address_search.setVisibility(View.GONE);
+                    settings_CARD_search.setVisibility(View.GONE);
                 } else{
                         // The switch is disabled/unchecked
-                    settings_ET_address_search.setVisibility(View.VISIBLE);
+                    settings_CARD_search.setVisibility(View.VISIBLE);
                     }
                 }
             });
@@ -219,7 +222,7 @@ public class SettingsFragment extends Fragment {
                 settings_BTN_saveNewPassword.setVisibility(View.GONE);
                 settings_SWITCH_changeLocation.setVisibility(View.GONE);
                 settings_SWITCH_location.setVisibility(View.GONE);
-                settings_ET_address_search.setVisibility(View.GONE);
+                settings_CARD_search.setVisibility(View.GONE);
                 settings_BTN_saveNewLocation.setVisibility(View.GONE);
             } else {
                 settings_ET_username.setVisibility(View.VISIBLE);
@@ -307,7 +310,7 @@ public class SettingsFragment extends Fragment {
 
             settings_SWITCH_changeLocation = view.findViewById(R.id.settings_SWITCH_changeLocation);
             settings_SWITCH_location = view.findViewById(R.id.settings_SWITCH_location);
-            settings_ET_address_search = view.findViewById(R.id.settings_ET_address_search);
+            settings_CARD_search = view.findViewById(R.id.settings_CARD_search);
             settings_BTN_saveNewLocation = view.findViewById(R.id.settings_BTN_saveNewLocation);
         }
     }
