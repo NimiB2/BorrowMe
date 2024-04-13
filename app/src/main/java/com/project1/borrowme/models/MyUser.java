@@ -1,12 +1,10 @@
 package com.project1.borrowme.models;
 
-import android.content.Context;
 import android.net.Uri;
 
 import com.project1.borrowme.Utilities.MySignal;
 
 import java.util.HashMap;
-import java.util.LinkedHashSet;
 import java.util.Map;
 
 public class MyUser {
@@ -16,7 +14,7 @@ public class MyUser {
     private String uName;
     private String uEmail;
     private double lat;
-    private double lan;
+    private double lon;
     private Uri profileImageUri;
 
     private MyUser() {
@@ -97,12 +95,12 @@ public class MyUser {
         return this;
     }
 
-    public double getLan() {
-        return lan;
+    public double getLon() {
+        return lon;
     }
 
-    public MyUser setLan(double lan) {
-        this.lan = lan;
+    public MyUser setLon(double lon) {
+        this.lon = lon;
         return this;
     }
 
@@ -119,7 +117,7 @@ public class MyUser {
         this.uName = null;
         this.uEmail = null;
         this.lat = 0;
-        this.lan = 0;
+        this.lon = 0;
         this.categories.clear();
     }
 }

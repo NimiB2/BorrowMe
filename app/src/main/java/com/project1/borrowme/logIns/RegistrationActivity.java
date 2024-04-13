@@ -137,7 +137,7 @@ public class RegistrationActivity extends AppCompatActivity {
         userMap.put("categories", selectedCategories);
         userMap.put("uid", authUid);
         userMap.put("uEmail", authEmail);
-        userMap.put("lan", authLongitude);
+        userMap.put("lon", authLongitude);
         userMap.put("lat", authLatitude);
         userMap.put("uName", authUserName);
 

@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/background"
-    tools:context=".SettingsFragment">
+    tools:context=".views.SettingsFragment">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -83,7 +83,8 @@
                 android:inputType="textEmailAddress"
                 android:padding="@dimen/margin_xsmall"
                 android:textColor="@color/text_color"
-                android:visibility="gone"/>
+                android:visibility="gone"
+                />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/settings_BTN_saveChanges"
@@ -144,7 +145,7 @@
                 android:layout_marginTop="@dimen/margin_small"/>
 
             <com.google.android.material.switchmaterial.SwitchMaterial
-                android:id="@+id/settings_SWITCH_location"
+                android:id="@+id/settings_SWITCH_getLocationOptions"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/signUp_ET_password"

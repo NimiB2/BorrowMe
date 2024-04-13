@@ -12,7 +12,6 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
@@ -21,7 +20,6 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
-import com.project1.borrowme.BuildConfig;
 import com.project1.borrowme.R;
 import com.project1.borrowme.Utilities.FirebaseUtil;
 import com.project1.borrowme.Utilities.LocationManagerUtil;
@@ -29,7 +27,6 @@ import com.project1.borrowme.Utilities.MySignal;
 import com.project1.borrowme.interfaces.LocationFetchListener;
 
 public class SignUpActivity extends AppCompatActivity {
-    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private FusedLocationProviderClient fusedLocationClient;
     private TextInputEditText signUp_ET_userName;
     private TextInputEditText signUp_ET_email;
@@ -39,8 +36,6 @@ public class SignUpActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private SwitchMaterial signUp_SWITCH_location;
     private MaterialCardView signUp_CARD_search;
-    private double longitude ;
-    private double latitude ;
 
     private LocationManagerUtil locationManagerUtil;
 
@@ -65,7 +60,6 @@ public class SignUpActivity extends AppCompatActivity {
 
 
 
-
     private void setupLocationManager() {
         AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
                 getSupportFragmentManager().findFragmentById(R.id.signUp_FRAGMENT_autoComplete);
@@ -80,6 +74,16 @@ public class SignUpActivity extends AppCompatActivity {
                 MySignal.getInstance().toast("Failed to fetch location. Please ensure your location services are enabled, or enter a valid address.");
             }
         });
+    }
+
+    private void changeLocation() {
+        if (signUp_SWITCH_location.isChecked()) {
+            // The switch is ON, get the current GPS location
+            locationManagerUtil.getCurrentLocation();
+        } else {
+            // The switch is OFF, trigger the update with the selected location from autocomplete
+            locationManagerUtil.triggerLocationUpdate();
+        }
     }
 
     private void signUp(String email, String password, String userName, double latitude, double longitude) {
@@ -102,10 +106,8 @@ public class SignUpActivity extends AppCompatActivity {
         }
     }
 
-
-
     private void initViews() {
-        signUp_BTN_SingUp.setOnClickListener(v -> locationManagerUtil.handleLocation(signUp_SWITCH_location.isChecked()));
+        signUp_BTN_SingUp.setOnClickListener(v -> changeLocation());
         signUp_MTV_LogIn.setOnClickListener(v -> changeLogInActivity());
         signUp_SWITCH_location.setOnCheckedChangeListener((buttonView, isChecked) -> {
             signUp_CARD_search.setVisibility(isChecked ? View.GONE : View.VISIBLE);
@@ -116,7 +118,7 @@ public class SignUpActivity extends AppCompatActivity {
         signUp_ET_userName = findViewById(R.id.signUp_ET_userName);
         signUp_ET_email = findViewById(R.id.signUp_ET_email);
         signUp_ET_password = findViewById(R.id.signUp_ET_password);
-        signUp_BTN_SingUp = findViewById(R.id.signUp_BTN_LOGIN);
+        signUp_BTN_SingUp = findViewById(R.id.signUp_BTN_SingUp);
         signUp_MTV_LogIn = findViewById(R.id.signUp_MTV_LogIn);
         signUp_SWITCH_location = findViewById(R.id.signUp_SWITCH_location);
         signUp_CARD_search= findViewById(R.id.signUp_CARD_search);

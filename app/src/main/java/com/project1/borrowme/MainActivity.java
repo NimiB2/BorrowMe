@@ -1,7 +1,6 @@
 package com.project1.borrowme;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,9 +25,9 @@ import com.google.firebase.storage.StorageReference;
 import com.project1.borrowme.Utilities.FirebaseUtil;
 import com.project1.borrowme.logIns.LoginActivity;
 import com.project1.borrowme.models.MyUser;
-import com.project1.borrowme.views.HomeFragment;
-import com.project1.borrowme.views.InboxFragment;
-import com.project1.borrowme.views.ProfileFragment;
+import com.project1.borrowme.screens.HomeFragment;
+import com.project1.borrowme.screens.InboxFragment;
+import com.project1.borrowme.screens.ProfileFragment;
 
 public class MainActivity extends AppCompatActivity {
     private MyUser myUser;
@@ -80,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
             myUser.setuName(fetchedUser.getuName());
             myUser.setuEmail(fetchedUser.getuEmail());
             myUser.setLat(fetchedUser.getLat());
-            myUser.setLan(fetchedUser.getLan());
+            myUser.setLon(fetchedUser.getLon());
             myUser.setCategories(fetchedUser.getCategories());
             fetchAndSetUserProfileImage(myUser);
         }

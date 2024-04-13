@@ -104,7 +104,7 @@
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/signUp_BTN_LOGIN"
+        android:id="@+id/signUp_BTN_SingUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/signUp_CARD_search"
@@ -121,7 +121,7 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/signUp_BTN_LOGIN"
+        android:layout_below="@+id/signUp_BTN_SingUp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/margin_xsmall"
         android:orientation="horizontal">

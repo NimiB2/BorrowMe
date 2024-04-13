@@ -29,6 +29,9 @@ public class LocationManagerUtil {
     private FusedLocationProviderClient fusedLocationClient;
     private AutocompleteSupportFragment autocompleteFragment;
     private LocationFetchListener locationFetchListener;
+    private double selectedLatitude;
+    private double selectedLongitude;
+    private boolean locationSelected = false;
 
 
 
@@ -45,21 +48,14 @@ public class LocationManagerUtil {
     }
 
 
-    public void handleLocation(boolean isLocationSwitchOn) {
-        if (isLocationSwitchOn) {
-            getCurrentLocation();
-        }
-    }
-
-
     private void initAutocomplete() {
         autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG));
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(@NonNull Place place) {
-                double latitude = place.getLatLng().latitude;
-                double longitude = place.getLatLng().longitude;
-                locationFetchListener.onLocationFetched(latitude, longitude);
+                selectedLatitude = place.getLatLng().latitude;
+                selectedLongitude = place.getLatLng().longitude;
+                locationSelected = true;
             }
 
             @Override
@@ -69,9 +65,15 @@ public class LocationManagerUtil {
             }
         });
     }
+    public void triggerLocationUpdate() {
+        if (locationSelected) {
+            locationFetchListener.onLocationFetched(selectedLatitude, selectedLongitude);
+        } else {
+            locationFetchListener.onLocationFetchFailed();
+        }
+    }
 
-
-    private void getCurrentLocation() {
+    public void getCurrentLocation() {
         checkLocationPermission();
         fusedLocationClient.getLastLocation()
                 .addOnSuccessListener(location -> {
