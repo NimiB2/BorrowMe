@@ -10,43 +10,23 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <RelativeLayout
-            android:id="@+id/inbox_LAYOUT_title"
-            android:layout_width="match_parent"
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/inbox_SIV_back"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/tittle_color"
-            android:padding="@dimen/margin_small">
+            android:layout_alignParentStart="true"
+            android:background="@color/background"
+            android:src="@drawable/arrow_back">
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/inbox_MTV_inbox_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignStart="@id/inbox_SIV_back"
-                android:layout_marginStart="@dimen/margin_large"
-                android:text="@string/inbox"
-                android:textColor="@color/background"
-                android:textSize="@dimen/text_size_small"
-                android:textStyle="bold">
-
-            </com.google.android.material.textview.MaterialTextView>
-
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/inbox_SIV_back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:background="@color/background"
-                android:src="@drawable/arrow_back">
-
-            </androidx.appcompat.widget.AppCompatImageButton>
-        </RelativeLayout>
+        </androidx.appcompat.widget.AppCompatImageButton>
 
         <RelativeLayout
             android:id="@+id/inbox_LAYOUT_search_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/inbox_LAYOUT_title"
-            android:layout_marginTop="@dimen/margin_xsmall"
+            android:layout_below="@id/inbox_SIV_back"
+            android:layout_marginTop="@dimen/margin_large"
             android:background="@drawable/custom_edittext"
             android:elevation="@dimen/stroke_width"
             android:padding="@dimen/margin_xsmall">
@@ -60,7 +40,6 @@
                 android:hint="@string/user_name"
                 android:inputType="text"
                 tools:ignore="Autofill">
-
             </EditText>
 
             <ImageButton
@@ -74,8 +53,8 @@
                 android:elevation="@dimen/stroke_width"
                 android:importantForAccessibility="no"
                 android:src="@drawable/search">
-                
             </ImageButton>
+
         </RelativeLayout>
 
         <androidx.recyclerview.widget.RecyclerView
@@ -85,8 +64,8 @@
             android:layout_below="@id/inbox_LAYOUT_search_bar"
             android:layout_marginTop="@dimen/margin_medium"
             android:padding="@dimen/margin_xsmall">
-
         </androidx.recyclerview.widget.RecyclerView>
+
     </RelativeLayout>
 
 

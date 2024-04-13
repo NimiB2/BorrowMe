@@ -80,15 +80,10 @@ public class ProfileFragment extends Fragment {
 
             profile_MTV_categoryNum.setText(String.format("%d", myUser.getCategories().size()));
             initCategories();
-            setAdapter(context);
+            setCategoriesAdapter(context);
         }
 
-        profile_IMB_settings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                changeToSettingsFragment();
-            }
-        });
+        profile_IMB_settings.setOnClickListener(v -> changeToSettingsFragment());
 
         profile_FAB_change_image.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -155,7 +150,7 @@ public class ProfileFragment extends Fragment {
         categories = myUser.getCategories();
     }
 
-    private void setAdapter(Context context) {
+    private void setCategoriesAdapter(Context context) {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
         linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
         profile_RECYCLER_categories.setLayoutManager(linearLayoutManager);
