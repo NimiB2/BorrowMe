@@ -26,7 +26,10 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthRecentLoginRequiredException;
 import com.google.firebase.auth.FirebaseUser;
 import com.project1.borrowme.R;
 import com.project1.borrowme.Utilities.FirebaseUtil;
@@ -44,9 +47,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SettingsFragment extends Fragment {
-    private boolean passwordIsClicked = false;
-    private boolean categoriesListIsClicked = false;
-    private boolean changeLocationClicked = false;
+
     private MyUser myUser;
     private AppCompatImageButton settings_IMG_back;
 
@@ -75,7 +76,9 @@ public class SettingsFragment extends Fragment {
     private MaterialButton settings_BTN_saveNewCategories;
     private FrameLayout settings_fragment_container;
 
-
+    private FrameLayout settings_FRAME_old_password;
+    private TextInputEditText settings_ET_oldPassword;
+    private MaterialButton settings_BTN_save_old_password;
 
 
     @Override
@@ -94,7 +97,7 @@ public class SettingsFragment extends Fragment {
     }
 
     private void setupLocationManager() {
-        AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)getChildFragmentManager().findFragmentById(R.id.settings_FRAGMENT_autoComplete);
+        AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment) getChildFragmentManager().findFragmentById(R.id.settings_FRAGMENT_autoComplete);
         locationManagerUtil = new LocationManagerUtil(getContext(), autocompleteFragment, new LocationFetchListener() {
             @Override
             public void onLocationFetched(double lat, double lon) {
@@ -142,10 +145,10 @@ public class SettingsFragment extends Fragment {
             }
         });
     }
-    private void toggleLocationVisibility() {
-        changeLocationClicked = !changeLocationClicked;
 
-        if (changeLocationClicked) {
+    private void toggleLocationVisibility() {
+
+        if (settings_SWITCH_changeLocation.isChecked()) {
             settings_SWITCH_getLocationOptions.setVisibility(View.VISIBLE);
             settings_BTN_saveNewLocation.setVisibility(View.VISIBLE);
             toggleLocationSwitchVisibility();
@@ -198,29 +201,29 @@ public class SettingsFragment extends Fragment {
     }
 
     private void toggleCategoriesListVisibility() {
-        categoriesListIsClicked = !categoriesListIsClicked;
 
-        settings_fragment_container.setVisibility(categoriesListIsClicked ? View.VISIBLE : View.GONE);
-        settings_BTN_saveNewCategories.setVisibility(categoriesListIsClicked ? View.VISIBLE : View.GONE);
-
-            if (categoriesListIsClicked) {
-                settings_ET_username.setVisibility(View.GONE);
-//                settings_ET_email.setVisibility(View.GONE);
-                settings_BTN_saveChanges.setVisibility(View.GONE);
-                settings_SWITCH_changePassword.setVisibility(View.GONE);
-                settings_ET_newPassword.setVisibility(View.GONE);
-                settings_BTN_saveNewPassword.setVisibility(View.GONE);
-                settings_SWITCH_changeLocation.setVisibility(View.GONE);
-//                settings_SWITCH_location.setVisibility(View.GONE);
-                settings_CARD_search.setVisibility(View.GONE);
-                settings_BTN_saveNewLocation.setVisibility(View.GONE);
-            } else {
-                settings_ET_username.setVisibility(View.VISIBLE);
-//                settings_ET_email.setVisibility(View.VISIBLE);
-                settings_BTN_saveChanges.setVisibility(View.VISIBLE);
-                settings_SWITCH_changePassword.setVisibility(View.VISIBLE);
-                settings_SWITCH_changeLocation.setVisibility(View.VISIBLE);
-            }
+        if (settings_SWITCH_manageCategories.isChecked()) {
+            settings_fragment_container.setVisibility(View.VISIBLE);
+            settings_BTN_saveNewCategories.setVisibility(View.VISIBLE);
+            settings_ET_username.setVisibility(View.GONE);
+                settings_ET_email.setVisibility(View.GONE);
+            settings_BTN_saveChanges.setVisibility(View.GONE);
+            settings_SWITCH_changePassword.setVisibility(View.GONE);
+            settings_ET_newPassword.setVisibility(View.GONE);
+            settings_BTN_saveNewPassword.setVisibility(View.GONE);
+            settings_SWITCH_changeLocation.setVisibility(View.GONE);
+            settings_SWITCH_getLocationOptions.setVisibility(View.GONE);
+            settings_CARD_search.setVisibility(View.GONE);
+            settings_BTN_saveNewLocation.setVisibility(View.GONE);
+        } else {
+            settings_fragment_container.setVisibility(View.GONE);
+            settings_BTN_saveNewCategories.setVisibility(View.GONE);
+            settings_ET_username.setVisibility(View.VISIBLE);
+                settings_ET_email.setVisibility(View.VISIBLE);
+            settings_BTN_saveChanges.setVisibility(View.VISIBLE);
+            settings_SWITCH_changePassword.setVisibility(View.VISIBLE);
+            settings_SWITCH_changeLocation.setVisibility(View.VISIBLE);
+        }
     }
 
     private void initCategoriesFragment() {
@@ -253,22 +256,53 @@ public class SettingsFragment extends Fragment {
             FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
             if (firebaseUser != null) {
+
+
                 firebaseUser.updatePassword(newPassword)
                         .addOnSuccessListener(aVoid -> {
                             MySignal.getInstance().toast("Password updated successfully");
                         })
                         .addOnFailureListener(e -> {
-                            MySignal.getInstance().toast("Password updated failed");
+                            if (e instanceof FirebaseAuthRecentLoginRequiredException) {
+                                // Prompt the user to re-authenticate
+                                MySignal.getInstance().toast("Please re-authenticate to update your password");
+                                promptReAuthentication(firebaseUser);
+                            } else {
+                                MySignal.getInstance().toast("Password update failed: " + e.getMessage());
+                            }
                         });
             }
         }
+
+    }
+
+    private void promptReAuthentication(FirebaseUser user) {
+        settings_FRAME_old_password.setVisibility(View.VISIBLE);
+        settings_BTN_save_old_password.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String oldPas= settings_ET_oldPassword.getText().toString().trim();
+
+                AuthCredential credential = EmailAuthProvider.getCredential(user.getEmail(), oldPas);
+
+                user.reauthenticate(credential)
+                        .addOnSuccessListener(aVoid -> {
+                            // Now call changePassword() again or let the user proceed with other sensitive actions
+                            settings_FRAME_old_password.setVisibility(View.GONE);
+                            MySignal.getInstance().toast("Re-authentication successful");
+                        })
+                        .addOnFailureListener(e -> {
+                            MySignal.getInstance().toast("Re-authentication failed: " + e.getMessage());
+                        });
+            }
+        });
+
     }
 
     private void togglePasswordVisibility() {
-        passwordIsClicked = !passwordIsClicked;
 
-        settings_ET_newPassword.setVisibility(passwordIsClicked ? View.VISIBLE : View.GONE);
-        settings_BTN_saveNewPassword.setVisibility(passwordIsClicked ? View.VISIBLE : View.GONE);
+        settings_ET_newPassword.setVisibility(settings_SWITCH_changePassword.isChecked() ? View.VISIBLE : View.GONE);
+        settings_BTN_saveNewPassword.setVisibility(settings_SWITCH_changePassword.isChecked() ? View.VISIBLE : View.GONE);
 
     }
 
@@ -297,6 +331,8 @@ public class SettingsFragment extends Fragment {
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
                                 Log.d(TAG, "User email address updated.");
+                            }else{
+                                promptReAuthentication(firebaseUser);
                             }
                         }
                     });
@@ -363,5 +399,9 @@ public class SettingsFragment extends Fragment {
         settings_SWITCH_getLocationOptions = view.findViewById(R.id.settings_SWITCH_getLocationOptions);
         settings_CARD_search = view.findViewById(R.id.settings_CARD_search);
         settings_BTN_saveNewLocation = view.findViewById(R.id.settings_BTN_saveNewLocation);
+
+        settings_FRAME_old_password = view.findViewById(R.id.settings_FRAME_old_password);
+        settings_ET_oldPassword = view.findViewById(R.id.settings_ET_oldPassword);
+        settings_BTN_save_old_password=view.findViewById(R.id.settings_BTN_save_old_password);
     }
 }

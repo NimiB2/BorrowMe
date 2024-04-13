@@ -41,7 +41,7 @@ public class CategoriesData {
             R.drawable.gardening
     };
 
-    public static  Map<String, Category> getCategories() {
+    public static Map<String, Category> getCategories() {
         Map<String, Category> categories = new HashMap<>();
         for (int i = 0; i < names.length; i++) {
             Category category = new Category()
@@ -52,4 +52,7 @@ public class CategoriesData {
         return categories;
     }
 
+    public static String[] getNames() {
+        return names;
+    }
 }

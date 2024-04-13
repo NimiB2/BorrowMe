@@ -18,7 +18,7 @@
 
 
     <!-- Stroke -->
-    <dimen name="stroke_width">3dp</dimen>
+    <dimen name="stroke_width">2dp</dimen>
 
     <!-- Text Sizes -->
     <dimen name="text_size_large">60sp</dimen>

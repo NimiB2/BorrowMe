@@ -3,165 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
-    >
-
-<ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fillViewport="true">
-
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="@dimen/margin_medium">
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/newBorrow_MTV_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/new_borrow_request"
-            android:gravity="center_horizontal"
-            android:layout_marginTop="@dimen/margin_medium"
-            android:textSize="@dimen/text_size_medium"
-            android:textStyle="bold"
-            android:textColor="@color/tittle_color"
-            />
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/newBorrow_TIL_itemName"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_medium"
-            android:hint="@string/item_name_hint">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/newBorrow_ET_itemName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/text_color"
-                />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <!-- Category Input -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/newBorrow_TIL_category"
-            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_small"
-            android:hint="@string/category_hint">
-
-            <androidx.appcompat.widget.AppCompatAutoCompleteTextView
-                android:id="@+id/newBorrow_ACTV_category"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="none"
-                android:textCursorDrawable="@null"/>
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <!-- Description Input -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/newBorrow_TIL_description"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_small"
-            android:hint="@string/description_hint">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/newBorrow_ET_description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/text_color"
-                />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <!-- Location Picker Placeholder (Consider using a Map View or a custom location picker here) -->
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/signUp_SWITCH_location"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_medium"
-            android:layout_gravity="center"
-            android:text="@string/get_current_location"
-            android:checked="true"
-            android:buttonTint="@color/bottom_nav_color"
-            android:textColor="@color/text_color"
-            />
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/signUp_FRAGMENT_autoComplete"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_xsmall"
-            android:background="@drawable/custom_edittext"
-            android:drawableLeft="@drawable/location"
-            android:layout_gravity="center"
-            android:drawablePadding="@dimen/margin_xsmall"
-            android:hint="@string/search_hint"
-            android:inputType="textPostalAddress"
-            android:padding="@dimen/margin_xsmall"
-            android:textColor="@color/text_color"
-            android:visibility="gone"
-            android:autofillHints="" />
-
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:id="@+id/distance_options_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_small"
-            android:orientation="horizontal"
-            android:gravity="center">
-
-            <com.google.android.material.radiobutton.MaterialRadioButton
-                android:id="@+id/radio_distance_1km"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/distance_1km"
-                android:textColor="@color/text_color"
-                android:buttonTint="@color/bottom_nav_color"
-                />
-
-            <com.google.android.material.radiobutton.MaterialRadioButton
-                android:id="@+id/radio_distance_5km"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/distance_5km"
-                android:checked="true"
-                android:textColor="@color/text_color"
-                android:buttonTint="@color/bottom_nav_color"
-
-                />
-
-            <com.google.android.material.radiobutton.MaterialRadioButton
-                android:id="@+id/radio_distance_10km"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/distance_10km"
-                android:textColor="@color/text_color"
-                android:buttonTint="@color/bottom_nav_color"
-                />
-
-        </androidx.appcompat.widget.LinearLayoutCompat>
-
-
-        <!-- Submit Button -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/newBorrow_BTN_submit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_large"
-            android:backgroundTint="@color/buttonColor"
-            android:text="@string/submit_request"
-            android:textStyle="bold"
-            android:textSize="@dimen/text_size_small"
-            android:textColor="@color/button_text_color" />
-    </androidx.appcompat.widget.LinearLayoutCompat>
-</ScrollView>
+    android:background="@color/background">
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/inbox_SIV_back"
@@ -170,7 +12,151 @@
         android:layout_marginStart="@dimen/margin_small"
         android:layout_marginTop="@dimen/margin_medium"
         android:background="?attr/selectableItemBackgroundBorderless"
-        android:src="@drawable/arrow_back"
-         />
+        android:src="@drawable/arrow_back" />
+
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/margin_medium">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/newBorrow_MTV_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="@string/new_borrow_request"
+                android:textColor="@color/tittle_color"
+                android:textSize="@dimen/text_size_medium"
+                android:textStyle="bold" />
+
+
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/newBorrow_ET_itemName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_search_view"
+                    android:paddingVertical="@dimen/margin_xxxsmall"
+                    android:layout_marginTop="@dimen/margin_large"
+                    android:hint="@string/item_name_hint"
+                    android:textColor="@color/text_color"
+                    android:paddingTop="@dimen/margin_xsmall"
+                    android:paddingStart="@dimen/margin_xsmall"
+                    android:imeOptions="actionDone"
+                    android:textSize="@dimen/text_size_small" />
+            <!-- Description Input -->
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/newBorrow_ET_description"
+                    android:layout_marginTop="@dimen/margin_small"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/image_size"
+                    android:background="@drawable/bg_search_view"
+                    android:gravity="top"
+                    android:paddingTop="@dimen/margin_xsmall"
+                    android:paddingStart="@dimen/margin_xsmall"
+                    android:textColor="@color/text_color"
+                    android:hint="@string/description_hint"
+                    android:imeOptions="actionDone"
+
+                    android:textSize="@dimen/text_size_xsmall" />
+            <!-- Category Input -->
+
+
+
+            <!-- Location Picker Placeholder (Consider using a Map View or a custom location picker here) -->
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/newBorrow_SWITCH_changeLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:text="@string/change_location"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/text_size_small" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/newBorrow_SWITCH_getLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/margin_small"
+                android:checked="true"
+                android:text="@string/get_current_location"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/text_size_xsmall"
+                android:visibility="gone" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/newBorrow_FRAGMENT_autoComplete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/margin_xsmall"
+                android:autofillHints=""
+                android:background="@drawable/custom_edittext"
+                android:drawableLeft="@drawable/location"
+                android:drawablePadding="@dimen/margin_xsmall"
+                android:hint="@string/search_hint"
+                android:inputType="textPostalAddress"
+                android:padding="@dimen/margin_xsmall"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/text_size_xsmall"
+                android:visibility="gone" />
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/distance_options_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_small"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/newBorrow_RADIO_1km"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/bottom_nav_color"
+                    android:text="@string/distance_1km"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/text_size_xsmall" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/newBorrow_RADIO_5km"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/bottom_nav_color"
+                    android:checked="true"
+                    android:text="@string/distance_5km"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/text_size_xsmall"
+
+                    />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/newBorrow_RADIO_10km"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/bottom_nav_color"
+                    android:text="@string/distance_10km"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/text_size_xsmall" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+            <!-- Submit Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/newBorrow_BTN_submit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_large"
+                android:backgroundTint="@color/buttonColor"
+                android:text="@string/submit_request"
+                android:textColor="@color/button_text_color"
+                android:textSize="@dimen/text_size_main_button_s"
+                android:textStyle="bold" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
 </FrameLayout>

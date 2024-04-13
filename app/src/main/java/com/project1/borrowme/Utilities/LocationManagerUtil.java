@@ -21,6 +21,7 @@ import com.google.android.libraries.places.widget.listener.PlaceSelectionListene
 import com.project1.borrowme.BuildConfig;
 import com.project1.borrowme.interfaces.LocationFetchListener;
 
+import java.io.IOException;
 import java.util.Arrays;
 
 public class LocationManagerUtil {
@@ -67,7 +68,11 @@ public class LocationManagerUtil {
     }
     public void triggerLocationUpdate() {
         if (locationSelected) {
-            locationFetchListener.onLocationFetched(selectedLatitude, selectedLongitude);
+            try {
+                locationFetchListener.onLocationFetched(selectedLatitude, selectedLongitude);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         } else {
             locationFetchListener.onLocationFetchFailed();
         }
@@ -78,7 +83,11 @@ public class LocationManagerUtil {
         fusedLocationClient.getLastLocation()
                 .addOnSuccessListener(location -> {
                     if (location != null) {
-                        locationFetchListener.onLocationFetched(location.getLatitude(), location.getLongitude());
+                        try {
+                            locationFetchListener.onLocationFetched(location.getLatitude(), location.getLongitude());
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
                     } else {
                         locationFetchListener.onLocationFetchFailed();
                     }

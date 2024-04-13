@@ -7,6 +7,70 @@
     android:background="@color/background"
     tools:context=".views.SettingsFragment">
 
+
+    <FrameLayout
+        android:id="@+id/settings_FRAME_old_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:paddingVertical="@dimen/margin_large"
+        android:paddingHorizontal="@dimen/margin_xsmall"
+        android:background="@color/smallButtonColor"
+        android:elevation="@dimen/margin_xxsmall"
+        android:visibility="gone"
+
+        >
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/insert_your_password"
+            android:textSize="@dimen/text_size_main_button_m"
+            android:gravity="center"
+            android:layout_marginStart="@dimen/margin_xxxsmall"
+            android:layout_marginTop="@dimen/margin_small"
+            android:textColor="@color/tittle_color"
+            android:textStyle="bold"
+            >
+
+        </com.google.android.material.textview.MaterialTextView>
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/settings_ET_oldPassword"
+            android:layout_width="@dimen/size_medium"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:layout_marginStart="@dimen/margin_xxxsmall"
+            android:background="@drawable/custom_edittext"
+            android:drawableLeft="@drawable/lock"
+            android:drawablePadding="@dimen/margin_xsmall"
+            android:hint="@string/password"
+            android:inputType="textPassword"
+            android:padding="@dimen/margin_xsmall"
+            android:textColor="@color/text_color"
+            />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/settings_BTN_save_old_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:backgroundTint="@color/buttonColor"
+            android:text="@string/save_changes"
+            android:textColor="@color/button_text_color"
+            android:textSize="@dimen/text_size_small"
+            android:textStyle="bold"/>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </FrameLayout>
+
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -83,7 +147,7 @@
                 android:inputType="textEmailAddress"
                 android:padding="@dimen/margin_xsmall"
                 android:textColor="@color/text_color"
-                android:visibility="gone"
+
                 />
 
             <com.google.android.material.button.MaterialButton
@@ -195,13 +259,13 @@
                 android:layout_height="wrap_content">
 
 
-            <com.google.android.material.switchmaterial.SwitchMaterial
-                android:id="@+id/settings_SWITCH_manageCategories"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/manage_categories"
-                android:textColor="@color/text_color"
-                android:layout_marginTop="@dimen/margin_small"/>
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/settings_SWITCH_manageCategories"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/manage_categories"
+                    android:textColor="@color/text_color"
+                    android:layout_marginTop="@dimen/margin_small"/>
 
                 <FrameLayout
                     android:id="@+id/settings_fragment_container"

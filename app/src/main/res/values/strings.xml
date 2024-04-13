@@ -57,4 +57,6 @@
     <string name="save_new_location">SAVE NEW LOCATION</string>
     <string name="update_your_categories">UPDATE YOUR CATEGORIES</string>
     <string name="settings_title">SETTINGS</string>
+    <string name="select_category">Select Categories</string>
+    <string name="insert_your_password">Insert your current password :</string>
 </resources>
