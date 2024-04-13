@@ -1,4 +1,4 @@
-package com.project1.borrowme.views;
+package com.project1.borrowme.screens;
 
 import android.content.Context;
 import android.content.Intent;
@@ -28,7 +28,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textview.MaterialTextView;
 import com.project1.borrowme.R;
-import com.project1.borrowme.SettingsFragment;
+import com.project1.borrowme.views.SettingsFragment;
 import com.project1.borrowme.Utilities.FirebaseUtil;
 import com.project1.borrowme.Utilities.MySignal;
 import com.project1.borrowme.adpters.CategoryAdapter;
@@ -101,7 +101,7 @@ public class ProfileFragment extends Fragment {
     private void setAddress() throws IOException {
         Geocoder geocoder = new Geocoder(requireContext(), Locale.getDefault());
         double latitude = myUser.getLat();
-        double longitude = myUser.getLan();
+        double longitude = myUser.getLon();
         List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
         if (!addresses.isEmpty()) {
             Address address = addresses.get(0);

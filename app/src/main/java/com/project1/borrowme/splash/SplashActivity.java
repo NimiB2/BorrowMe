@@ -1,4 +1,4 @@
-package com.project1.borrowme.logIns;
+package com.project1.borrowme.splash;
 
 import android.animation.Animator;
 import android.annotation.SuppressLint;

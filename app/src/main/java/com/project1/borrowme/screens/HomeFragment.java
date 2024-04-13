@@ -1,4 +1,4 @@
-package com.project1.borrowme.views;
+package com.project1.borrowme.screens;
 
 import android.os.Bundle;
 
