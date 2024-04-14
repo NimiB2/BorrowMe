@@ -10,6 +10,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.project1.borrowme.models.Borrow;
 import com.project1.borrowme.models.Category;
 
 import java.util.Map;
@@ -63,6 +64,13 @@ public class FirebaseUtil {
                 .update("userDetails.categories", selectedCategories)
                 .addOnSuccessListener(aVoid -> Log.d("Firestore", "Categories updated successfully!"))
                 .addOnFailureListener(e -> Log.w("Firestore", "Error updating categories", e));
+    }
+
+    public static void updateUserBorrowMap(Map<String, Borrow> borrowMap) {
+        currentUserFirestore()
+                .update("borrowMap", borrowMap)
+                .addOnSuccessListener(aVoid -> Log.d("Firestore", "borrowMap updated successfully!"))
+                .addOnFailureListener(e -> Log.w("Firestore", "Error updating borrowMap", e));
     }
 
     public static StorageReference getCurrentProfilePicStorageRef(){

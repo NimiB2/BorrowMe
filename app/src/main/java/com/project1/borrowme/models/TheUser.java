@@ -56,6 +56,13 @@ public class TheUser {
         this.borrowMap = borrowMap;
         return this;
     }
+    public void addBorrow(String key, Borrow borrow) {
+        borrowMap.put(key, borrow);
+    }
+
+    public void removeBorrow(String key) {
+        borrowMap.remove(key);
+    }
 
     public Map<String, ReceivedBorrow> getReceivedBorrowMap() {
         return receivedBorrowMap;

@@ -82,6 +82,10 @@ public class MainActivity extends AppCompatActivity {
                 theUser.setUserDetails(new UserDetails());
             }
             theUser.setUid(fetchedUser.getUid());
+            theUser.setBorrowMap(fetchedUser.getBorrowMap());
+            theUser.setReceivedBorrowMap(fetchedUser.getReceivedBorrowMap());
+            theUser.setHistory(fetchedUser.getHistory());
+            theUser.setMassages(fetchedUser.getMassages());
 
             UserDetails userDetails= theUser.getUserDetails();
             userDetails.setuName(fetchedUserDetails.getuName());

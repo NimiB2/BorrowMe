@@ -1,6 +1,5 @@
 package com.project1.borrowme.views;
 
-import android.content.DialogInterface;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -13,7 +12,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,16 +28,13 @@ import com.google.android.material.radiobutton.MaterialRadioButton;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textview.MaterialTextView;
-import com.google.firebase.firestore.DocumentReference;
 import com.project1.borrowme.R;
 import com.project1.borrowme.Utilities.FirebaseUtil;
 import com.project1.borrowme.Utilities.LocationManagerUtil;
 import com.project1.borrowme.Utilities.MySignal;
-import com.project1.borrowme.adpters.UserAdapter;
 import com.project1.borrowme.data.CategoriesData;
 import com.project1.borrowme.interfaces.LocationFetchListener;
 import com.project1.borrowme.models.Borrow;
-import com.project1.borrowme.models.Category;
 import com.project1.borrowme.models.TheUser;
 import com.project1.borrowme.models.UserDetails;
 import com.project1.borrowme.screens.HomeFragment;
@@ -52,6 +47,10 @@ import java.util.Locale;
 
 
 public class NewBorrowingFragment extends Fragment {
+    private final int DISTANCE_1 = 1;
+    private final int DISTANCE_5 = 5;
+    private final int DISTANCE_10 = 10;
+    private TheUser theUser;
     private AppCompatImageButton newBorrow_SIV_back;
     private TextInputEditText newBorrow_ET_itemName;
     private TextInputEditText newBorrow_ET_description;
@@ -75,7 +74,7 @@ public class NewBorrowingFragment extends Fragment {
     private FusedLocationProviderClient fusedLocationClient;
 
     boolean[] selectedCategories;
-    List<String> categoryList = new ArrayList<>();
+    List<String> categoryList;
     String[] categoryArray;
     private int chosenDistance;
     private double lat;
@@ -88,6 +87,7 @@ public class NewBorrowingFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_new_borrowing, container, false);
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(view.getContext());
 
+        initDefaultDetails();
         findViews(view);
         initViews();
         initCategories();
@@ -95,6 +95,16 @@ public class NewBorrowingFragment extends Fragment {
         setupLocationManager();
 
         return view;
+    }
+
+    private void initDefaultDetails() {
+        theUser = TheUser.getInstance();
+        chosenDistance = DISTANCE_5;
+
+        lat = theUser.getUserDetails().getLat();
+        lon = theUser.getUserDetails().getLon();
+
+        categoryList = new ArrayList<>();
     }
 
     private void initCategories() {
@@ -138,17 +148,17 @@ public class NewBorrowingFragment extends Fragment {
         distance_options_container.setOnCheckedChangeListener((group, checkedId) -> {
             // This ensures only one radio button can be active at a time
             if (checkedId == R.id.newBorrow_RADIO_1km) {
-                chosenDistance = 1;
+                chosenDistance = DISTANCE_1;
                 newBorrow_RADIO_1km.setChecked(true);
                 newBorrow_RADIO_5km.setChecked(false);
                 newBorrow_RADIO_10km.setChecked(false);
             } else if (checkedId == R.id.newBorrow_RADIO_5km) {
-                chosenDistance = 5;
+                chosenDistance = DISTANCE_5;
                 newBorrow_RADIO_1km.setChecked(false);
                 newBorrow_RADIO_5km.setChecked(true);
                 newBorrow_RADIO_10km.setChecked(false);
             } else if (checkedId == R.id.newBorrow_RADIO_10km) {
-                chosenDistance = 10;
+                chosenDistance = DISTANCE_10;
                 newBorrow_RADIO_1km.setChecked(false);
                 newBorrow_RADIO_5km.setChecked(false);
                 newBorrow_RADIO_10km.setChecked(true);
@@ -191,7 +201,6 @@ public class NewBorrowingFragment extends Fragment {
     }
 
 
-
     private boolean validateInputs() {
         // Validate item name length
         if (newBorrow_ET_itemName.getText().toString().trim().length() < 2) {
@@ -208,7 +217,8 @@ public class NewBorrowingFragment extends Fragment {
         return true;
     }
 
-    private void changeLocation() {
+    private void getLocation() {
+
         if (newBorrow_SWITCH_getLocation.isChecked()) {
             // Get current location from GPS
             locationManagerUtil.getCurrentLocation();
@@ -216,7 +226,6 @@ public class NewBorrowingFragment extends Fragment {
             // Use the selected location from autocomplete
             locationManagerUtil.triggerLocationUpdate();
         }
-
     }
 
     private void toggleLocationVisibility() {
@@ -247,7 +256,6 @@ public class NewBorrowingFragment extends Fragment {
     }
 
 
-
     private void backToHome() {
         if (getActivity() != null) {
 
@@ -262,8 +270,8 @@ public class NewBorrowingFragment extends Fragment {
         if (validateInputs()) {
             MySignal.getInstance().toast("Your request has been successfully sent, we will notify you when there are answers");
 
-            UserDetails userDetails = TheUser.getInstance().getUserDetails();
-
+            UserDetails userDetails = theUser.getUserDetails();
+            getLocation();
             Location borrowLocation = new Location("BorrowLocationProvider");
             borrowLocation.setLatitude(lat);
             borrowLocation.setLongitude(lon);
@@ -276,40 +284,18 @@ public class NewBorrowingFragment extends Fragment {
                     chosenDistance,
                     borrowLocation
             );
-            storeBorrowInFirestore(newBorrow);
+            theUser.addBorrow(newBorrow.getId(),newBorrow);
+            FirebaseUtil.updateUserBorrowMap(theUser.getBorrowMap());
             backToHome();
         }
 
     }
 
-    private void storeBorrowInFirestore(Borrow newBorrow) {
-
-        if (FirebaseUtil.currentUserId() == null) {
-            MySignal.getInstance().toast("No valid user session found.");
-            return;
-        }
-
-        // Prepare the Firestore document reference
-        DocumentReference userDocRef = FirebaseUtil.currentUserFirestore();
-        DocumentReference borrowRef = userDocRef.collection("borrowMap").document(newBorrow.getId());
-
-        // Attempt to store the new Borrow
-        borrowRef.set(newBorrow)
-                .addOnSuccessListener(aVoid -> {
-                    Log.d("Firestore", "Borrow successfully stored under user in Firestore.");
-                    MySignal.getInstance().toast("Your borrow request has been registered.");
-                    backToHome();  // Optionally navigate back or refresh the UI as needed
-                })
-                .addOnFailureListener(e -> {
-                    Log.w("Firestore", "Error storing borrow in Firestore", e);
-                    MySignal.getInstance().toast("Failed to store borrow. Please try again.");
-                });
-    }
 
     private void initViews() {
         newBorrow_SIV_back.setOnClickListener(v -> backToHome());
         newBorrow_BTN_submit.setOnClickListener(v -> submitForm());
-        newBorrow_SWITCH_getLocation.setOnClickListener(v -> changeLocation());
+        newBorrow_SWITCH_getLocation.setOnClickListener(v -> getLocation());
         newBorrow_SWITCH_changeLocation.setOnClickListener(v -> toggleLocationVisibility());
 
     }
