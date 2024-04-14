@@ -8,15 +8,17 @@ import android.os.Vibrator;
 import android.widget.Toast;
 
 public class MySignal {
-    private static MySignal instance=null;
+    private final long SHORT_VIB = 500;
+    private final long LONG_VIB = 1000;
+    private static MySignal instance = null;
     private static Vibrator vibrator;
     private Toast currentToast;
     private MediaPlayer mp;
 
     private Context context;
 
-    private MySignal(Context context){
-        this.context=context;
+    private MySignal(Context context) {
+        this.context = context;
     }
 
     public static void init(Context context) {
@@ -36,8 +38,13 @@ public class MySignal {
         currentToast.show();
     }
 
-    public void vibrate(long miliSec) {
-
+    public void vibrate(boolean isShort) {
+        long miliSec;
+        if (isShort) {
+            miliSec = SHORT_VIB;
+        } else {
+            miliSec = LONG_VIB;
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             vibrator.vibrate(VibrationEffect.createOneShot(miliSec, VibrationEffect.DEFAULT_AMPLITUDE));
         } else {
@@ -46,15 +53,15 @@ public class MySignal {
         }
     }
 
-    public  void sound(int audio){
-        if(mp !=null){
+    public void sound(int audio) {
+        if (mp != null) {
             mp.stop();
             mp.release();
-            mp=null;
+            mp = null;
         }
-        mp = MediaPlayer.create(context,audio);
-        if(mp !=null){
-            mp.setVolume(1.0f,1.0f);
+        mp = MediaPlayer.create(context, audio);
+        if (mp != null) {
+            mp.setVolume(1.0f, 1.0f);
             mp.start();
             mp.setOnCompletionListener(MediaPlayer::pause);
         }

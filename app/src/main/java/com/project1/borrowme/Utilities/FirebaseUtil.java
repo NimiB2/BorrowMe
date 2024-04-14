@@ -1,21 +1,9 @@
 package com.project1.borrowme.Utilities;
 
-import android.Manifest;
-import android.content.Context;
-import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
-import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
 
-import androidx.core.app.ActivityCompat;
-
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -24,20 +12,19 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.project1.borrowme.models.Category;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class FirebaseUtil {
 
-    public static DocumentReference currentUserDetails() {
-        return FirebaseFirestore.getInstance().collection("users").document(currentUserId());
-    }
-
     public static String currentUserId() {
         return FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
+
+    public static DocumentReference currentUserFirestore() {
+        return FirebaseFirestore.getInstance().collection("users").document(currentUserId());
+    }
+
+
 
     public static boolean validateUserName(TextInputEditText userNameEditText) {
         String userName = userNameEditText.getText().toString().trim();
@@ -72,8 +59,8 @@ public class FirebaseUtil {
 
 
     public static void updateUserCategories(Map<String, Category> selectedCategories) {
-        currentUserDetails()
-                .update("categories", selectedCategories)
+        currentUserFirestore()
+                .update("userDetails.categories", selectedCategories)
                 .addOnSuccessListener(aVoid -> Log.d("Firestore", "Categories updated successfully!"))
                 .addOnFailureListener(e -> Log.w("Firestore", "Error updating categories", e));
     }

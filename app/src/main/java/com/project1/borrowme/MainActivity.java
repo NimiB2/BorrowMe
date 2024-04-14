@@ -2,6 +2,7 @@ package com.project1.borrowme;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -24,13 +25,15 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.storage.StorageReference;
 import com.project1.borrowme.Utilities.FirebaseUtil;
 import com.project1.borrowme.logIns.LoginActivity;
-import com.project1.borrowme.models.MyUser;
+import com.project1.borrowme.models.TheUser;
+import com.project1.borrowme.models.UserDetails;
 import com.project1.borrowme.screens.HomeFragment;
 import com.project1.borrowme.screens.InboxFragment;
 import com.project1.borrowme.screens.ProfileFragment;
 
 public class MainActivity extends AppCompatActivity {
-    private MyUser myUser;
+    private TheUser theUser= TheUser.getInstance();;
+
     private AppCompatImageButton main_BTN_logout;
     private BottomNavigationView bottomNavigationView;
     private FrameLayout frameLayout;
@@ -59,38 +62,47 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getTheUser() {
-        FirebaseUtil.currentUserDetails().get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        FirebaseUtil.currentUserFirestore().get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if(task.isSuccessful()){
 
-                    MyUser fetchedUser = task.getResult().toObject(MyUser.class);
+                    TheUser fetchedUser = task.getResult().toObject(TheUser.class);
                     setUser(fetchedUser,task.getResult());
                 }
             }
         });
     }
 
-    private void setUser(MyUser fetchedUser, DocumentSnapshot document) {
-        if (fetchedUser != null) {
-            myUser =MyUser.getInstance();
+    private void setUser(TheUser fetchedUser, DocumentSnapshot document) {
+        if (fetchedUser != null && fetchedUser.getUserDetails() != null) {
+            UserDetails fetchedUserDetails =fetchedUser.getUserDetails();
 
-            myUser.setUid(fetchedUser.getUid());
-            myUser.setuName(fetchedUser.getuName());
-            myUser.setuEmail(fetchedUser.getuEmail());
-            myUser.setLat(fetchedUser.getLat());
-            myUser.setLon(fetchedUser.getLon());
-            myUser.setCategories(fetchedUser.getCategories());
-            fetchAndSetUserProfileImage(myUser);
+            if (theUser.getUserDetails() == null) {
+                theUser.setUserDetails(new UserDetails());
+            }
+            theUser.setUid(fetchedUser.getUid());
+
+            UserDetails userDetails= theUser.getUserDetails();
+            userDetails.setuName(fetchedUserDetails.getuName());
+            userDetails.setuEmail(fetchedUserDetails.getuEmail());
+            userDetails.setLat(fetchedUserDetails.getLat());
+            userDetails.setLon(fetchedUserDetails.getLon());
+            userDetails.setCategories(fetchedUserDetails.getCategories());
+
+            fetchAndSetUserProfileImage(userDetails);
+
+        } else {
+            Log.e("Firestore", "Fetched user or user details are null");
         }
     }
 
-    private void fetchAndSetUserProfileImage(MyUser myUser) {
+    private void fetchAndSetUserProfileImage(UserDetails userDetails) {
         StorageReference profilePicRef = FirebaseUtil.getCurrentProfilePicStorageRef();
         profilePicRef.getDownloadUrl()
-                .addOnSuccessListener(myUser::setProfileImageUri)
+                .addOnSuccessListener(userDetails::setProfileImageUri)
                 .addOnFailureListener(e -> {
-                    MyUser.getInstance().setProfileImageUri(null);
+                    userDetails.setProfileImageUri(null);
                 });
     }
 
@@ -104,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void logOut() {
-        MyUser.getInstance().resetUser();
+        //theUser.resetUser();
         FirebaseAuth.getInstance().signOut();
 
         Intent intent = new Intent(MainActivity.this, LoginActivity.class);

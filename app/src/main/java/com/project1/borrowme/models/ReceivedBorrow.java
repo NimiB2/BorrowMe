@@ -2,10 +2,10 @@ package com.project1.borrowme.models;
 
 import com.project1.borrowme.adpters.UserAdapter;
 
-public class GetBorrow {
+public class ReceivedBorrow {
     private Borrow borrow;
-    private UserAdapter getBorrow;
-    private boolean status;
+    private UserAdapter receiveUser;
+    private boolean isApprove;
 
 
 

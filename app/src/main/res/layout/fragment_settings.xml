@@ -17,15 +17,14 @@
         android:paddingHorizontal="@dimen/margin_xsmall"
         android:background="@color/smallButtonColor"
         android:elevation="@dimen/margin_xxsmall"
-        android:visibility="gone"
-
+       android:visibility="gone"
         >
+
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
             >
-
 
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="match_parent"
@@ -34,7 +33,7 @@
             android:textSize="@dimen/text_size_main_button_m"
             android:gravity="center"
             android:layout_marginStart="@dimen/margin_xxxsmall"
-            android:layout_marginTop="@dimen/margin_small"
+            android:layout_marginTop="@dimen/margin_xxxsmall"
             android:textColor="@color/tittle_color"
             android:textStyle="bold"
             >

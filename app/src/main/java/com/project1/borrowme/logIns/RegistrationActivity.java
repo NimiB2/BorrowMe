@@ -10,8 +10,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.fragment.app.FragmentManager;
-import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textview.MaterialTextView;
@@ -23,12 +21,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.project1.borrowme.MainActivity;
 import com.project1.borrowme.R;
 import com.project1.borrowme.Utilities.MySignal;
-import com.project1.borrowme.adpters.CategoryAdapter;
 import com.project1.borrowme.data.CategoriesData;
-import com.project1.borrowme.interfaces.CallbackCategory;
 import com.project1.borrowme.interfaces.CategorySelectionListener;
 import com.project1.borrowme.models.Category;
-import com.project1.borrowme.models.MyUser;
 import com.project1.borrowme.views.CategoriesFragment;
 
 import java.util.HashMap;
@@ -37,6 +32,7 @@ import java.util.Map;
 public class RegistrationActivity extends AppCompatActivity {
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private Map<String, Category> selectedCategories;
+    private Map<String, Category> allCategories;
     private String authEmail;
     private String authUserName;
     private String authUid;
@@ -46,7 +42,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private MaterialButton registration_BTN_LOGIN;
     private MaterialButton registration_BTN_back;
     private MaterialTextView registration_MTV_categoryNum;
-    private Map<String, Category> categories ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,8 +59,8 @@ public class RegistrationActivity extends AppCompatActivity {
         authEmail = intent.getStringExtra("email");
         authUserName = intent.getStringExtra("userName");
         authUid = intent.getStringExtra("uId");
-        authLatitude = intent.getDoubleExtra("latitude",1.1);
-        authLongitude = intent.getDoubleExtra("longitude",1.1);
+        authLatitude = intent.getDoubleExtra("latitude", 1.1);
+        authLongitude = intent.getDoubleExtra("longitude", 1.1);
 
 
         findViews();
@@ -74,20 +70,80 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
 
+    private void saveUserToFirestore() {
+        // create userDetails :
+        Map<String, Object> userDetailsMap = new HashMap<>();
+        userDetailsMap.put("uName", authUserName);
+        userDetailsMap.put("uEmail", authEmail);
+        userDetailsMap.put("lat", authLatitude);
+        userDetailsMap.put("lon", authLongitude);
+        userDetailsMap.put("categories", selectedCategories);
+
+        // create user map:
+        Map<String, Object> userMap = new HashMap<>();
+        userMap.put("uid", authUid);
+        userMap.put("userDetails", userDetailsMap);
+
+        // Get the document reference from Firestore and set the user data
+        DocumentReference userDocRef = db.collection("users").document(authUid);
+        userDocRef.set(userMap)
+                .addOnSuccessListener(aVoid -> {
+                    Log.d("Firestore", "User added successfully!");
+                    changeActivity(true);
+                })
+                .addOnFailureListener(e -> Log.w("Firestore", "Error adding user", e));
+    }
+
+    private void initFragment() {
+        CategoriesFragment categoriesFragment = new CategoriesFragment();
+        CategorySelectionListener listener = new CategorySelectionListener() {
+            @Override
+            public void onCategorySelectionUpdated(Map<String, Category> selectedCategories) {
+                updateCategories(selectedCategories);
+            }
+        };
+
+        categoriesFragment.setSelectionListener(listener);
+
+
+        if (allCategories != null) {
+            categoriesFragment.initCategories(allCategories);
+        }
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.registration_fragment_container, categoriesFragment)
+                .commit();
+    }
+
+    private void updateCategories(Map<String, Category> selectedCategories) {
+        this.selectedCategories = selectedCategories;
+    }
 
     private void initCategories() {
-        categories = new HashMap<>();
-        categories = CategoriesData.getCategories();
+        allCategories = new HashMap<>();
+        allCategories = CategoriesData.getCategories();
+    }
+
+    private void changeActivity(boolean status) {
+        Intent intent;
+        if (status) {
+            intent = new Intent(this, MainActivity.class);
+        } else {
+            intent = new Intent(this, SignUpActivity.class);
+        }
+        startActivity(intent);
+        finish();
     }
 
     private void initViews() {
         registration_BTN_LOGIN.setOnClickListener(v -> {
 
             if (selectedCategories != null && selectedCategories.size() >= 3) {
-                //setUser(authEmail, authUserName, authUid);
-                setDb();
-                changeActivity(true);
+                saveUserToFirestore();
+
             } else {
+                MySignal.getInstance().vibrate(true);
                 MySignal.getInstance().toast("You must select at least 3 categories");
             }
         });
@@ -112,63 +168,11 @@ public class RegistrationActivity extends AppCompatActivity {
         });
     }
 
-    private void changeActivity(boolean status) {
-        Intent intent;
-        if (status) {
-            intent = new Intent(this, MainActivity.class);
-        } else {
-            intent = new Intent(this, SignUpActivity.class);
-        }
-        startActivity(intent);
-        finish();
-    }
-
     private void findViews() {
         registration_fragment_container = findViewById(R.id.registration_fragment_container);
         registration_BTN_LOGIN = findViewById(R.id.registration_BTN_LOGIN);
         registration_BTN_back = findViewById(R.id.registration_BTN_back);
         registration_MTV_categoryNum = findViewById(R.id.MTV_categoryNum);
-    }
-
-    private void setDb() {
-        CollectionReference reference = db.collection("users");
-        DocumentReference documentReference = reference.document(authUid);
-        Map<String, Object> userMap = new HashMap<>();
-        userMap.put("categories", selectedCategories);
-        userMap.put("uid", authUid);
-        userMap.put("uEmail", authEmail);
-        userMap.put("lon", authLongitude);
-        userMap.put("lat", authLatitude);
-        userMap.put("uName", authUserName);
-
-        documentReference.set(userMap)
-                .addOnSuccessListener(aVoid -> Log.d("Firestore", "User added successfully!"))
-                .addOnFailureListener(e -> Log.w("Firestore", "Error adding user", e));
-    }
-
-    private void updateCategories(Map<String, Category> selectedCategories){
-        this.selectedCategories = selectedCategories;
-    }
-    private void initFragment() {
-        CategoriesFragment categoriesFragment = new CategoriesFragment();
-        CategorySelectionListener listener = new CategorySelectionListener() {
-            @Override
-            public void onCategorySelectionUpdated(Map<String, Category> selectedCategories) {
-                updateCategories(selectedCategories);
-            }
-        };
-
-        categoriesFragment.setSelectionListener(listener);
-
-
-        if (categories != null) {
-            categoriesFragment.initCategories(categories);
-        }
-
-        getSupportFragmentManager()
-                .beginTransaction()
-                .add(R.id.registration_fragment_container,categoriesFragment)
-                .commit();
     }
 
 }

@@ -4,7 +4,6 @@ import static android.content.ContentValues.TAG;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -19,7 +18,6 @@ import android.widget.FrameLayout;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.material.button.MaterialButton;
@@ -39,20 +37,18 @@ import com.project1.borrowme.data.CategoriesData;
 import com.project1.borrowme.interfaces.CategorySelectionListener;
 import com.project1.borrowme.interfaces.LocationFetchListener;
 import com.project1.borrowme.models.Category;
-import com.project1.borrowme.models.MyUser;
-import com.project1.borrowme.views.CategoriesFragment;
+import com.project1.borrowme.models.TheUser;
+import com.project1.borrowme.models.UserDetails;
 import com.project1.borrowme.screens.ProfileFragment;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class SettingsFragment extends Fragment {
-
-    private MyUser myUser;
+    private TheUser theUser;
+    private UserDetails userDetails;
     private AppCompatImageButton settings_IMG_back;
-
-
-    private Map<String, Category> categories;
+    private Map<String, Category> allCategories;
     private Map<String, Category> selectedCategories;
     private LocationManagerUtil locationManagerUtil;
     private FusedLocationProviderClient fusedLocationClient;
@@ -87,10 +83,14 @@ public class SettingsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(view.getContext());
+        theUser = TheUser.getInstance();
+        userDetails = theUser.getUserDetails();
+
         findViews(view);
         initViews();
         initCategories();
         initCategoriesFragment();
+
         setupLocationManager();
 
         return view;
@@ -101,10 +101,10 @@ public class SettingsFragment extends Fragment {
         locationManagerUtil = new LocationManagerUtil(getContext(), autocompleteFragment, new LocationFetchListener() {
             @Override
             public void onLocationFetched(double lat, double lon) {
-                myUser.setLon(lon);
-                myUser.setLat(lat);
+                userDetails.setLon(lon);
+                userDetails.setLat(lat);
 
-                FirebaseUtil.currentUserDetails().update("lon", lon, "lat", lat)
+                FirebaseUtil.currentUserFirestore().update("userDetails.lon", lon, "userDetails.lat", lat)
                         .addOnSuccessListener(aVoid -> {
                             MySignal.getInstance().toast("Updated successfully");
                         })
@@ -163,13 +163,13 @@ public class SettingsFragment extends Fragment {
 
     private void synchronizeCategorySelection() {
         // Check if both maps are initialized
-        if (categories == null || myUser.getCategories() == null) {
+        if (allCategories == null || userDetails.getCategories() == null) {
             return;
         }
-        for (String key : myUser.getCategories().keySet()) {
+        for (String key : userDetails.getCategories().keySet()) {
             // If the category exists in the main categories collection, set it as clicked
-            if (categories.containsKey(key)) {
-                Category category = categories.get(key);
+            if (allCategories.containsKey(key)) {
+                Category category = allCategories.get(key);
                 if (category != null) {
                     category.setClicked(true);
                 }
@@ -185,17 +185,20 @@ public class SettingsFragment extends Fragment {
 
         if (selectedCategories != null && !selectedCategories.isEmpty()) {
 
-            myUser.setCategories(selectedCategories);
-            FirebaseUtil.updateUserCategories(myUser.getCategories());
+            userDetails.setCategories(selectedCategories);
+            FirebaseUtil.updateUserCategories(userDetails.getCategories());
             MySignal.getInstance().toast("Categories updated successfully!");
+            settings_SWITCH_manageCategories.setChecked(false);
+            toggleCategoriesListVisibility();
         } else {
+            MySignal.getInstance().vibrate(true);
             MySignal.getInstance().toast("You must select at least 1 categories.");
         }
     }
 
     private void initCategories() {
-        categories = new HashMap<>();
-        categories = CategoriesData.getCategories();
+        allCategories = new HashMap<>();
+        allCategories = CategoriesData.getCategories();
 
         synchronizeCategorySelection();
     }
@@ -205,8 +208,9 @@ public class SettingsFragment extends Fragment {
         if (settings_SWITCH_manageCategories.isChecked()) {
             settings_fragment_container.setVisibility(View.VISIBLE);
             settings_BTN_saveNewCategories.setVisibility(View.VISIBLE);
+
             settings_ET_username.setVisibility(View.GONE);
-                settings_ET_email.setVisibility(View.GONE);
+            settings_ET_email.setVisibility(View.GONE);
             settings_BTN_saveChanges.setVisibility(View.GONE);
             settings_SWITCH_changePassword.setVisibility(View.GONE);
             settings_ET_newPassword.setVisibility(View.GONE);
@@ -219,7 +223,7 @@ public class SettingsFragment extends Fragment {
             settings_fragment_container.setVisibility(View.GONE);
             settings_BTN_saveNewCategories.setVisibility(View.GONE);
             settings_ET_username.setVisibility(View.VISIBLE);
-                settings_ET_email.setVisibility(View.VISIBLE);
+            settings_ET_email.setVisibility(View.VISIBLE);
             settings_BTN_saveChanges.setVisibility(View.VISIBLE);
             settings_SWITCH_changePassword.setVisibility(View.VISIBLE);
             settings_SWITCH_changeLocation.setVisibility(View.VISIBLE);
@@ -231,8 +235,8 @@ public class SettingsFragment extends Fragment {
         CategoriesFragment categoriesFragment = new CategoriesFragment();
 
 
-        if (categories != null) {
-            categoriesFragment.initCategories(categories);
+        if (allCategories != null) {
+            categoriesFragment.initCategories(allCategories);
         }
         CategorySelectionListener listener = new CategorySelectionListener() {
             @Override
@@ -242,6 +246,7 @@ public class SettingsFragment extends Fragment {
             }
         };
         categoriesFragment.setSelectionListener(listener);
+
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.settings_fragment_container, categoriesFragment);
         fragmentTransaction.commit();
@@ -281,7 +286,7 @@ public class SettingsFragment extends Fragment {
         settings_BTN_save_old_password.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String oldPas= settings_ET_oldPassword.getText().toString().trim();
+                String oldPas = settings_ET_oldPassword.getText().toString().trim();
 
                 AuthCredential credential = EmailAuthProvider.getCredential(user.getEmail(), oldPas);
 
@@ -313,8 +318,8 @@ public class SettingsFragment extends Fragment {
             String userEmail = settings_ET_email.getText().toString().trim();
 
             // Update local user instance
-            myUser.setuName(userName);
-            myUser.setuEmail(userEmail);
+            userDetails.setuName(userName);
+            userDetails.setuEmail(userEmail);
 
             updateUserFirebase(userName, userEmail);
         }
@@ -326,19 +331,16 @@ public class SettingsFragment extends Fragment {
 
         if (firebaseUser != null) {
             Task<Void> voidTask = firebaseUser.updateEmail(userEmail)
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                Log.d(TAG, "User email address updated.");
-                            }else{
-                                promptReAuthentication(firebaseUser);
-                            }
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "User email address updated.");
+                        } else {
+                            promptReAuthentication(firebaseUser);
                         }
                     });
         }
         // Update Firestore Document
-        FirebaseUtil.currentUserDetails().update("uName", userName, "uEmail", userEmail)
+        FirebaseUtil.currentUserFirestore().update("userDetails.uName", userName, "userDetails.uEmail", userEmail)
                 .addOnSuccessListener(aVoid -> {
                     MySignal.getInstance().toast("Updated successfully");
                 })
@@ -357,15 +359,15 @@ public class SettingsFragment extends Fragment {
     }
 
     private void initViews() {
-        myUser = MyUser.getInstance();
+
         settings_IMG_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 backToProfile();
             }
         });
-        settings_ET_username.setText(myUser.getuName());
-        settings_ET_email.setText(myUser.getuEmail());
+        settings_ET_username.setText(userDetails.getuName());
+        settings_ET_email.setText(userDetails.getuEmail());
 
         settings_BTN_saveChanges.setOnClickListener(v -> saveUserDetails());
 
@@ -402,6 +404,6 @@ public class SettingsFragment extends Fragment {
 
         settings_FRAME_old_password = view.findViewById(R.id.settings_FRAME_old_password);
         settings_ET_oldPassword = view.findViewById(R.id.settings_ET_oldPassword);
-        settings_BTN_save_old_password=view.findViewById(R.id.settings_BTN_save_old_password);
+        settings_BTN_save_old_password = view.findViewById(R.id.settings_BTN_save_old_password);
     }
 }

@@ -6,9 +6,7 @@ import com.project1.borrowme.adpters.CategoryAdapter;
 
 public class Category {
     private String name;
-
     private int image;
-
     private boolean isClicked = false;
 
     public Category() {
@@ -45,14 +43,4 @@ public class Category {
         isClicked = clicked;
     }
 
-
-
-//    public LinkedHashSet<Item> getItems() {
-//        return items;
-//    }
-//    public void addItems(Item item){
-//        if(item!=null){
-//            items.add(item);
-//        }
-//    }
 }

@@ -1,23 +1,28 @@
 package com.project1.borrowme.adpters;
 
-import com.project1.borrowme.models.MyUser;
+import android.net.Uri;
+
+import com.project1.borrowme.models.UserDetails;
 
 public class UserAdapter {
-    private final MyUser myUser=MyUser.getInstance();
+    private  UserDetails userDetails ;
 
-    public UserAdapter(MyUser myUser) {
+    public UserAdapter() {
     }
 
-    public String getUid(){
-        return myUser.getUid();
+    public UserAdapter(UserDetails userDetails) {
+        this.userDetails = userDetails;
     }
+
     public String getuName(){
-        return myUser.getuName();
+        return userDetails.getuName();
     }
     public String getuEmail(){
 
-        return myUser.getuEmail();
+        return userDetails.getuEmail();
     }
-
+    public Uri getProfileImageUri(){
+        return userDetails.getProfileImageUri();
+    }
 
 }

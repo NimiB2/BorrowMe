@@ -3,38 +3,27 @@ package com.project1.borrowme.logIns;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
-import android.view.View;
-import android.widget.EditText;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatEditText;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textview.MaterialTextView;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.project1.borrowme.App;
 import com.project1.borrowme.MainActivity;
 import com.project1.borrowme.R;
-import com.project1.borrowme.Utilities.FirebaseUtil;
 import com.project1.borrowme.Utilities.MySignal;
-import com.project1.borrowme.models.MyUser;
 
 public class LoginActivity extends AppCompatActivity {
-   // private MyUser myUser ;
     private FirebaseAuth auth;
+
     private TextInputEditText LogIn_ET_email;
     private TextInputEditText LogIn_ET_password;
     private MaterialButton LogIn_BTN_LOGIN;
@@ -60,38 +49,18 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        initViews();
-        FirebaseUser user = auth.getCurrentUser();
-        if (user == null) {
-            login();
+        setupViewListeners();
+        redirectIfLoggedIn();
+    }
+
+    private void redirectIfLoggedIn() {
+        FirebaseUser authCurrentUser = auth.getCurrentUser();
+
+        if (authCurrentUser == null) {
+            attemptLogin();
         } else {
             changeActivity(false);
         }
-
-    }
-
-
-    private void initViews() {
-        LogIn_BTN_LOGIN.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                login();
-            }
-        });
-
-        LogIn_MTV_singUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                changeActivity(true);
-            }
-        });
-    }
-
-    private void findViews() {
-        LogIn_ET_email = findViewById(R.id.LogIn_ET_email);
-        LogIn_ET_password = findViewById(R.id.LogIn_ET_password);
-        LogIn_BTN_LOGIN = findViewById(R.id.LogIn_BTN_LOGIN);
-        LogIn_MTV_singUp = findViewById(R.id.LogIn_MTV_singUp);
     }
 
     private void changeActivity(boolean isNewUser) {
@@ -106,35 +75,32 @@ public class LoginActivity extends AppCompatActivity {
         finish();
     }
 
-
-    private void signIn(String email, String password) {
+    private void login(String email, String password) {
         auth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success
-                            FirebaseUser currentUser = auth.getCurrentUser();
-                            MySignal.getInstance().toast("Login Successful");
-                            changeActivity(false);
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        // Sign in success
+                        FirebaseUser currentUser = auth.getCurrentUser();
+                        MySignal.getInstance().toast("Login Successful");
+                        changeActivity(false);
 
-                        } else {
-                            if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
-                                // The password is invalid or the user does not have a password
-                                MySignal.getInstance().toast("Invalid password. Please try again.");
-                            } else if (task.getException() instanceof FirebaseAuthInvalidUserException) {
-                                // There is no user record corresponding to this identifier
-                                MySignal.getInstance().toast("Email not registered. Please sign up.");
-                            } else {
-                                // Other errors
-                                MySignal.getInstance().toast("Authentication failed. " + task.getException().getMessage());
-                            }
-                        }
+                    } else {
+                        handleLoginFailure(task.getException());
                     }
                 });
     }
+    private void handleLoginFailure(Exception exception) {
+        MySignal.getInstance().vibrate(true);
 
-    private boolean validateInputs(String email, String password) {
+        if (exception instanceof FirebaseAuthInvalidCredentialsException) {
+            MySignal.getInstance().toast("Invalid password. Please try again.");
+        } else if (exception instanceof FirebaseAuthInvalidUserException) {
+            MySignal.getInstance().toast("Email not registered. Please sign up.");
+        } else {
+            MySignal.getInstance().toast("Authentication failed. " + exception.getMessage());
+        }
+    }
+    private boolean inputsAreValid(String email, String password) {
         if (email.isEmpty()) {
             LogIn_ET_email.setError("Email cannot be empty");
             return false;
@@ -155,12 +121,25 @@ public class LoginActivity extends AppCompatActivity {
         return true;
     }
 
-    private void login() {
+    private void attemptLogin() {
         String email = LogIn_ET_email.getText().toString().trim();
         String password = LogIn_ET_password.getText().toString().trim();
 
-        if (validateInputs(email, password)) {
-            signIn(email, password);
+        if (inputsAreValid(email, password)) {
+            login(email, password);
         }
+    }
+    
+    private void setupViewListeners() {
+        LogIn_BTN_LOGIN.setOnClickListener(v -> attemptLogin());
+
+        LogIn_MTV_singUp.setOnClickListener(v -> changeActivity(true));
+    }
+
+    private void findViews() {
+        LogIn_ET_email = findViewById(R.id.LogIn_ET_email);
+        LogIn_ET_password = findViewById(R.id.LogIn_ET_password);
+        LogIn_BTN_LOGIN = findViewById(R.id.LogIn_BTN_LOGIN);
+        LogIn_MTV_singUp = findViewById(R.id.LogIn_MTV_singUp);
     }
 }

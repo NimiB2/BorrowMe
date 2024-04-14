@@ -14,17 +14,18 @@ import android.view.ViewGroup;
 import com.google.android.material.textview.MaterialTextView;
 import com.project1.borrowme.R;
 import com.project1.borrowme.adpters.CategoryAdapter;
-import com.project1.borrowme.data.CategoriesData;
 import com.project1.borrowme.interfaces.CallbackCategory;
 import com.project1.borrowme.interfaces.CategorySelectionListener;
 import com.project1.borrowme.models.Category;
-import com.project1.borrowme.models.MyUser;
+import com.project1.borrowme.models.TheUser;
+import com.project1.borrowme.models.UserDetails;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class CategoriesFragment extends Fragment {
-    //private final MyUser myUser = MyUser.getInstance();
+    private TheUser theUser = TheUser.getInstance();
+    private UserDetails userDetails;
     private final int NUM_OF_COLS = 3;
     private RecyclerView recyclerViewCategories;
     private MaterialTextView MTV_categoryNum;
@@ -41,7 +42,8 @@ public class CategoriesFragment extends Fragment {
         View view= inflater.inflate(R.layout.fragment_categories, container, false);
 
         findViews(view);
-        updateNumCategoryText(MyUser.getInstance().getCategories().size());
+        userDetails= theUser.getUserDetails();
+        updateNumCategoryText(userDetails.getCategories().size());
         setAdapter(getContext());
 
 

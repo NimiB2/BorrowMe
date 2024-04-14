@@ -27,17 +27,20 @@ import com.project1.borrowme.Utilities.MySignal;
 import com.project1.borrowme.interfaces.LocationFetchListener;
 
 public class SignUpActivity extends AppCompatActivity {
+    private FirebaseAuth auth;
+    private LocationManagerUtil locationManagerUtil;
     private FusedLocationProviderClient fusedLocationClient;
+
+
     private TextInputEditText signUp_ET_userName;
     private TextInputEditText signUp_ET_email;
     private TextInputEditText signUp_ET_password;
     private MaterialButton signUp_BTN_SingUp;
     private MaterialTextView signUp_MTV_LogIn;
-    private FirebaseAuth auth;
     private SwitchMaterial signUp_SWITCH_location;
     private MaterialCardView signUp_CARD_search;
 
-    private LocationManagerUtil locationManagerUtil;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,9 +79,9 @@ public class SignUpActivity extends AppCompatActivity {
         });
     }
 
-    private void changeLocation() {
+    private void getLocation() {
         if (signUp_SWITCH_location.isChecked()) {
-            // The switch is ON, get the current GPS location
+            // The switch is ON, get the current location
             locationManagerUtil.getCurrentLocation();
         } else {
             // The switch is OFF, trigger the update with the selected location from autocomplete
@@ -94,8 +97,10 @@ public class SignUpActivity extends AppCompatActivity {
             auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     String uId = auth.getCurrentUser().getUid();
-                    changeRegistrationActivity(email, password, userName, uId, latitude, longitude);
+                    changeRegistrationActivity(email, userName, uId, latitude, longitude);
                 } else {
+
+                    MySignal.getInstance().vibrate(true);
                     if (task.getException() instanceof FirebaseAuthUserCollisionException) {
                         signUp_ET_email.setError("Email is already in use");
                     } else {
@@ -106,8 +111,29 @@ public class SignUpActivity extends AppCompatActivity {
         }
     }
 
+
+
+    private void changeRegistrationActivity(String email, String userName, String uId, double latitude, double longitude) {
+        Intent intent = new Intent(this, RegistrationActivity.class);
+
+        intent.putExtra("email", email);
+        intent.putExtra("userName", userName);
+        intent.putExtra("uId", uId);
+        intent.putExtra("latitude", latitude);
+        intent.putExtra("longitude", longitude);
+
+        startActivity(intent);
+        finish();
+    }
+
+    private void changeLogInActivity() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
     private void initViews() {
-        signUp_BTN_SingUp.setOnClickListener(v -> changeLocation());
+        signUp_BTN_SingUp.setOnClickListener(v -> getLocation());
         signUp_MTV_LogIn.setOnClickListener(v -> changeLogInActivity());
         signUp_SWITCH_location.setOnCheckedChangeListener((buttonView, isChecked) -> {
             signUp_CARD_search.setVisibility(isChecked ? View.GONE : View.VISIBLE);
@@ -122,26 +148,5 @@ public class SignUpActivity extends AppCompatActivity {
         signUp_MTV_LogIn = findViewById(R.id.signUp_MTV_LogIn);
         signUp_SWITCH_location = findViewById(R.id.signUp_SWITCH_location);
         signUp_CARD_search= findViewById(R.id.signUp_CARD_search);
-    }
-
-    private void changeRegistrationActivity(String email, String password, String
-            userName, String uId, double latitude, double longitude) {
-        Intent intent = new Intent(this, RegistrationActivity.class);
-
-        intent.putExtra("email", email);
-        intent.putExtra("password", password);
-        intent.putExtra("userName", userName);
-        intent.putExtra("uId", uId);
-        intent.putExtra("latitude", latitude);
-        intent.putExtra("longitude", longitude);
-
-        startActivity(intent);
-        finish();
-    }
-
-    private void changeLogInActivity() {
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
-        finish();
     }
 }

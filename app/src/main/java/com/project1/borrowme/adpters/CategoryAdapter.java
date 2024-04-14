@@ -100,7 +100,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         private void updateUI(Category category, boolean clicked) {
             itemView.post(() -> {
                 if (clicked) {
-                    MySignal.getInstance().vibrate(VIBRATION);
+                    MySignal.getInstance().vibrate(true);
                     imageCategory.setImageAlpha(255);
                     categoryName.setAlpha(1.0f);
                     itemView.setBackgroundColor(ContextCompat.getColor(context, R.color.background));

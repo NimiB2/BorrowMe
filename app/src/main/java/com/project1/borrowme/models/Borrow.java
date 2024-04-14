@@ -8,8 +8,8 @@ import java.util.List;
 
 public class Borrow {
     private String id;
-    private UserAdapter fromUser;
-    private boolean status;
+    private UserAdapter senderUser;
+    private boolean isOpenBorrow;
     private boolean borrowComplete;
     private String itemName;
     private String description;

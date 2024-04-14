@@ -7,42 +7,27 @@ import com.project1.borrowme.Utilities.MySignal;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MyUser {
-    private static volatile MyUser instance;
+public class UserDetails {
     private Map<String, Category> categories = new HashMap<>();
-    private String uid;
     private String uName;
     private String uEmail;
     private double lat;
     private double lon;
     private Uri profileImageUri;
 
-    private MyUser() {
+    public UserDetails() {
     }
-
-    public static MyUser getInstance() {
-        if (instance == null) {
-            synchronized (MyUser.class) {
-                if (instance == null) {
-                    instance = new MyUser();
-                }
-            }
-        }
-        return instance;
-    }
-
-
 
     public Map<String, Category> getCategories() {
         return categories;
     }
 
-    public MyUser setCategories(Map<String, Category> categories) {
+    public UserDetails setCategories(Map<String, Category> categories) {
         this.categories = categories;
         return this;
     }
 
-    public MyUser addCategory(Category category) {
+    public UserDetails addCategory(Category category) {
         this.categories.put(category.getName(), category);
         return this;
     }
@@ -57,21 +42,11 @@ public class MyUser {
         }
     }
 
-
-    public String getUid() {
-        return uid;
-    }
-
-    public MyUser setUid(String uid) {
-        this.uid = uid;
-        return this;
-    }
-
     public String getuName() {
         return uName;
     }
 
-    public MyUser setuName(String uName) {
+    public UserDetails setuName(String uName) {
         this.uName = uName;
         return this;
     }
@@ -80,7 +55,7 @@ public class MyUser {
         return uEmail;
     }
 
-    public MyUser setuEmail(String uEmail) {
+    public UserDetails setuEmail(String uEmail) {
         this.uEmail = uEmail;
         return this;
     }
@@ -90,7 +65,7 @@ public class MyUser {
         return lat;
     }
 
-    public MyUser setLat(double lat) {
+    public UserDetails setLat(double lat) {
         this.lat = lat;
         return this;
     }
@@ -99,7 +74,7 @@ public class MyUser {
         return lon;
     }
 
-    public MyUser setLon(double lon) {
+    public UserDetails setLon(double lon) {
         this.lon = lon;
         return this;
     }
@@ -113,7 +88,6 @@ public class MyUser {
     }
 
     public void resetUser() {
-        this.uid = null;
         this.uName = null;
         this.uEmail = null;
         this.lat = 0;

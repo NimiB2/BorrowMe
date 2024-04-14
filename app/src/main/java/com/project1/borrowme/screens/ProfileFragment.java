@@ -28,13 +28,14 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textview.MaterialTextView;
 import com.project1.borrowme.R;
+import com.project1.borrowme.models.TheUser;
 import com.project1.borrowme.views.SettingsFragment;
 import com.project1.borrowme.Utilities.FirebaseUtil;
 import com.project1.borrowme.Utilities.MySignal;
 import com.project1.borrowme.adpters.CategoryAdapter;
 import com.project1.borrowme.interfaces.CallbackCategory;
 import com.project1.borrowme.models.Category;
-import com.project1.borrowme.models.MyUser;
+import com.project1.borrowme.models.UserDetails;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -43,7 +44,8 @@ import java.util.Locale;
 import java.util.Map;
 
 public class ProfileFragment extends Fragment {
-    MyUser myUser = MyUser.getInstance();
+    TheUser theUser;
+    private UserDetails userDetails;
     ActivityResultLauncher<Intent> resultLauncher;
     private Map<String, Category> categories = new HashMap<>();
     private MaterialTextView profile_MTV_categoryNum;
@@ -60,52 +62,43 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
-
+        setUser();
         findViews(view);
         registerResult();
-        try {
-            initViews(getContext());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        initViews(getContext());
+
         return view;
     }
 
-    private void initViews(Context context) throws IOException {
-
-        if (myUser != null) {
-            profile_MTV_name.setText(myUser.getuName());
-            setAddress();
-            setProfilePic(myUser.getProfileImageUri());
-
-            profile_MTV_categoryNum.setText(String.format("%d", myUser.getCategories().size()));
-            initCategories();
-            setCategoriesAdapter(context);
-        }
-
-        profile_IMB_settings.setOnClickListener(v -> changeToSettingsFragment());
-
-        profile_FAB_change_image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                pickImage();
-            }
-        });
+    private void setUser() {
+        theUser =TheUser.getInstance();
+        userDetails=theUser.getUserDetails();
     }
 
-    private void setAddress() throws IOException {
+
+    private void setAddress()  {
         Geocoder geocoder = new Geocoder(requireContext(), Locale.getDefault());
-        double latitude = myUser.getLat();
-        double longitude = myUser.getLon();
-        List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
+        double latitude = userDetails.getLat();
+        double longitude = userDetails.getLon();
+        List<Address> addresses = null;
+        try {
+            addresses = geocoder.getFromLocation(latitude, longitude, 1);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         if (!addresses.isEmpty()) {
             Address address = addresses.get(0);
             String location = address.getAddressLine(0);
             profile_TV_user_location.setText(location);
         } else {
-            throw new IOException("No address found for coordinates: " + latitude + ", " + longitude);
+            try {
+                throw new IOException("No address found for coordinates: " + latitude + ", " + longitude);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
+
     private void pickImage() {
         Intent intent = new Intent(MediaStore.ACTION_PICK_IMAGES);
         resultLauncher.launch(intent);
@@ -119,7 +112,7 @@ public class ProfileFragment extends Fragment {
                     Uri imageUri = result.getData().getData();
                     if (imageUri != null) {
                         FirebaseUtil.getCurrentProfilePicStorageRef().putFile(imageUri);
-                        myUser.setProfileImageUri(imageUri);
+                        userDetails.setProfileImageUri(imageUri);
                         setProfilePic(imageUri);
                     }
 
@@ -147,7 +140,7 @@ public class ProfileFragment extends Fragment {
 
 
     private void initCategories() {
-        categories = myUser.getCategories();
+        categories = userDetails.getCategories();
     }
 
     private void setCategoriesAdapter(Context context) {
@@ -159,16 +152,40 @@ public class ProfileFragment extends Fragment {
             @Override
             public void addCategory(Category category) {
                 // Implement adding category logic
-                myUser.addCategory(category);
+                userDetails.addCategory(category);
             }
 
             @Override
             public void removeCategory(Category category) {
                 // Implement removing category logic
-                myUser.removeCategory(category.getName());
+                userDetails.removeCategory(category.getName());
             }
         });
         profile_RECYCLER_categories.setAdapter(adapter);
+    }
+
+
+
+    private void initViews(Context context)  {
+
+        if (userDetails != null) {
+            profile_MTV_name.setText(userDetails.getuName());
+            setAddress();
+            setProfilePic(userDetails.getProfileImageUri());
+
+            profile_MTV_categoryNum.setText(String.format("%d", userDetails.getCategories().size()));
+            initCategories();
+            setCategoriesAdapter(context);
+        }
+
+        profile_IMB_settings.setOnClickListener(v -> changeToSettingsFragment());
+
+        profile_FAB_change_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pickImage();
+            }
+        });
     }
 
     private void findViews(View view) {
