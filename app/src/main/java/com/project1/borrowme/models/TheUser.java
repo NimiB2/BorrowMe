@@ -1,18 +1,22 @@
 package com.project1.borrowme.models;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class TheUser {
     private static volatile TheUser instance;
     private String uid;
     private UserDetails userDetails;
-   private Map<String,Borrow> borrowMap;
+    private Map<String, Borrow> borrowMap;
     private Map<String, ReceivedBorrow> receivedBorrowMap;
     private Map<String, ReceivedBorrow> history;
     private Map<String, ReceivedBorrow> massages;
 
     private TheUser() {
         userDetails = new UserDetails();
+        receivedBorrowMap = new HashMap<>();
+        history = new HashMap<>();
+        massages = new HashMap<>();
     }
 
     public static TheUser getInstance() {

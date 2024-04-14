@@ -3,6 +3,7 @@ package com.project1.borrowme.models;
 import android.net.Uri;
 
 import com.project1.borrowme.Utilities.MySignal;
+import com.project1.borrowme.adpters.UserAdapter;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -87,11 +88,8 @@ public class UserDetails {
         this.profileImageUri = profileImageUri;
     }
 
-    public void resetUser() {
-        this.uName = null;
-        this.uEmail = null;
-        this.lat = 0;
-        this.lon = 0;
-        this.categories.clear();
+    public UserAdapter getMyAdapter(){
+        return new UserAdapter(this);
     }
+
 }

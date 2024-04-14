@@ -5,69 +5,115 @@
     android:layout_height="match_parent"
     android:background="@color/background">
 
-    <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/inbox_SIV_back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_small"
-        android:layout_marginTop="@dimen/margin_medium"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:src="@drawable/arrow_back" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
-<androidx.core.widget.NestedScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="@dimen/margin_medium">
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/newBorrow_MTV_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:text="@string/new_borrow_request"
-                android:textColor="@color/tittle_color"
-                android:textSize="@dimen/text_size_medium"
-                android:textStyle="bold" />
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/newBorrow_ET_itemName"
-                    android:layout_width="match_parent"
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/newBorrow_SIV_back"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_search_view"
-                    android:paddingVertical="@dimen/margin_xxxsmall"
-                    android:layout_marginTop="@dimen/margin_large"
-                    android:hint="@string/item_name_hint"
-                    android:textColor="@color/text_color"
-                    android:paddingTop="@dimen/margin_xsmall"
-                    android:paddingStart="@dimen/margin_xsmall"
-                    android:imeOptions="actionDone"
-                    android:textSize="@dimen/text_size_small" />
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/arrow_back" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/newBorrow_MTV_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/new_borrow_request"
+                    android:layout_marginBottom="@dimen/margin_small"
+                    android:layout_marginStart="@dimen/margin_small"
+                    android:textSize="@dimen/text_size_medium"
+                    android:textColor="@color/tittle_color"
+                    android:textStyle="bold"
+                   />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+            <!-- Separation Line -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="@dimen/margin_xsmall"
+                android:background="@color/tittle_color" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/newBorrow_ET_itemName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_xsmall"
+                android:background="@drawable/bg_search_view"
+                android:hint="@string/item_name_hint"
+                android:imeOptions="actionDone"
+                android:paddingVertical="@dimen/margin_xxxsmall"
+                android:paddingStart="@dimen/margin_xsmall"
+                android:paddingTop="@dimen/margin_xsmall"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/text_size_small" />
             <!-- Description Input -->
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/newBorrow_ET_description"
-                    android:layout_marginTop="@dimen/margin_small"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/image_size"
-                    android:background="@drawable/bg_search_view"
-                    android:gravity="top"
-                    android:paddingTop="@dimen/margin_xsmall"
-                    android:paddingStart="@dimen/margin_xsmall"
-                    android:textColor="@color/text_color"
-                    android:hint="@string/description_hint"
-                    android:imeOptions="actionDone"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/newBorrow_ET_description"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/image_size"
+                android:layout_marginTop="@dimen/margin_small"
+                android:background="@drawable/bg_search_view"
+                android:gravity="top"
+                android:hint="@string/description_hint"
+                android:imeOptions="actionDone"
+                android:paddingStart="@dimen/margin_xsmall"
+                android:paddingTop="@dimen/margin_xsmall"
+                android:textColor="@color/text_color"
 
-                    android:textSize="@dimen/text_size_xsmall" />
+                android:textSize="@dimen/text_size_xsmall" />
             <!-- Category Input -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/newBorrow_CARD_categories"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_small"
+                android:background="@drawable/bg_search_view"
+                android:backgroundTint="@color/background"
+                >
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    >
 
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/newBorrow_MTV_categories"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/select_category"
+                        android:textSize="@dimen/text_size_small"
+                        android:layout_marginStart="@dimen/margin_xsmall"
+                        android:paddingVertical="@dimen/margin_xxxsmall"
+                        android:textColor="@color/text_color"
+                        />
 
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/newBorrow_SIV_categories"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/drop_down_button"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="@dimen/margin_xxxsmall"/>
+
+                </RelativeLayout>
+
+            </com.google.android.material.card.MaterialCardView>
 
             <!-- Location Picker Placeholder (Consider using a Map View or a custom location picker here) -->
             <com.google.android.material.switchmaterial.SwitchMaterial
@@ -91,62 +137,71 @@
                 android:textSize="@dimen/text_size_xsmall"
                 android:visibility="gone" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/newBorrow_FRAGMENT_autoComplete"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/newBorrow_CARD_search"
+                android:layout_width="@dimen/size_medium"
+                android:layout_height="@dimen/margin_large"
+                android:layout_centerHorizontal="true"
+                app:cardCornerRadius="@dimen/margin_xsmall"
+                android:layout_below="@id/signUp_SWITCH_location"
                 android:layout_marginTop="@dimen/margin_xsmall"
-                android:autofillHints=""
-                android:background="@drawable/custom_edittext"
-                android:drawableLeft="@drawable/location"
-                android:drawablePadding="@dimen/margin_xsmall"
-                android:hint="@string/search_hint"
-                android:inputType="textPostalAddress"
-                android:padding="@dimen/margin_xsmall"
-                android:textColor="@color/text_color"
-                android:textSize="@dimen/text_size_xsmall"
-                android:visibility="gone" />
+                android:visibility="gone"
+                >
+
+                <fragment
+                    android:id="@+id/newBorrow_FRAGMENT_autoComplete"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+                    />
+            </com.google.android.material.card.MaterialCardView>
 
             <androidx.appcompat.widget.LinearLayoutCompat
-                android:id="@+id/distance_options_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_small"
                 android:gravity="center"
                 android:orientation="horizontal">
 
-                <com.google.android.material.radiobutton.MaterialRadioButton
-                    android:id="@+id/newBorrow_RADIO_1km"
+                <RadioGroup
+                    android:id="@+id/distance_options_container"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:buttonTint="@color/bottom_nav_color"
-                    android:text="@string/distance_1km"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/text_size_xsmall" />
+                    android:orientation="horizontal">
 
-                <com.google.android.material.radiobutton.MaterialRadioButton
-                    android:id="@+id/newBorrow_RADIO_5km"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:buttonTint="@color/bottom_nav_color"
-                    android:checked="true"
-                    android:text="@string/distance_5km"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/text_size_xsmall"
+                    <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:id="@+id/newBorrow_RADIO_1km"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="@color/bottom_nav_color"
+                        android:text="@string/distance_1km"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/text_size_xsmall" />
 
-                    />
+                    <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:id="@+id/newBorrow_RADIO_5km"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="@color/bottom_nav_color"
+                        android:checked="true"
+                        android:text="@string/distance_5km"
+                        android:textColor="@color/text_color"
+                        android:layout_marginHorizontal="@dimen/margin_small"
+                        android:textSize="@dimen/text_size_xsmall"/>
 
-                <com.google.android.material.radiobutton.MaterialRadioButton
-                    android:id="@+id/newBorrow_RADIO_10km"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:buttonTint="@color/bottom_nav_color"
-                    android:text="@string/distance_10km"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/text_size_xsmall" />
+                    <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:id="@+id/newBorrow_RADIO_10km"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="@color/bottom_nav_color"
+                        android:text="@string/distance_10km"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/text_size_xsmall" />
 
+                </RadioGroup>
             </androidx.appcompat.widget.LinearLayoutCompat>
+
+
 
 
             <!-- Submit Button -->
@@ -161,6 +216,6 @@
                 android:textSize="@dimen/text_size_main_button_s"
                 android:textStyle="bold" />
         </androidx.appcompat.widget.LinearLayoutCompat>
-</androidx.core.widget.NestedScrollView>
+    </ScrollView>
 
 </FrameLayout>

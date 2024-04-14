@@ -89,9 +89,22 @@ public class RegistrationActivity extends AppCompatActivity {
         userDocRef.set(userMap)
                 .addOnSuccessListener(aVoid -> {
                     Log.d("Firestore", "User added successfully!");
+                    initializeEmptyCollections(userDocRef);
                     changeActivity(true);
                 })
                 .addOnFailureListener(e -> Log.w("Firestore", "Error adding user", e));
+    }
+
+    private void initializeEmptyCollections(DocumentReference userDocRef) {
+        String placeholderId = "placeholder";
+        Map<String, Object> emptyData = new HashMap<>();
+        emptyData.put("placeholder", true);  // Arbitrary data to allow document creation
+
+        // Initializing each collection with a placeholder document
+        userDocRef.collection("borrowMap").document(placeholderId).set(emptyData);
+        userDocRef.collection("receivedBorrowMap").document(placeholderId).set(emptyData);
+        userDocRef.collection("history").document(placeholderId).set(emptyData);
+        userDocRef.collection("massages").document(placeholderId).set(emptyData);
     }
 
     private void initFragment() {
