@@ -21,8 +21,5 @@ public class UserAdapter {
 
         return userDetails.getuEmail();
     }
-    public Uri getProfileImageUri(){
-        return userDetails.getProfileImageUri();
-    }
 
 }

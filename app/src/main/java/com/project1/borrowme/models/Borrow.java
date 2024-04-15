@@ -1,22 +1,19 @@
 package com.project1.borrowme.models;
 
-import android.location.Location;
-
 import com.project1.borrowme.adpters.UserAdapter;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 public class Borrow {
     private String id;
-    private UserAdapter senderUser;
+    private String senderId;
     private boolean isOpenBorrow;
     private boolean borrowComplete;
     private String itemName;
     private String description;
     private ArrayList<String> categories =new ArrayList<>();;
-    private int distance;
+    private int radiusKm;
     private int numOfSending;
     private int numOfAnswers;
     private double lat;
@@ -31,18 +28,18 @@ public class Borrow {
     }
 
 
-    public Borrow(UserAdapter senderUser, String itemName, String description, ArrayList<String> categories, int distance, double lat, double lon) {
+    public Borrow( String senderId,String itemName, String description, ArrayList<String> categories, int radiusKm, double lat, double lon) {
         this.id = generateUniqueId();
         this.isOpenBorrow = false;
         this.borrowComplete = false;
         this.numOfSending = 0;
         this.numOfAnswers = 0;
 
-        this.senderUser = senderUser;
+        //this.senderUser = senderUser;
         this.itemName = itemName;
         this.description = description;
         this.categories = categories;
-        this.distance = distance;
+        this.radiusKm = radiusKm;
         this.lat = lat;
         this.lon = lon;
     }
@@ -60,12 +57,12 @@ public class Borrow {
         return this;
     }
 
-    public UserAdapter getSenderUser() {
-        return senderUser;
+    public String getSenderId() {
+        return senderId;
     }
 
-    public Borrow setSenderUser(UserAdapter senderUser) {
-        this.senderUser = senderUser;
+    public Borrow setSenderId(String senderId) {
+        this.senderId = senderId;
         return this;
     }
 
@@ -114,12 +111,12 @@ public class Borrow {
         return this;
     }
 
-    public int getDistance() {
-        return distance;
+    public int getRadiusKm() {
+        return radiusKm;
     }
 
-    public Borrow setDistance(int distance) {
-        this.distance = distance;
+    public Borrow setRadiusKm(int radiusKm) {
+        this.radiusKm = radiusKm;
         return this;
     }
 

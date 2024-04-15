@@ -2,7 +2,6 @@ package com.project1.borrowme.views;
 
 import android.location.Address;
 import android.location.Geocoder;
-import android.location.Location;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
@@ -29,12 +28,16 @@ import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textview.MaterialTextView;
 import com.project1.borrowme.R;
+import com.project1.borrowme.Utilities.BorrowUtil;
 import com.project1.borrowme.Utilities.FirebaseUtil;
 import com.project1.borrowme.Utilities.LocationManagerUtil;
 import com.project1.borrowme.Utilities.MySignal;
 import com.project1.borrowme.data.CategoriesData;
+import com.project1.borrowme.interfaces.CallbackCheckUsers;
+import com.project1.borrowme.interfaces.CallbackReceivedBorrow;
 import com.project1.borrowme.interfaces.LocationFetchListener;
 import com.project1.borrowme.models.Borrow;
+import com.project1.borrowme.models.ReceivedBorrow;
 import com.project1.borrowme.models.TheUser;
 import com.project1.borrowme.models.UserDetails;
 import com.project1.borrowme.screens.HomeFragment;
@@ -76,7 +79,7 @@ public class NewBorrowingFragment extends Fragment {
     boolean[] selectedCategories;
     ArrayList<String> categoryList;
     String[] categoryArray;
-    private int chosenDistance;
+    private int chosenRadiusKm;
     private double lat;
     private double lon;
 
@@ -99,7 +102,7 @@ public class NewBorrowingFragment extends Fragment {
 
     private void initDefaultDetails() {
         theUser = TheUser.getInstance();
-        chosenDistance = DISTANCE_5;
+        chosenRadiusKm = DISTANCE_5;
 
         lat = theUser.getUserDetails().getLat();
         lon = theUser.getUserDetails().getLon();
@@ -148,17 +151,17 @@ public class NewBorrowingFragment extends Fragment {
         distance_options_container.setOnCheckedChangeListener((group, checkedId) -> {
             // This ensures only one radio button can be active at a time
             if (checkedId == R.id.newBorrow_RADIO_1km) {
-                chosenDistance = DISTANCE_1;
+                chosenRadiusKm = DISTANCE_1;
                 newBorrow_RADIO_1km.setChecked(true);
                 newBorrow_RADIO_5km.setChecked(false);
                 newBorrow_RADIO_10km.setChecked(false);
             } else if (checkedId == R.id.newBorrow_RADIO_5km) {
-                chosenDistance = DISTANCE_5;
+                chosenRadiusKm = DISTANCE_5;
                 newBorrow_RADIO_1km.setChecked(false);
                 newBorrow_RADIO_5km.setChecked(true);
                 newBorrow_RADIO_10km.setChecked(false);
             } else if (checkedId == R.id.newBorrow_RADIO_10km) {
-                chosenDistance = DISTANCE_10;
+                chosenRadiusKm = DISTANCE_10;
                 newBorrow_RADIO_1km.setChecked(false);
                 newBorrow_RADIO_5km.setChecked(false);
                 newBorrow_RADIO_10km.setChecked(true);
@@ -268,25 +271,57 @@ public class NewBorrowingFragment extends Fragment {
 
     private void submitForm() {
         if (validateInputs()) {
+            MySignal.getInstance().vibrate(true);
             MySignal.getInstance().toast("Your request has been successfully sent, we will notify you when there are answers");
-
-            UserDetails userDetails = theUser.getUserDetails();
+            ;
             getLocation();
-
+            String myId= theUser.getUid();
             Borrow newBorrow = new Borrow(
-                    userDetails.getMyAdapter(),
+                    myId,
                     newBorrow_ET_itemName.getText().toString().trim(),
                     newBorrow_ET_description.getText().toString().trim(),
                     categoryList,
-                    chosenDistance,
+                    chosenRadiusKm,
                     lat,
                     lon
             );
-            theUser.addBorrow(newBorrow.getId(),newBorrow);
-            FirebaseUtil.addBorrowToFirestore(newBorrow);
-            backToHome();
+            theUser.addBorrow(newBorrow.getId(), newBorrow);
+            CallbackCheckUsers checkUsers= new CallbackCheckUsers() {
+                @Override
+                public void checkUsers(Borrow newBorrow) {
+                    addingForHistory(myId,newBorrow);
+                }
+            };
+
+            FirebaseUtil.addBorrowToFirestore(newBorrow,checkUsers);
+
         }
 
+    }
+
+    private void addingForHistory(String myId,Borrow newBorrow) {
+        ReceivedBorrow receivedBorrow = new ReceivedBorrow(newBorrow,theUser.getUserDetails().getMyAdapter());
+        theUser.addToMap(theUser.getHistory(),receivedBorrow.getId(),receivedBorrow);
+        CallbackReceivedBorrow callbackReceivedBorrow = new CallbackReceivedBorrow() {
+            @Override
+            public void onAddToFirebase(ReceivedBorrow receivedBorrow) {
+                checkOtherUsers(myId,newBorrow);
+                backToHome();
+            }
+        };
+
+        FirebaseUtil.addReceivedBorrowToFirestore(receivedBorrow,"history",callbackReceivedBorrow);
+
+    }
+
+
+    private void checkOtherUsers(String senderId,Borrow newBorrow) {
+       BorrowUtil.findEligibleUsers(senderId,newBorrow.getLat(), newBorrow.getLon(), newBorrow.getRadiusKm(),newBorrow.getCategories()).thenAccept(otherUsersId->{
+          sendGetBorrow(otherUsersId);
+       });
+    }
+
+    private void sendGetBorrow(List<String> otherUsersId) {
     }
 
 

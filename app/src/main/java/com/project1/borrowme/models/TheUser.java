@@ -56,6 +56,7 @@ public class TheUser {
         this.borrowMap = borrowMap;
         return this;
     }
+
     public void addBorrow(String key, Borrow borrow) {
         borrowMap.put(key, borrow);
     }
@@ -91,4 +92,14 @@ public class TheUser {
         return this;
     }
 
+    public <T> void addToMap(Map<String, T> map, String key, T value) {
+        map.put(key, value);
+    }
+
+    // Generic method to remove an item from a map
+    public <T> void removeFromMap(Map<String, T> map, String key) {
+        if (map.containsKey(key)) {
+            map.remove(key);
+        }
+    }
 }
