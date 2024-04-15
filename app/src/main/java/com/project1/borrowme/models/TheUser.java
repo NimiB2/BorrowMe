@@ -10,13 +10,13 @@ public class TheUser {
     private Map<String, Borrow> borrowMap;
     private Map<String, ReceivedBorrow> receivedBorrowMap;
     private Map<String, ReceivedBorrow> history;
-    private Map<String, ReceivedBorrow> massages;
+    private Map<String, ReceivedBorrow> Messages;
 
     private TheUser() {
         userDetails = new UserDetails();
         receivedBorrowMap = new HashMap<>();
         history = new HashMap<>();
-        massages = new HashMap<>();
+        Messages = new HashMap<>();
     }
 
     public static TheUser getInstance() {
@@ -82,12 +82,12 @@ public class TheUser {
         return this;
     }
 
-    public Map<String, ReceivedBorrow> getMassages() {
-        return massages;
+    public Map<String, ReceivedBorrow> getMessages() {
+        return Messages;
     }
 
-    public TheUser setMassages(Map<String, ReceivedBorrow> massages) {
-        this.massages = massages;
+    public TheUser setMessages(Map<String, ReceivedBorrow> Messages) {
+        this.Messages = Messages;
         return this;
     }
 

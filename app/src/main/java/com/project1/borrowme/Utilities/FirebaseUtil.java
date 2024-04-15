@@ -7,12 +7,14 @@ import android.util.Patterns;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.project1.borrowme.models.Borrow;
 import com.project1.borrowme.models.Category;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class FirebaseUtil {
@@ -66,16 +68,46 @@ public class FirebaseUtil {
                 .addOnFailureListener(e -> Log.w("Firestore", "Error updating categories", e));
     }
 
-    public static void updateUserBorrowMap(Map<String, Borrow> borrowMap) {
-        currentUserFirestore()
-                .update("borrowMap", borrowMap)
-                .addOnSuccessListener(aVoid -> Log.d("Firestore", "borrowMap updated successfully!"))
-                .addOnFailureListener(e -> Log.w("Firestore", "Error updating borrowMap", e));
-    }
 
     public static StorageReference getCurrentProfilePicStorageRef(){
         return FirebaseStorage.getInstance().getReference().child("profile_pic")
                 .child(FirebaseUtil.currentUserId());
+    }
+
+
+    public static void addBorrowToFirestore(Borrow borrow) {
+        // Convert the Borrow object into a Map
+        Map<String, Object> borrowMap = new HashMap<>();
+        borrowMap.put("id", borrow.getId());
+        borrowMap.put("isOpenBorrow", borrow.isOpenBorrow());
+        borrowMap.put("borrowComplete", borrow.isBorrowComplete());
+        borrowMap.put("itemName", borrow.getItemName());
+        borrowMap.put("description", borrow.getDescription());
+        borrowMap.put("categories", borrow.getCategories());
+        borrowMap.put("distance", borrow.getDistance());
+        borrowMap.put("numOfSending", borrow.getNumOfSending());
+        borrowMap.put("numOfAnswers", borrow.getNumOfAnswers());
+        borrowMap.put("lat", borrow.getLat());
+        borrowMap.put("lon", borrow.getLon());
+
+        // Update the borrowMap in Firestore for the current user
+        DocumentReference userDocRef = currentUserFirestore();
+        userDocRef.update("borrowMap." + borrow.getId(), borrowMap)
+                .addOnSuccessListener(aVoid -> Log.d("Firestore", "Borrow added successfully!"))
+                .addOnFailureListener(e -> Log.w("Firestore", "Error adding borrow", e));
+    }
+
+    public void removeBorrowFromFirestore(String borrowId) {
+        // Get the document reference for the current user from Firestore
+        DocumentReference userDocRef = currentUserFirestore();
+
+        // Remove the borrow from the borrowMap
+        Map<String, Object> updates = new HashMap<>();
+        updates.put("borrowMap." + borrowId, FieldValue.delete());
+
+        userDocRef.update(updates)
+                .addOnSuccessListener(aVoid -> Log.d("Firestore", "Borrow removed successfully!"))
+                .addOnFailureListener(e -> Log.w("Firestore", "Error removing borrow", e));
     }
 }
 

@@ -86,7 +86,7 @@ public class RegistrationActivity extends AppCompatActivity {
         userMap.put("borrowMap", new HashMap<>());
         userMap.put("receivedBorrowMap", new HashMap<>());
         userMap.put("history", new HashMap<>());
-        userMap.put("massages", new HashMap<>());
+        userMap.put("Messages", new HashMap<>());
 
         // Get the document reference from Firestore and set the user data
         DocumentReference userDocRef = db.collection("users").document(authUid);

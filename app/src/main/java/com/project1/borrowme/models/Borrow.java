@@ -15,11 +15,12 @@ public class Borrow {
     private boolean borrowComplete;
     private String itemName;
     private String description;
-    private List<String> categories =new ArrayList<>();;
+    private ArrayList<String> categories =new ArrayList<>();;
     private int distance;
     private int numOfSending;
     private int numOfAnswers;
-    private Location location;
+    private double lat;
+    private double lon;
 
     public Borrow() {
         this.id = generateUniqueId();
@@ -29,7 +30,8 @@ public class Borrow {
         this.numOfAnswers = 0;
     }
 
-    public Borrow(UserAdapter senderUser, String itemName, String description, List<String> categories, int distance, Location location) {
+
+    public Borrow(UserAdapter senderUser, String itemName, String description, ArrayList<String> categories, int distance, double lat, double lon) {
         this.id = generateUniqueId();
         this.isOpenBorrow = false;
         this.borrowComplete = false;
@@ -41,7 +43,8 @@ public class Borrow {
         this.description = description;
         this.categories = categories;
         this.distance = distance;
-        this.location = location;
+        this.lat = lat;
+        this.lon = lon;
     }
 
     private static String generateUniqueId() {
@@ -102,11 +105,11 @@ public class Borrow {
         return this;
     }
 
-    public List<String> getCategories() {
+    public ArrayList<String> getCategories() {
         return categories;
     }
 
-    public Borrow setCategories(List<String> categories) {
+    public Borrow setCategories(ArrayList<String> categories) {
         this.categories = categories;
         return this;
     }
@@ -138,12 +141,21 @@ public class Borrow {
         return this;
     }
 
-    public Location getLocation() {
-        return location;
+    public double getLat() {
+        return lat;
     }
 
-    public Borrow setLocation(Location location) {
-        this.location = location;
+    public Borrow setLat(double lat) {
+        this.lat = lat;
+        return this;
+    }
+
+    public double getLon() {
+        return lon;
+    }
+
+    public Borrow setLon(double lon) {
+        this.lon = lon;
         return this;
     }
 }

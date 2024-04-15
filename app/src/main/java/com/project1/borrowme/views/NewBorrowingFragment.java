@@ -74,7 +74,7 @@ public class NewBorrowingFragment extends Fragment {
     private FusedLocationProviderClient fusedLocationClient;
 
     boolean[] selectedCategories;
-    List<String> categoryList;
+    ArrayList<String> categoryList;
     String[] categoryArray;
     private int chosenDistance;
     private double lat;
@@ -272,9 +272,6 @@ public class NewBorrowingFragment extends Fragment {
 
             UserDetails userDetails = theUser.getUserDetails();
             getLocation();
-            Location borrowLocation = new Location("BorrowLocationProvider");
-            borrowLocation.setLatitude(lat);
-            borrowLocation.setLongitude(lon);
 
             Borrow newBorrow = new Borrow(
                     userDetails.getMyAdapter(),
@@ -282,10 +279,11 @@ public class NewBorrowingFragment extends Fragment {
                     newBorrow_ET_description.getText().toString().trim(),
                     categoryList,
                     chosenDistance,
-                    borrowLocation
+                    lat,
+                    lon
             );
             theUser.addBorrow(newBorrow.getId(),newBorrow);
-            FirebaseUtil.updateUserBorrowMap(theUser.getBorrowMap());
+            FirebaseUtil.addBorrowToFirestore(newBorrow);
             backToHome();
         }
 
