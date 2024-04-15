@@ -35,7 +35,7 @@ public class Borrow {
         this.numOfSending = 0;
         this.numOfAnswers = 0;
 
-        //this.senderUser = senderUser;
+        this.senderId = senderId;
         this.itemName = itemName;
         this.description = description;
         this.categories = categories;

@@ -7,7 +7,7 @@ import java.util.UUID;
 public class ReceivedBorrow {
     private String id;
     private Borrow borrow;
-    private UserAdapter receiveUser;
+    private String receiveUserId;
     private boolean isApprove;
 
     public ReceivedBorrow() {
@@ -15,10 +15,10 @@ public class ReceivedBorrow {
         isApprove=false;
     }
 
-    public ReceivedBorrow(Borrow borrow, UserAdapter receiveUser) {
+    public ReceivedBorrow(Borrow borrow, String receiveUserId) {
         this.id = generateUniqueId();
         this.borrow = borrow;
-        this.receiveUser = receiveUser;
+        this.receiveUserId = receiveUserId;
         this.isApprove = false;
     }
     private static String generateUniqueId() {
@@ -42,12 +42,12 @@ public class ReceivedBorrow {
         return this;
     }
 
-    public UserAdapter getReceiveUser() {
-        return receiveUser;
+    public String getReceiveUserId() {
+        return receiveUserId;
     }
 
-    public ReceivedBorrow setReceiveUser(UserAdapter receiveUser) {
-        this.receiveUser = receiveUser;
+    public ReceivedBorrow setReceiveUserId(String receiveUserId) {
+        this.receiveUserId = receiveUserId;
         return this;
     }
 

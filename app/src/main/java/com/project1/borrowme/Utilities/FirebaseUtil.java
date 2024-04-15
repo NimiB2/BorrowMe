@@ -11,7 +11,6 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.project1.borrowme.adpters.UserAdapter;
 import com.project1.borrowme.interfaces.CallbackCheckUsers;
 import com.project1.borrowme.interfaces.CallbackReceivedBorrow;
 import com.project1.borrowme.models.Borrow;
@@ -117,16 +116,17 @@ public class FirebaseUtil {
     }
 
 
-    public static void addReceivedBorrowToFirestore(ReceivedBorrow receivedBorrow, String theMap, CallbackReceivedBorrow callbackReceivedBorrow) {
+    public static void addReceivedBorrowToFirestore(ReceivedBorrow receivedBorrow, String theMap, CallbackReceivedBorrow callbackReceivedBorrow, String userId) {
         // Convert the Borrow object into a Map
         Map<String, Object> theMapType = new HashMap<>();
         theMapType.put("id", receivedBorrow.getId());
         theMapType.put("borrow", receivedBorrow.getBorrow());
-        theMapType.put("receiveUser", receivedBorrow.getReceiveUser());
+        theMapType.put("receiveUserId", receivedBorrow.getReceiveUserId());
         theMapType.put("isApprove", receivedBorrow.isApprove());
 
+        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
         // Update the borrowMap in Firestore for the current user
-        DocumentReference userDocRef = currentUserFirestore();
+        DocumentReference userDocRef = firestore.collection("users").document(userId);
         userDocRef.update(theMap + "." + receivedBorrow.getId(), theMapType) // Notice the change here
                 .addOnSuccessListener(aVoid -> {
                     if (callbackReceivedBorrow != null) {

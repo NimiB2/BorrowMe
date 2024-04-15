@@ -27,7 +27,7 @@ public class BorrowUtil {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             TheUser otherUser = document.toObject(TheUser.class);
-                            if (otherUser != null && otherUser.getUid()!= myId && otherUser.getUserDetails() != null) {
+                            if (otherUser != null && !otherUser.getUid().equals(myId)  && otherUser.getUserDetails() != null) {
                                 UserDetails otherUserDetails = otherUser.getUserDetails();
                                 if (isAnyCategoryMatched(otherUserDetails.getCategories(), borrowCategoryList)) {
                                     if (isUserWithinRadius(myLat, myLon, otherUserDetails.getLat(), otherUserDetails.getLon(), radiusKm)) {

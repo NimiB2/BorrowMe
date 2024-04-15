@@ -275,7 +275,7 @@ public class NewBorrowingFragment extends Fragment {
             MySignal.getInstance().toast("Your request has been successfully sent, we will notify you when there are answers");
             ;
             getLocation();
-            String myId= theUser.getUid();
+            String myId= FirebaseUtil.currentUserId();
             Borrow newBorrow = new Borrow(
                     myId,
                     newBorrow_ET_itemName.getText().toString().trim(),
@@ -300,7 +300,7 @@ public class NewBorrowingFragment extends Fragment {
     }
 
     private void addingForHistory(String myId,Borrow newBorrow) {
-        ReceivedBorrow receivedBorrow = new ReceivedBorrow(newBorrow,theUser.getUserDetails().getMyAdapter());
+        ReceivedBorrow receivedBorrow = new ReceivedBorrow(newBorrow,theUser.getUid());
         theUser.addToMap(theUser.getHistory(),receivedBorrow.getId(),receivedBorrow);
         CallbackReceivedBorrow callbackReceivedBorrow = new CallbackReceivedBorrow() {
             @Override
@@ -310,18 +310,29 @@ public class NewBorrowingFragment extends Fragment {
             }
         };
 
-        FirebaseUtil.addReceivedBorrowToFirestore(receivedBorrow,"history",callbackReceivedBorrow);
+        FirebaseUtil.addReceivedBorrowToFirestore(receivedBorrow,"history",callbackReceivedBorrow,myId);
 
     }
 
 
     private void checkOtherUsers(String senderId,Borrow newBorrow) {
        BorrowUtil.findEligibleUsers(senderId,newBorrow.getLat(), newBorrow.getLon(), newBorrow.getRadiusKm(),newBorrow.getCategories()).thenAccept(otherUsersId->{
-          sendGetBorrow(otherUsersId);
+          sendGetBorrow(otherUsersId,newBorrow);
        });
     }
 
-    private void sendGetBorrow(List<String> otherUsersId) {
+    private void sendGetBorrow(List<String> otherUsersId,Borrow newBorrow) {
+        for (String userId :otherUsersId) {
+            ReceivedBorrow receivedBorrow = new ReceivedBorrow(newBorrow,userId );
+            CallbackReceivedBorrow callbackReceivedBorrow = new CallbackReceivedBorrow() {
+                @Override
+                public void onAddToFirebase(ReceivedBorrow receivedBorrow) {
+
+                }
+            };
+            FirebaseUtil.addReceivedBorrowToFirestore(receivedBorrow,"receivedBorrowMap", callbackReceivedBorrow,userId);
+        }
+
     }
 
 
