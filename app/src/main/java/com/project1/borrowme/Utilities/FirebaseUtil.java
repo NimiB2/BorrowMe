@@ -13,7 +13,6 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.project1.borrowme.R;
 import com.project1.borrowme.interfaces.CallbackCheckUsers;
 import com.project1.borrowme.interfaces.CallbackAddFirebase;
 import com.project1.borrowme.interfaces.CallbackGetFirebase;
@@ -27,7 +26,6 @@ import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.project1.borrowme.models.TheUser;
 import com.project1.borrowme.models.UserDetails;
 
@@ -196,14 +194,14 @@ public class FirebaseUtil {
         theMapType.put("id", receivedBorrow.getId());
         theMapType.put("borrow", receivedBorrow.getBorrow());
         theMapType.put("receiveUserId", receivedBorrow.getReceiveUserId());
-        theMapType.put("isApprove", receivedBorrow.isApprove());
-        theMapType.put("isMe", receivedBorrow.isMe());
+        theMapType.put("Approved", receivedBorrow.getApproved());
+        theMapType.put("answer", receivedBorrow.getAnswer());
 
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
         // Update the borrowMap in Firestore for the current user
         DocumentReference userDocRef = firestore.collection("users").document(userId);
 
-        userDocRef.update(theMap+ "." + receivedBorrow.getId(), theMapType) // Notice the change here
+        userDocRef.update(theMap+ "." + receivedBorrow.getId(), theMapType)
                 .addOnSuccessListener(aVoid -> {
                     if (callbackAddFirebase != null) {
                         callbackAddFirebase.onAddToFirebase(receivedBorrow);

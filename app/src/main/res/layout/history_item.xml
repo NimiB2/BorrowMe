@@ -100,7 +100,7 @@
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/borrow_item_MTV_address"
-                    android:layout_width="match_parent"
+                    android:layout_width="@dimen/card_width_size"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_xxxsmall"
                     android:text="@string/my_location"

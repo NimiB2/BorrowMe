@@ -300,7 +300,8 @@ public class NewBorrowingFragment extends Fragment {
     }
 
     private void addingForMyHistory(String myId, Borrow newBorrow) {
-        ReceivedBorrow receivedBorrow = new ReceivedBorrow(newBorrow,theUser.getUid(),true);
+        ReceivedBorrow receivedBorrow = new ReceivedBorrow(newBorrow,theUser.getUid());
+        receivedBorrow.setMe(true);
         theUser.addToMap(theUser.getHistory(),receivedBorrow.getId(),receivedBorrow);
         CallbackAddFirebase callbackAddFirebase = new CallbackAddFirebase() {
             @Override
@@ -323,7 +324,8 @@ public class NewBorrowingFragment extends Fragment {
 
     private void sendGetBorrow(List<String> otherUsersId,Borrow newBorrow) {
         for (String userId :otherUsersId) {
-            ReceivedBorrow receivedBorrow = new ReceivedBorrow(newBorrow,userId,false );
+            ReceivedBorrow receivedBorrow = new ReceivedBorrow(newBorrow,userId );
+            receivedBorrow.setMe(false);
             CallbackAddFirebase callbackAddFirebase = new CallbackAddFirebase() {
                 @Override
                 public void onAddToFirebase(ReceivedBorrow receivedBorrow) {

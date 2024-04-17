@@ -186,14 +186,17 @@ public class Borrow {
         this.numOfAnswers++;
     }
 
-    public void checkForClosed(){
+    public boolean checkForClosed(){
         if(this.numOfAnswers==this.numOfSending){
             setOpenBorrow(false);
+            return true;
         }
         else if(this.isBorrowComplete()){
             setOpenBorrow(false);
             setSucceeded(true);
+            return true;
         }
+        return false;
     }
 
 }

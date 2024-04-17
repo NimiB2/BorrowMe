@@ -60,7 +60,7 @@
     <string name="select_category">Select Categories</string>
     <string name="insert_your_password">Insert your current password :</string>
     <string name="where_have_we_been_until_now">Where have we been ? 🫣</string>
-    <string name="history">NO WHERE ‍🤦🏾‍♂🤦🏻‍♀️</string>
+    <string name="history">NO BORROW ‍🤦🏾‍♂🤦🏻‍♀️</string>
     <string name="borrow_status">BORROW STATUS</string>
     <string name="is_complete">Is the borrow finish?</string>
     <string name="your_history">Your History</string>
@@ -75,4 +75,5 @@
     <string name="sender">Sender:</string>
     <string name="approve">APPROVE</string>
     <string name="reject">REJECT</string>
+    <string name="title">title</string>
 </resources>

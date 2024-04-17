@@ -18,9 +18,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.project1.borrowme.R;
+import com.project1.borrowme.adpters.HistoryAdapter;
 import com.project1.borrowme.adpters.MessageAdapter;
 import com.project1.borrowme.models.ReceivedBorrow;
+import com.project1.borrowme.models.TheUser;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -35,6 +38,7 @@ public class InboxFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_inbox, container, false);
+        messages= TheUser.getInstance().getMessages();
 
         findViews(view);
         initViews();
@@ -89,10 +93,13 @@ public class InboxFragment extends Fragment {
     }
 
     private void setupRecyclerView() {
-        adapter = new MessageAdapter(getContext(), new HashMap<>(messages));
+        ArrayList<ReceivedBorrow> newMes= new ArrayList<>(messages.values());
+
+        adapter = new MessageAdapter(getContext(), newMes);
         inbox_RECYCLER_users_list.setLayoutManager(new LinearLayoutManager(getContext()));
         inbox_RECYCLER_users_list.setAdapter(adapter);
     }
+
 
     private void loadMessages() {
 

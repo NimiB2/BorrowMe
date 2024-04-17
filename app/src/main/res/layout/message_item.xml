@@ -21,12 +21,12 @@
             android:orientation="horizontal">
 
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/message_item_MTV_item_name"
+                android:id="@+id/message_item_MTV_title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:text="@string/item_name_hint"
+                android:text="@string/title"
                 android:textColor="@color/tittle_color"
                 android:textSize="@dimen/text_size_main_button_s"
                 android:textStyle="bold" />
@@ -41,6 +41,23 @@
                 />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/detail_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/message_item_MTV_item_name"
+            android:layout_width="@dimen/card_width_size"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_xxxsmall"
+            android:text="@string/item_name_hint"
+            android:textColor="@color/tittle_color"
+            android:textSize="@dimen/text_size_main_button_s"
+            android:textStyle="bold" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/message_item_MTV_user_name"
@@ -80,7 +97,7 @@
             android:textColor="@color/smallButton_text_color"
             android:textSize="@dimen/text_borrow" />
 
-
+        </androidx.appcompat.widget.LinearLayoutCompat>
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

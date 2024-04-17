@@ -1,28 +1,28 @@
 
 package com.project1.borrowme.models;
 
-import com.project1.borrowme.adpters.UserAdapter;
-
 import java.util.UUID;
 
 public class ReceivedBorrow {
     private String id;
     private Borrow borrow;
     private String receiveUserId;
-    private boolean isApprove;
-    private boolean isMe;
+    private boolean Approved;
+    private boolean answer;
+    private boolean me;
 
     public ReceivedBorrow() {
-        this.id = generateUniqueId();
-        isApprove=false;
+       // this.id = generateUniqueId();
+        Approved =false;
     }
 
-    public ReceivedBorrow(Borrow borrow, String receiveUserId, boolean isMe) {
-        this.id = generateUniqueId();
+    public ReceivedBorrow(Borrow borrow, String receiveUserId) {
+
         this.borrow = borrow;
+        this.id = borrow.getId();
         this.receiveUserId = receiveUserId;
-        this.isApprove = false;
-        this.isMe=isMe;
+        this.Approved = false;
+
     }
     private static String generateUniqueId() {
         return UUID.randomUUID().toString();
@@ -54,21 +54,30 @@ public class ReceivedBorrow {
         return this;
     }
 
-    public boolean isApprove() {
-        return isApprove;
+    public boolean getApproved() {
+        return Approved;
     }
 
-    public ReceivedBorrow setApprove(boolean approve) {
-        isApprove = approve;
+    public ReceivedBorrow setApproved(boolean approved) {
+        Approved = approved;
         return this;
     }
 
-    public boolean isMe() {
-        return isMe;
+    public boolean getMe() {
+        return me;
     }
 
     public ReceivedBorrow setMe(boolean me) {
-        isMe = me;
+        this.me = me;
+        return this;
+    }
+
+    public boolean getAnswer() {
+        return answer;
+    }
+
+    public ReceivedBorrow setAnswer(boolean answer) {
+        this.answer = answer;
         return this;
     }
 }
