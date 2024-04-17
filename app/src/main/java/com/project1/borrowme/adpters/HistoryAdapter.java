@@ -31,12 +31,12 @@ import java.util.Map;
 
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder> {
     private Context context;
-    private Map<String, ReceivedBorrow> receivedBorrows;
+
     private List<ReceivedBorrow> history;
 
-    public HistoryAdapter(Context context, Map<String, ReceivedBorrow> receivedBorrows) {
+    public HistoryAdapter(Context context, List<ReceivedBorrow> receivedBorrows) {
         this.context = context;
-        this.history = new ArrayList<>(receivedBorrows.values());
+        this.history = receivedBorrows;
     }
 
     @NonNull

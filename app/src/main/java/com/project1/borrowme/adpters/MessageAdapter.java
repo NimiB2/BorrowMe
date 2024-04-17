@@ -57,14 +57,10 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
         holder.message_item_BTN_approve.setOnClickListener(v -> updateUIForStatus(holder, true, message));
         holder.message_item_BTN_reject.setOnClickListener(v -> updateUIForStatus(holder, false, message));
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                holder.toggleVisibility();
-            }
-        });
+        holder.itemView.setOnClickListener(v -> holder.toggleVisibility());
 
         if (message.getBorrow().getSenderId().equals(FirebaseUtil.currentUserId())) {
+            // current user is the sender
             if (message.getApproved()) {
                 holder.message_item_MTV_title.setText("Borrow Approved");
                 holder.message_item_BTN_approve.setText("CLOSE THE DEAL");
@@ -103,8 +99,11 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
                     }
                 };
                 FirebaseUtil.addReceivedBorrowToFirestore(message,"history",callbackAddFirebase,message.getReceiveUserId());
+                holder.message_item_MTV_title.setText("There was a deal");
+            }else{
+                holder.message_item_MTV_title.setText("The request is closed");
             }
-            holder.message_item_MTV_title.setText("Closed");
+
             holder.message_item_IMG_status.setImageResource(R.drawable.closed);
         }else{
             // Set image based on whether approved or rejected

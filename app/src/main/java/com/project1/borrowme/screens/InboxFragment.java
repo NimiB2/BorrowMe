@@ -24,6 +24,7 @@ import com.project1.borrowme.models.ReceivedBorrow;
 import com.project1.borrowme.models.TheUser;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -94,6 +95,9 @@ public class InboxFragment extends Fragment {
 
     private void setupRecyclerView() {
         ArrayList<ReceivedBorrow> newMes= new ArrayList<>(messages.values());
+        newMes = (ArrayList<ReceivedBorrow>) newMes.stream()
+                .sorted(Comparator.comparing(ReceivedBorrow::getCreatedAt, Comparator.reverseOrder()))
+                .collect(Collectors.toList());
 
         adapter = new MessageAdapter(getContext(), newMes);
         inbox_RECYCLER_users_list.setLayoutManager(new LinearLayoutManager(getContext()));

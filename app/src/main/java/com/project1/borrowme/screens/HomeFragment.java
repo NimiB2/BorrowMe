@@ -18,7 +18,10 @@ import com.project1.borrowme.models.ReceivedBorrow;
 import com.project1.borrowme.models.TheUser;
 import com.project1.borrowme.views.NewBorrowingFragment;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class HomeFragment extends Fragment {
     private Map<String, ReceivedBorrow> history;
@@ -58,7 +61,13 @@ public class HomeFragment extends Fragment {
 
     private void setAdapter() {
         if (history != null && !history.isEmpty()) {
-            HistoryAdapter historyAdapter = new HistoryAdapter(getContext(), history);
+
+            ArrayList<ReceivedBorrow> historyArrayList = new ArrayList<>(history.values());
+            historyArrayList =(ArrayList<ReceivedBorrow>)historyArrayList.stream()
+                    .sorted(Comparator.comparing(ReceivedBorrow::getCreatedAt, Comparator.reverseOrder()))
+                    .collect(Collectors.toList());
+
+            HistoryAdapter historyAdapter = new HistoryAdapter(getContext(), historyArrayList);
             home_RECYCLER_old_borrowings.setLayoutManager(new LinearLayoutManager(getContext()));
 
             home_RECYCLER_old_borrowings.setAdapter(historyAdapter);

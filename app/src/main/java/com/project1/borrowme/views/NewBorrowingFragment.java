@@ -287,15 +287,15 @@ public class NewBorrowingFragment extends Fragment {
                     lon
             );
             theUser.addBorrow(newBorrow.getId(), newBorrow);
-            CallbackCheckUsers checkUsers= new CallbackCheckUsers() {
-                @Override
-                public void checkUsers(Borrow newBorrow) {
-                    addingForMyHistory(myId,newBorrow);
-                }
-            };
-
-            FirebaseUtil.addBorrowToFirestore(newBorrow,checkUsers);
-
+//            CallbackCheckUsers checkUsers= new CallbackCheckUsers() {
+//                @Override
+//                public void checkUsers(Borrow newBorrow) {
+//                    addingForMyHistory(myId,newBorrow);
+//                }
+//            };
+//
+//            FirebaseUtil.addBorrowToFirestore(newBorrow,checkUsers);
+            addingForMyHistory(myId,newBorrow);
         }
 
     }
