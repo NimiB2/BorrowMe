@@ -29,7 +29,7 @@
     <string name="title_notifications">Notifications</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="new_borrowing">Lets Do It !</string>
+    <string name="new_borrowing">Lets Borrow Me !</string>
     <string name="common_products">Common Products</string>
     <string name="my_history">Where have we been until now? 🫣</string>
     <string name="i_have_a_product">I have a product</string>
@@ -59,4 +59,20 @@
     <string name="settings_title">SETTINGS</string>
     <string name="select_category">Select Categories</string>
     <string name="insert_your_password">Insert your current password :</string>
+    <string name="where_have_we_been_until_now">Where have we been ? 🫣</string>
+    <string name="history">NO WHERE ‍🤦🏾‍♂🤦🏻‍♀️</string>
+    <string name="borrow_status">BORROW STATUS</string>
+    <string name="is_complete">Is the borrow finish?</string>
+    <string name="your_history">Your History</string>
+    <string name="collection_borrowmap">borrowMap</string>
+    <string name="collection_receivedborrowmap">receivedBorrowMap</string>
+    <string name="collection_history">history</string>
+    <string name="collection_messages">Messages</string>
+    <string name="description">Description:</string>
+    <string name="categories_title">Categories:</string>
+    <string name="radius">Radius:</string>
+    <string name="address_of_borrow">Address of borrow:</string>
+    <string name="sender">Sender:</string>
+    <string name="approve">APPROVE</string>
+    <string name="reject">REJECT</string>
 </resources>

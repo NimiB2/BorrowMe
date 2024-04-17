@@ -19,6 +19,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
 import com.project1.borrowme.MainActivity;
 import com.project1.borrowme.R;
+import com.project1.borrowme.Utilities.FirebaseUtil;
 import com.project1.borrowme.Utilities.MySignal;
 
 public class LoginActivity extends AppCompatActivity {
@@ -82,6 +83,7 @@ public class LoginActivity extends AppCompatActivity {
                         // Sign in success
                         FirebaseUser currentUser = auth.getCurrentUser();
                         MySignal.getInstance().toast("Login Successful");
+                        FirebaseUtil.fetchCurrentUserAndSet();
                         changeActivity(false);
 
                     } else {

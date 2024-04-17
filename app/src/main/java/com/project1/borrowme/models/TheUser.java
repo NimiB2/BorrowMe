@@ -1,6 +1,7 @@
 package com.project1.borrowme.models;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class TheUser {
@@ -14,9 +15,9 @@ public class TheUser {
 
     private TheUser() {
         userDetails = new UserDetails();
-        receivedBorrowMap = new HashMap<>();
-        history = new HashMap<>();
-        Messages = new HashMap<>();
+        receivedBorrowMap = new LinkedHashMap<>();
+        history = new LinkedHashMap<>();
+        Messages = new LinkedHashMap<>();
     }
 
     public static TheUser getInstance() {
@@ -93,13 +94,25 @@ public class TheUser {
     }
 
     public <T> void addToMap(Map<String, T> map, String key, T value) {
-        map.put(key, value);
+        if (map != null) {
+            map.put(key, value);
+        }
     }
 
-    // Generic method to remove an item from a map
     public <T> void removeFromMap(Map<String, T> map, String key) {
-        if (map.containsKey(key)) {
+        if (map != null && map.containsKey(key)) {
             map.remove(key);
         }
+    }
+
+    public void resetUser() {
+
+        uid = null;
+        userDetails.resetUserDetails();
+        borrowMap.clear();
+        receivedBorrowMap.clear();
+        history.clear();
+        Messages.clear();
+
     }
 }

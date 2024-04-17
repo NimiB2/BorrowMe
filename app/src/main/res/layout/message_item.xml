@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/margin_small"
+    android:background="@drawable/custom_edittext"
+    app:cardBackgroundColor="@color/background"
+    app:cardCornerRadius="@dimen/margin_small"
+    app:cardElevation="@dimen/margin_small">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/margin_xsmall">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/message_item_MTV_item_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:text="@string/item_name_hint"
+                android:textColor="@color/tittle_color"
+                android:textSize="@dimen/text_size_main_button_s"
+                android:textStyle="bold" />
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/message_item_IMG_status"
+                android:layout_width="@dimen/status_icon_size"
+                android:layout_height="@dimen/status_icon_size"
+                android:src="@drawable/sand_clock"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="@dimen/margin_medium"
+                />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/message_item_MTV_user_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_xxxsmall"
+            android:text="@string/user_name"
+            android:textStyle="bold"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/text_borrow" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/message_MTV_sender"
+            android:layout_width="@dimen/card_width_size"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_xxxsmall"
+            android:text="@string/user_name"
+            android:textColor="@color/smallButton_text_color"
+            android:textSize="@dimen/text_borrow" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/message_item_MTV_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_small"
+            android:text="@string/description"
+            android:textStyle="bold"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/text_borrow" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/message_MTV_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_xxxsmall"
+            android:text="@string/description_hint"
+            android:textColor="@color/smallButton_text_color"
+            android:textSize="@dimen/text_borrow" />
+
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/message_item_BTN_approve"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin_xsmall"
+                android:layout_weight="1"
+                android:backgroundTint="@color/buttonColor"
+                android:text="@string/approve"
+                android:textColor="@color/button_text_color"
+                android:textSize="@dimen/text_size_small"
+                android:textStyle="bold" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/message_item_BTN_reject"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_xsmall"
+                android:layout_weight="1"
+                android:backgroundTint="@color/smallButtonColor"
+                android:text="@string/reject"
+                android:textColor="@color/smallButton_text_color"
+                android:textSize="@dimen/text_size_small"
+                android:textStyle="bold" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</androidx.cardview.widget.CardView>

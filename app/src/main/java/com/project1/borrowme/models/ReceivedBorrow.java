@@ -1,3 +1,4 @@
+
 package com.project1.borrowme.models;
 
 import com.project1.borrowme.adpters.UserAdapter;
@@ -9,17 +10,19 @@ public class ReceivedBorrow {
     private Borrow borrow;
     private String receiveUserId;
     private boolean isApprove;
+    private boolean isMe;
 
     public ReceivedBorrow() {
         this.id = generateUniqueId();
         isApprove=false;
     }
 
-    public ReceivedBorrow(Borrow borrow, String receiveUserId) {
+    public ReceivedBorrow(Borrow borrow, String receiveUserId, boolean isMe) {
         this.id = generateUniqueId();
         this.borrow = borrow;
         this.receiveUserId = receiveUserId;
         this.isApprove = false;
+        this.isMe=isMe;
     }
     private static String generateUniqueId() {
         return UUID.randomUUID().toString();
@@ -57,6 +60,15 @@ public class ReceivedBorrow {
 
     public ReceivedBorrow setApprove(boolean approve) {
         isApprove = approve;
+        return this;
+    }
+
+    public boolean isMe() {
+        return isMe;
+    }
+
+    public ReceivedBorrow setMe(boolean me) {
+        isMe = me;
         return this;
     }
 }

@@ -34,11 +34,10 @@ public class UserDetails {
     }
 
 
-
     public void removeCategory(String categoryName) {
-        if(categories.size()>1){
+        if (categories.size() > 1) {
             this.categories.remove(categoryName);
-        }else{
+        } else {
             MySignal.getInstance().toast("You must have at least one category");
         }
     }
@@ -88,8 +87,18 @@ public class UserDetails {
         this.profileImageUri = profileImageUri;
     }
 
-    public UserAdapter getMyAdapter(){
+    public UserAdapter getMyAdapter() {
         return new UserAdapter(this);
     }
 
+    public void resetUserDetails() {
+
+        categories = new HashMap<>();
+        uName = null;
+        uEmail = null;
+        lat = 0.0;
+        lon = 0.0;
+        profileImageUri = null;
+
+    }
 }

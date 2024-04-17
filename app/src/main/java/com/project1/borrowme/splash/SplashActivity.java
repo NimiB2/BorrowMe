@@ -19,11 +19,13 @@ import com.google.android.material.imageview.ShapeableImageView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.project1.borrowme.MainActivity;
 import com.project1.borrowme.R;
+import com.project1.borrowme.Utilities.FirebaseUtil;
 import com.project1.borrowme.logIns.LoginActivity;
+import com.project1.borrowme.models.TheUser;
 
 @SuppressLint("CustomSplashScreen")
 public class SplashActivity extends AppCompatActivity {
-
+    private boolean  isNewUser=true;
     private final int DURATION_TIME = 1650;
     private final long DELAY = 700;
     private final float ALPHA_START = 0.0f;
@@ -74,7 +76,10 @@ public class SplashActivity extends AppCompatActivity {
                         new Animator.AnimatorListener() {
                             @Override
                             public void onAnimationStart(@NonNull Animator animation) {
-
+                                if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                                    FirebaseUtil.fetchCurrentUserAndSet();
+                                    isNewUser=false;
+                                }
                             }
 
                             @Override
@@ -138,15 +143,17 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void changeActivity() {
-        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+        if (!isNewUser) {
             startActivity(new Intent(this, MainActivity.class));
             finish();
         }else{
+
             startActivity(new Intent(this, LoginActivity.class));
             finish();
         }
 
     }
+
 
     private void findViews() {
         splash_IMG_logo = findViewById(R.id.splash_IMG_logo);

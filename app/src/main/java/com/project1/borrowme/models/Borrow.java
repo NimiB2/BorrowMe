@@ -18,23 +18,28 @@ public class Borrow {
     private int numOfAnswers;
     private double lat;
     private double lon;
+    private boolean isSucceeded;
+    private String senderName;
 
     public Borrow() {
         this.id = generateUniqueId();
-        this.isOpenBorrow = false;
+        this.isOpenBorrow = true;
         this.borrowComplete = false;
         this.numOfSending = 0;
         this.numOfAnswers = 0;
+        this.isSucceeded=false;
     }
 
 
-    public Borrow( String senderId,String itemName, String description, ArrayList<String> categories, int radiusKm, double lat, double lon) {
+    public Borrow( String senderName,String senderId,String itemName, String description, ArrayList<String> categories, int radiusKm, double lat, double lon) {
         this.id = generateUniqueId();
-        this.isOpenBorrow = false;
+        this.isOpenBorrow = true;
         this.borrowComplete = false;
         this.numOfSending = 0;
         this.numOfAnswers = 0;
+        this.isSucceeded=false;
 
+        this.senderName=senderName;
         this.senderId = senderId;
         this.itemName = itemName;
         this.description = description;
@@ -155,4 +160,40 @@ public class Borrow {
         this.lon = lon;
         return this;
     }
+
+    public boolean isSucceeded() {
+        return isSucceeded;
+    }
+
+    public Borrow setSucceeded(boolean succeeded) {
+        isSucceeded = succeeded;
+        return this;
+    }
+
+    public String getSenderName() {
+        return senderName;
+    }
+
+    public Borrow setSenderName(String senderName) {
+        this.senderName = senderName;
+        return this;
+    }
+
+    public void updateNumOfSending(){
+        this.numOfSending++;
+    }
+    public void updateNumOfAnswers(){
+        this.numOfAnswers++;
+    }
+
+    public void checkForClosed(){
+        if(this.numOfAnswers==this.numOfSending){
+            setOpenBorrow(false);
+        }
+        else if(this.isBorrowComplete()){
+            setOpenBorrow(false);
+            setSucceeded(true);
+        }
+    }
+
 }

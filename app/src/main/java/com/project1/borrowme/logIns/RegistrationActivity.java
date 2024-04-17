@@ -20,10 +20,13 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.project1.borrowme.MainActivity;
 import com.project1.borrowme.R;
+import com.project1.borrowme.Utilities.FirebaseUtil;
 import com.project1.borrowme.Utilities.MySignal;
 import com.project1.borrowme.data.CategoriesData;
 import com.project1.borrowme.interfaces.CategorySelectionListener;
 import com.project1.borrowme.models.Category;
+import com.project1.borrowme.models.TheUser;
+import com.project1.borrowme.models.UserDetails;
 import com.project1.borrowme.views.CategoriesFragment;
 
 import java.util.HashMap;
@@ -93,10 +96,26 @@ public class RegistrationActivity extends AppCompatActivity {
         userDocRef.set(userMap)
                 .addOnSuccessListener(aVoid -> {
                     Log.d("Firestore", "User added successfully!");
-
+                    setTheUser();
                     changeActivity(true);
                 })
                 .addOnFailureListener(e -> Log.w("Firestore", "Error adding user", e));
+    }
+
+    private void setTheUser() {
+        TheUser theUser = TheUser.getInstance();
+        theUser.setUid(authUid);
+        theUser.setUserDetails(new UserDetails()
+                .setuName(authUserName)
+                .setuEmail(authEmail)
+                .setLat(authLatitude)
+                .setLon(authLongitude)
+                .setCategories(selectedCategories)
+        );
+//        theUser.setBorrowMap(new HashMap<>());
+//        theUser.setReceivedBorrowMap(new HashMap<>());
+//        theUser.setHistory(new HashMap<>());
+//        theUser.setMessages(new HashMap<>());
     }
 
     private void initFragment() {

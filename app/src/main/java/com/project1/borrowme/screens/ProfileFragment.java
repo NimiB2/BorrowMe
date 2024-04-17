@@ -73,6 +73,7 @@ public class ProfileFragment extends Fragment {
     private void setUser() {
         theUser =TheUser.getInstance();
         userDetails=theUser.getUserDetails();
+        int x=1;
     }
 
 

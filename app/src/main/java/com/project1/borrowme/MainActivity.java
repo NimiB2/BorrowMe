@@ -56,59 +56,16 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
         findViews();
-        getTheUser();
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         initViews();
         initFragments();
     }
 
-    private void getTheUser() {
-        FirebaseUtil.currentUserFirestore().get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()){
-
-                    TheUser fetchedUser = task.getResult().toObject(TheUser.class);
-                    setUser(fetchedUser,task.getResult());
-                }
-            }
-        });
-    }
-
-    private void setUser(TheUser fetchedUser, DocumentSnapshot document) {
-        if (fetchedUser != null && fetchedUser.getUserDetails() != null) {
-            UserDetails fetchedUserDetails =fetchedUser.getUserDetails();
-
-            if (theUser.getUserDetails() == null) {
-                theUser.setUserDetails(new UserDetails());
-            }
-            theUser.setUid(fetchedUser.getUid());
-            theUser.setBorrowMap(fetchedUser.getBorrowMap());
-            theUser.setReceivedBorrowMap(fetchedUser.getReceivedBorrowMap());
-            theUser.setHistory(fetchedUser.getHistory());
-            theUser.setMessages(fetchedUser.getMessages());
-
-            UserDetails userDetails= theUser.getUserDetails();
-            userDetails.setuName(fetchedUserDetails.getuName());
-            userDetails.setuEmail(fetchedUserDetails.getuEmail());
-            userDetails.setLat(fetchedUserDetails.getLat());
-            userDetails.setLon(fetchedUserDetails.getLon());
-            userDetails.setCategories(fetchedUserDetails.getCategories());
-
-            fetchAndSetUserProfileImage(userDetails);
-
-        } else {
-            Log.e("Firestore", "Fetched user or user details are null");
-        }
-    }
-
-    private void fetchAndSetUserProfileImage(UserDetails userDetails) {
-        StorageReference profilePicRef = FirebaseUtil.getCurrentProfilePicStorageRef();
-        profilePicRef.getDownloadUrl()
-                .addOnSuccessListener(userDetails::setProfileImageUri)
-                .addOnFailureListener(e -> {
-                    userDetails.setProfileImageUri(null);
-                });
-    }
 
     private void initViews() {
         main_BTN_logout.setOnClickListener(new View.OnClickListener() {
@@ -120,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void logOut() {
-        //theUser.resetUser();
+        theUser.resetUser();
         FirebaseAuth.getInstance().signOut();
 
         Intent intent = new Intent(MainActivity.this, LoginActivity.class);

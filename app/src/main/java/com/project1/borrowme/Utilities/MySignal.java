@@ -13,7 +13,6 @@ public class MySignal {
     private static MySignal instance = null;
     private static Vibrator vibrator;
     private Toast currentToast;
-    private MediaPlayer mp;
 
     private Context context;
 
@@ -53,19 +52,6 @@ public class MySignal {
         }
     }
 
-    public void sound(int audio) {
-        if (mp != null) {
-            mp.stop();
-            mp.release();
-            mp = null;
-        }
-        mp = MediaPlayer.create(context, audio);
-        if (mp != null) {
-            mp.setVolume(1.0f, 1.0f);
-            mp.start();
-            mp.setOnCompletionListener(MediaPlayer::pause);
-        }
-    }
 
     public static MySignal getInstance() {
         return instance;

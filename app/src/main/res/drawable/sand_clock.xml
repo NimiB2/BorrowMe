@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="@dimen/status_icon_size"
+    android:height="@dimen/status_icon_size"
+    android:viewportWidth="512"
+    android:viewportHeight="512">
+
+    <path
+        android:fillColor="#bbdefb"
+        android:strokeWidth="1"
+        android:pathData="M400 64V48H112v16c0 63.959 36.794 120.9 94.051 157.507 25.159 16.086 25.159 52.9 0 68.986C148.794 327.1 112 384.041 112 448v16h288v-16c0-63.959-36.794-120.9-94.051-157.507-25.159-16.086-25.159-52.9 0-68.986C363.206 184.9 400 127.959 400 64z" />
+    <path
+        android:fillColor="#ffa500"
+        android:strokeWidth="1"
+        android:pathData="M271.08 324a56.683 56.683 0 0 0 26.25 47.973c31.922 20.409 55.933 46.63 70.5 76.027l0.171 8H144l0.171-8c14.565-29.4 38.577-55.618 70.5-76.027A56.681 56.681 0 0 0 240.92 324v-72a56.681 56.681 0 0 0-26.251-47.973c-31.921-20.409-55.933-46.63-70.5-76.027h223.66c-14.566 29.4-38.577 55.618-70.5 76.027A56.683 56.683 0 0 0 271.08 252z" />
+    <path
+        android:fillColor="#3f51b5"
+        android:strokeWidth="1"
+        android:pathData="M416 488H96v-23a17 17 0 0 1 17-17h287a16 16 0 0 1 16 16zM416 24H96v23a17 17 0 0 0 17 17h287a16 16 0 0 0 16-16z" />
+</vector>

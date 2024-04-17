@@ -34,12 +34,11 @@ import com.project1.borrowme.Utilities.LocationManagerUtil;
 import com.project1.borrowme.Utilities.MySignal;
 import com.project1.borrowme.data.CategoriesData;
 import com.project1.borrowme.interfaces.CallbackCheckUsers;
-import com.project1.borrowme.interfaces.CallbackReceivedBorrow;
+import com.project1.borrowme.interfaces.CallbackAddFirebase;
 import com.project1.borrowme.interfaces.LocationFetchListener;
 import com.project1.borrowme.models.Borrow;
 import com.project1.borrowme.models.ReceivedBorrow;
 import com.project1.borrowme.models.TheUser;
-import com.project1.borrowme.models.UserDetails;
 import com.project1.borrowme.screens.HomeFragment;
 
 import java.io.IOException;
@@ -277,6 +276,7 @@ public class NewBorrowingFragment extends Fragment {
             getLocation();
             String myId= FirebaseUtil.currentUserId();
             Borrow newBorrow = new Borrow(
+                    theUser.getUserDetails().getuName(),
                     myId,
                     newBorrow_ET_itemName.getText().toString().trim(),
                     newBorrow_ET_description.getText().toString().trim(),
@@ -289,7 +289,7 @@ public class NewBorrowingFragment extends Fragment {
             CallbackCheckUsers checkUsers= new CallbackCheckUsers() {
                 @Override
                 public void checkUsers(Borrow newBorrow) {
-                    addingForHistory(myId,newBorrow);
+                    addingForMyHistory(myId,newBorrow);
                 }
             };
 
@@ -299,40 +299,52 @@ public class NewBorrowingFragment extends Fragment {
 
     }
 
-    private void addingForHistory(String myId,Borrow newBorrow) {
-        ReceivedBorrow receivedBorrow = new ReceivedBorrow(newBorrow,theUser.getUid());
+    private void addingForMyHistory(String myId, Borrow newBorrow) {
+        ReceivedBorrow receivedBorrow = new ReceivedBorrow(newBorrow,theUser.getUid(),true);
         theUser.addToMap(theUser.getHistory(),receivedBorrow.getId(),receivedBorrow);
-        CallbackReceivedBorrow callbackReceivedBorrow = new CallbackReceivedBorrow() {
+        CallbackAddFirebase callbackAddFirebase = new CallbackAddFirebase() {
             @Override
             public void onAddToFirebase(ReceivedBorrow receivedBorrow) {
+
                 checkOtherUsers(myId,newBorrow);
                 backToHome();
             }
         };
-
-        FirebaseUtil.addReceivedBorrowToFirestore(receivedBorrow,"history",callbackReceivedBorrow,myId);
+        FirebaseUtil.addReceivedBorrowToFirestore(receivedBorrow,"history", callbackAddFirebase,myId);
 
     }
 
 
     private void checkOtherUsers(String senderId,Borrow newBorrow) {
-       BorrowUtil.findEligibleUsers(senderId,newBorrow.getLat(), newBorrow.getLon(), newBorrow.getRadiusKm(),newBorrow.getCategories()).thenAccept(otherUsersId->{
-          sendGetBorrow(otherUsersId,newBorrow);
-       });
+        BorrowUtil.findEligibleUsers(senderId,newBorrow.getLat(), newBorrow.getLon(), newBorrow.getRadiusKm(),newBorrow.getCategories()).thenAccept(otherUsersId->{
+            sendGetBorrow(otherUsersId,newBorrow);
+        });
     }
 
     private void sendGetBorrow(List<String> otherUsersId,Borrow newBorrow) {
         for (String userId :otherUsersId) {
-            ReceivedBorrow receivedBorrow = new ReceivedBorrow(newBorrow,userId );
-            CallbackReceivedBorrow callbackReceivedBorrow = new CallbackReceivedBorrow() {
+            ReceivedBorrow receivedBorrow = new ReceivedBorrow(newBorrow,userId,false );
+            CallbackAddFirebase callbackAddFirebase = new CallbackAddFirebase() {
                 @Override
                 public void onAddToFirebase(ReceivedBorrow receivedBorrow) {
+                    newBorrow.updateNumOfSending();
+                    addForMessages(receivedBorrow,userId);
 
                 }
             };
-            FirebaseUtil.addReceivedBorrowToFirestore(receivedBorrow,"receivedBorrowMap", callbackReceivedBorrow,userId);
+            FirebaseUtil.addReceivedBorrowToFirestore(receivedBorrow,"receivedBorrowMap", callbackAddFirebase,userId);
         }
 
+    }
+
+    private void addForMessages(ReceivedBorrow receivedBorrow,String userId) {
+        CallbackAddFirebase callbackAddFirebase = new CallbackAddFirebase() {
+            @Override
+            public void onAddToFirebase(ReceivedBorrow receivedBorrow) {
+
+            }
+        };
+        FirebaseUtil.addReceivedBorrowToFirestore(receivedBorrow,"Messages", callbackAddFirebase,userId);
     }
 
 

@@ -1,5 +1,6 @@
 package com.project1.borrowme.Utilities;
 
+import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
@@ -7,21 +8,36 @@ import android.util.Patterns;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.project1.borrowme.R;
 import com.project1.borrowme.interfaces.CallbackCheckUsers;
-import com.project1.borrowme.interfaces.CallbackReceivedBorrow;
+import com.project1.borrowme.interfaces.CallbackAddFirebase;
+import com.project1.borrowme.interfaces.CallbackGetFirebase;
 import com.project1.borrowme.models.Borrow;
 import com.project1.borrowme.models.Category;
 import com.project1.borrowme.models.ReceivedBorrow;
 
 import java.util.HashMap;
 import java.util.Map;
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.project1.borrowme.models.TheUser;
+import com.project1.borrowme.models.UserDetails;
 
 public class FirebaseUtil {
     private CallbackCheckUsers callback;
+    private static Context appContext;
+
+    public static void initialize(Context context) {
+        appContext = context.getApplicationContext();
+    }
 
     public static String currentUserId() {
         return FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -30,6 +46,59 @@ public class FirebaseUtil {
     public static DocumentReference currentUserFirestore() {
         return FirebaseFirestore.getInstance().collection("users").document(currentUserId());
     }
+
+    public static void fetchCurrentUserAndSet() {
+
+        FirebaseUtil.currentUserFirestore().get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+
+                    TheUser fetchedUser = task.getResult().toObject(TheUser.class);
+                    setUser(fetchedUser);
+                }
+            }
+        });
+    }
+
+    private static void setUser(TheUser fetchedUser) {
+        TheUser theUser= TheUser.getInstance();
+
+        if (fetchedUser != null && fetchedUser.getUserDetails() != null) {
+            UserDetails fetchedUserDetails =fetchedUser.getUserDetails();
+
+            if (theUser.getUserDetails() == null) {
+                theUser.setUserDetails(new UserDetails());
+            }
+            theUser.setUid(fetchedUser.getUid());
+            theUser.setBorrowMap(fetchedUser.getBorrowMap());
+            theUser.setReceivedBorrowMap(fetchedUser.getReceivedBorrowMap());
+            theUser.setHistory(fetchedUser.getHistory());
+            theUser.setMessages(fetchedUser.getMessages());
+
+            UserDetails userDetails= theUser.getUserDetails();
+            userDetails.setuName(fetchedUserDetails.getuName());
+            userDetails.setuEmail(fetchedUserDetails.getuEmail());
+            userDetails.setLat(fetchedUserDetails.getLat());
+            userDetails.setLon(fetchedUserDetails.getLon());
+            userDetails.setCategories(fetchedUserDetails.getCategories());
+
+            fetchAndSetUserProfileImage(userDetails);
+
+        } else {
+            Log.e("Firestore", "Fetched user or user details are null");
+        }
+    }
+
+    private static void fetchAndSetUserProfileImage(UserDetails userDetails) {
+        StorageReference profilePicRef = FirebaseUtil.getCurrentProfilePicStorageRef();
+        profilePicRef.getDownloadUrl()
+                .addOnSuccessListener(userDetails::setProfileImageUri)
+                .addOnFailureListener(e -> {
+                    userDetails.setProfileImageUri(null);
+                });
+    }
+
 
 
     public static boolean validateUserName(TextInputEditText userNameEditText) {
@@ -80,6 +149,8 @@ public class FirebaseUtil {
     public static void addBorrowToFirestore(Borrow borrow, CallbackCheckUsers checkUsers) {
         // Convert the Borrow object into a Map
         Map<String, Object> borrowMap = new HashMap<>();
+        borrowMap.put("isSucceeded", borrow.isSucceeded());
+        borrowMap.put("senderName", borrow.getSenderName());
         borrowMap.put("isOpenBorrow", borrow.isOpenBorrow());
         borrowMap.put("borrowComplete", borrow.isBorrowComplete());
         borrowMap.put("itemName", borrow.getItemName());
@@ -93,6 +164,7 @@ public class FirebaseUtil {
 
         // Update the borrowMap in Firestore for the current user
         DocumentReference userDocRef = currentUserFirestore();
+
         userDocRef.update("borrowMap." + borrow.getId(), borrowMap)
                 .addOnSuccessListener(aVoid -> {
                     if (checkUsers != null) {
@@ -108,6 +180,7 @@ public class FirebaseUtil {
 
         // Remove the borrow from the borrowMap
         Map<String, Object> updates = new HashMap<>();
+
         updates.put("borrowMap." + borrowId, FieldValue.delete());
 
         userDocRef.update(updates)
@@ -116,21 +189,24 @@ public class FirebaseUtil {
     }
 
 
-    public static void addReceivedBorrowToFirestore(ReceivedBorrow receivedBorrow, String theMap, CallbackReceivedBorrow callbackReceivedBorrow, String userId) {
+
+    public static void addReceivedBorrowToFirestore(ReceivedBorrow receivedBorrow, String theMap, CallbackAddFirebase callbackAddFirebase, String userId) {
         // Convert the Borrow object into a Map
         Map<String, Object> theMapType = new HashMap<>();
         theMapType.put("id", receivedBorrow.getId());
         theMapType.put("borrow", receivedBorrow.getBorrow());
         theMapType.put("receiveUserId", receivedBorrow.getReceiveUserId());
         theMapType.put("isApprove", receivedBorrow.isApprove());
+        theMapType.put("isMe", receivedBorrow.isMe());
 
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
         // Update the borrowMap in Firestore for the current user
         DocumentReference userDocRef = firestore.collection("users").document(userId);
-        userDocRef.update(theMap + "." + receivedBorrow.getId(), theMapType) // Notice the change here
+
+        userDocRef.update(theMap+ "." + receivedBorrow.getId(), theMapType) // Notice the change here
                 .addOnSuccessListener(aVoid -> {
-                    if (callbackReceivedBorrow != null) {
-                        callbackReceivedBorrow.onAddToFirebase(receivedBorrow);
+                    if (callbackAddFirebase != null) {
+                        callbackAddFirebase.onAddToFirebase(receivedBorrow);
                     }
                 })
                 .addOnFailureListener(e -> Log.w("Firestore", "Error adding borrow", e));
@@ -142,11 +218,33 @@ public class FirebaseUtil {
 
         // Remove the borrow from the borrowMap
         Map<String, Object> updates = new HashMap<>();
-        updates.put("borrowMap." + borrowId, FieldValue.delete());
+
+        updates.put("receivedBorrowMap." + borrowId, FieldValue.delete());
 
         userDocRef.update(updates)
                 .addOnSuccessListener(aVoid -> Log.d("Firestore", "Borrow removed successfully!"))
                 .addOnFailureListener(e -> Log.w("Firestore", "Error removing borrow", e));
     }
-}
 
+    public static void fetchCollectionAsMap(String collectionName, CallbackGetFirebase<Map<String, ReceivedBorrow>> callback) {
+        FirebaseFirestore.getInstance().collection(collectionName).get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    Map<String, ReceivedBorrow> resultMap = new HashMap<>();
+                    for (DocumentSnapshot snapshot : queryDocumentSnapshots.getDocuments()) {
+                        ReceivedBorrow receivedBorrow = snapshot.toObject(ReceivedBorrow.class);
+                        resultMap.put(snapshot.getId(), receivedBorrow);
+                    }
+                    if (callback != null) {
+                        callback.onGet(resultMap);
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.w("Firestore", "Error fetching collection: " + collectionName, e);
+                    if (callback != null) {
+                        callback.onGet(null);
+                    }
+                });
+    }
+
+
+}

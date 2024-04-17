@@ -36,17 +36,32 @@
             android:layout_below="@id/home_BTN_new_borrowing"
             android:layout_marginTop="@dimen/margin_large"
             android:textStyle="bold"
+            android:layout_centerHorizontal="true"
             android:textColor="@color/tittle_color"
-            android:text="Where have we been until now? 🫣"
-            android:textSize="@dimen/text_size_main_button_s" />
+            android:text="@string/where_have_we_been_until_now"
+            android:textSize="@dimen/text_size_main_button_m" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/home_MTV_subTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/history"
+            android:textSize="@dimen/text_size_main_button_s"
+            android:textColor="@color/text_color"
+            android:textStyle="bold"
+            android:layout_below="@id/home_MTV_borrowings"
+            android:layout_marginTop="@dimen/margin_large"
+            />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/home_RECYCLER_old_borrowings"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/home_MTV_borrowings"
+            android:layout_below="@id/home_MTV_subTitle"
             android:layout_marginTop="@dimen/margin_medium"
+            android:layout_marginBottom="@dimen/margin_large"
             android:orientation="horizontal"
+            tools:listitem="@layout/history_item"
             />
 
     </com.google.android.material.circularreveal.CircularRevealRelativeLayout>
