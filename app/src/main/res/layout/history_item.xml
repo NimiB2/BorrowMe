@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="@dimen/margin_small"
-    android:background="@drawable/custom_edittext"
-    >
+    android:background="@drawable/custom_edittext">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/borrow_item_CARD"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="@dimen/margin_small"
         app:cardBackgroundColor="@color/smallButtonColor"
+        app:cardCornerRadius="@dimen/margin_small"
         app:cardElevation="@dimen/margin_xsmall">
 
         <RelativeLayout
@@ -21,17 +20,35 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/margin_small">
 
-            <!-- Item Name and Status Icon, always visible -->
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/borrow_item_MTV_item_name"
-                android:layout_width="@dimen/card_width_size"
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/name_and_date"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentStart="true"
-                android:text="@string/item_name_hint"
-                android:textColor="@color/tittle_color"
-                android:textSize="@dimen/text_size_main_button_s"
-                android:textStyle="bold" />
+                android:orientation="vertical">
+
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/borrow_item_MTV_item_name"
+                    android:layout_width="@dimen/card_width_size"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:text="@string/item_name_hint"
+                    android:textColor="@color/tittle_color"
+                    android:textSize="@dimen/text_size_main_button_s"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/borrow_item_MTV_date"
+                    android:layout_width="@dimen/card_width_size"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginTop="@dimen/margin_xxxsmall"
+                    android:text=""
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/text_borrow"
+                    android:textStyle="italic" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:id="@+id/borrow_item_LINEARLAYOUT_status"
@@ -57,8 +74,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginStart="@dimen/margin_small"
                     android:layout_marginTop="@dimen/margin_xsmall"
-                    android:src="@drawable/sand_clock"
-                  />
+                    android:src="@drawable/sand_clock" />
             </androidx.appcompat.widget.LinearLayoutCompat>
 
             <!-- Detail Views, initially hidden -->
@@ -66,10 +82,9 @@
                 android:id="@+id/detail_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/borrow_item_MTV_item_name"
+                android:layout_below="@id/name_and_date"
                 android:orientation="vertical"
-               android:visibility="gone"
-                >
+                android:visibility="gone">
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/title_sender"
@@ -77,8 +92,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_xsmall"
                     android:text="@string/sender"
-                    android:textStyle="bold"
-                    android:textSize="@dimen/text_borrow"/>
+                    android:textSize="@dimen/text_borrow"
+                    android:textStyle="bold" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/borrow_item_MTV_sender"
@@ -95,8 +110,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_xsmall"
                     android:text="@string/address_of_borrow"
-                    android:textStyle="bold"
-                    android:textSize="@dimen/text_borrow"/>
+                    android:textSize="@dimen/text_borrow"
+                    android:textStyle="bold" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/borrow_item_MTV_address"
@@ -113,8 +128,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_xsmall"
                     android:text="@string/radius"
-                    android:textStyle="bold"
-                    android:textSize="@dimen/text_borrow"/>
+                    android:textSize="@dimen/text_borrow"
+                    android:textStyle="bold" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/borrow_item_MTV_radius"
@@ -131,8 +146,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_xsmall"
                     android:text="@string/categories_title"
-                    android:textStyle="bold"
-                    android:textSize="@dimen/text_borrow"/>
+                    android:textSize="@dimen/text_borrow"
+                    android:textStyle="bold" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/borrow_item_MTV_categories"
@@ -149,8 +164,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_xsmall"
                     android:text="@string/description"
-                    android:textStyle="bold"
-                    android:textSize="@dimen/text_borrow"/>
+                    android:textSize="@dimen/text_borrow"
+                    android:textStyle="bold" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/borrow_item_MTV_description"

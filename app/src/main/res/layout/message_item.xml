@@ -20,25 +20,41 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/message_item_MTV_title"
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:text="@string/title"
-                android:textColor="@color/tittle_color"
-                android:textSize="@dimen/text_size_main_button_s"
-                android:textStyle="bold" />
+                android:orientation="vertical">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/message_item_MTV_title"
+                    android:layout_width="@dimen/card_width_size"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/title"
+                    android:textColor="@color/tittle_color"
+                    android:textSize="@dimen/text_size_main_button_s"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/message_item_MTV_date"
+                    android:layout_width="@dimen/card_width_size"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text=""
+                    android:layout_marginTop="@dimen/margin_xxxsmall"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/text_borrow"
+                    android:textStyle="italic" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/message_item_IMG_status"
                 android:layout_width="@dimen/status_icon_size"
                 android:layout_height="@dimen/status_icon_size"
-                android:src="@drawable/sand_clock"
                 android:layout_gravity="center_vertical"
                 android:layout_marginEnd="@dimen/margin_medium"
-                />
+                android:src="@drawable/sand_clock" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -49,55 +65,56 @@
             android:orientation="vertical">
 
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/message_item_MTV_item_name"
-            android:layout_width="@dimen/card_width_size"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_xxxsmall"
-            android:text="@string/item_name_hint"
-            android:textColor="@color/tittle_color"
-            android:textSize="@dimen/text_size_main_button_s"
-            android:textStyle="bold" />
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/message_item_MTV_item_name"
+                android:layout_width="@dimen/card_width_size"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_xxxsmall"
+                android:text="@string/item_name_hint"
+                android:textColor="@color/tittle_color"
+                android:textSize="@dimen/text_size_main_button_s"
+                android:textStyle="bold" />
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/message_item_MTV_user_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_xxxsmall"
-            android:text="@string/user_name"
-            android:textStyle="bold"
-            android:textColor="@color/text_color"
-            android:textSize="@dimen/text_borrow" />
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/message_item_MTV_user_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_xxxsmall"
+                android:text="@string/user_name"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/text_borrow"
+                android:textStyle="bold" />
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/message_MTV_sender"
-            android:layout_width="@dimen/card_width_size"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_xxxsmall"
-            android:text="@string/user_name"
-            android:textColor="@color/smallButton_text_color"
-            android:textSize="@dimen/text_borrow" />
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/message_MTV_sender"
+                android:layout_width="@dimen/card_width_size"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_xxxsmall"
+                android:text="@string/user_name"
+                android:textColor="@color/smallButton_text_color"
+                android:textSize="@dimen/text_borrow" />
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/message_item_MTV_description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_small"
-            android:text="@string/description"
-            android:textStyle="bold"
-            android:textColor="@color/text_color"
-            android:textSize="@dimen/text_borrow" />
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/message_item_MTV_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_small"
+                android:text="@string/description"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/text_borrow"
+                android:textStyle="bold" />
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/message_MTV_description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_xxxsmall"
-            android:text="@string/description_hint"
-            android:textColor="@color/smallButton_text_color"
-            android:textSize="@dimen/text_borrow" />
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/message_MTV_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_xxxsmall"
+                android:text="@string/description_hint"
+                android:textColor="@color/smallButton_text_color"
+                android:textSize="@dimen/text_borrow" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
+
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

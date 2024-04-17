@@ -1,28 +1,28 @@
 
 package com.project1.borrowme.models;
 
+import com.google.firebase.Timestamp;
+
 import java.util.UUID;
 
 public class ReceivedBorrow {
     private String id;
+    private Timestamp createdAt;
     private Borrow borrow;
     private String receiveUserId;
     private boolean Approved;
     private boolean answer;
-    private boolean me;
 
     public ReceivedBorrow() {
-       // this.id = generateUniqueId();
         Approved =false;
     }
 
-    public ReceivedBorrow(Borrow borrow, String receiveUserId) {
-
+    public ReceivedBorrow(Borrow borrow, String receiveUserId,Timestamp  createdAt) {
         this.borrow = borrow;
         this.id = borrow.getId();
         this.receiveUserId = receiveUserId;
         this.Approved = false;
-
+        this.createdAt = createdAt;
     }
     private static String generateUniqueId() {
         return UUID.randomUUID().toString();
@@ -63,21 +63,21 @@ public class ReceivedBorrow {
         return this;
     }
 
-    public boolean getMe() {
-        return me;
-    }
-
-    public ReceivedBorrow setMe(boolean me) {
-        this.me = me;
-        return this;
-    }
-
     public boolean getAnswer() {
         return answer;
     }
 
     public ReceivedBorrow setAnswer(boolean answer) {
         this.answer = answer;
+        return this;
+    }
+
+    public Timestamp getCreatedAt() {
+        return createdAt;
+    }
+
+    public ReceivedBorrow setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
         return this;
     }
 }

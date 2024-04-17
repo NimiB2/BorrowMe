@@ -27,6 +27,7 @@ import com.google.android.material.radiobutton.MaterialRadioButton;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textview.MaterialTextView;
+import com.google.firebase.Timestamp;
 import com.project1.borrowme.R;
 import com.project1.borrowme.Utilities.BorrowUtil;
 import com.project1.borrowme.Utilities.FirebaseUtil;
@@ -300,8 +301,8 @@ public class NewBorrowingFragment extends Fragment {
     }
 
     private void addingForMyHistory(String myId, Borrow newBorrow) {
-        ReceivedBorrow receivedBorrow = new ReceivedBorrow(newBorrow,theUser.getUid());
-        receivedBorrow.setMe(true);
+        ReceivedBorrow receivedBorrow = new ReceivedBorrow(newBorrow,theUser.getUid(),Timestamp.now());
+
         theUser.addToMap(theUser.getHistory(),receivedBorrow.getId(),receivedBorrow);
         CallbackAddFirebase callbackAddFirebase = new CallbackAddFirebase() {
             @Override
@@ -324,8 +325,8 @@ public class NewBorrowingFragment extends Fragment {
 
     private void sendGetBorrow(List<String> otherUsersId,Borrow newBorrow) {
         for (String userId :otherUsersId) {
-            ReceivedBorrow receivedBorrow = new ReceivedBorrow(newBorrow,userId );
-            receivedBorrow.setMe(false);
+            ReceivedBorrow receivedBorrow = new ReceivedBorrow(newBorrow,userId, Timestamp.now() );
+
             CallbackAddFirebase callbackAddFirebase = new CallbackAddFirebase() {
                 @Override
                 public void onAddToFirebase(ReceivedBorrow receivedBorrow) {

@@ -12,18 +12,23 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textview.MaterialTextView;
+import com.google.firebase.Timestamp;
 import com.project1.borrowme.R;
 import com.project1.borrowme.Utilities.FirebaseUtil;
 import com.project1.borrowme.interfaces.CallbackAddFirebase;
 import com.project1.borrowme.models.ReceivedBorrow;
 import com.project1.borrowme.models.TheUser;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHolder> {
     private Context context;
     private List<ReceivedBorrow> messages;
     private LayoutInflater inflater;
+
 
     public MessageAdapter(Context context, List<ReceivedBorrow> messages) {
         this.context = context;
@@ -42,6 +47,10 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ReceivedBorrow message = getItem(position);
 
+        Timestamp timestamp = message.getCreatedAt();
+        LocalDateTime localDateTime = timestamp.toDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+        holder.message_item_MTV_date.setText(localDateTime.format(DateTimeFormatter.ofPattern("dd-MM-yy HH:mm")));
+
         holder.message_item_MTV_item_name.setText(message.getBorrow().getItemName());
         holder.message_MTV_sender.setText(message.getBorrow().getSenderName());
         holder.message_MTV_description.setText(message.getBorrow().getDescription());
@@ -58,12 +67,15 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         if (message.getBorrow().getSenderId().equals(FirebaseUtil.currentUserId())) {
             if (message.getApproved()) {
                 holder.message_item_MTV_title.setText("Borrow Approved");
+                holder.message_item_BTN_approve.setText("CLOSE THE DEAL");
             } else {
                 holder.message_item_MTV_title.setText("Borrow Rejected");
+                holder.message_item_BTN_reject.setText("NO THANKS");
             }
 
         } else {
             if(message.getAnswer() || message.getBorrow().checkForClosed()){
+                holder.detail_layout.setVisibility(View.GONE);
                 holder.message_item_BTN_approve.setVisibility(View.GONE);
                 holder.message_item_BTN_reject.setVisibility(View.GONE);
 
@@ -92,6 +104,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
                 };
                 FirebaseUtil.addReceivedBorrowToFirestore(message,"history",callbackAddFirebase,message.getReceiveUserId());
             }
+            holder.message_item_MTV_title.setText("Closed");
             holder.message_item_IMG_status.setImageResource(R.drawable.closed);
         }else{
             // Set image based on whether approved or rejected
@@ -168,11 +181,13 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        MaterialTextView message_item_MTV_title, message_item_MTV_item_name, message_item_MTV_user_name, message_item_MTV_description, message_MTV_sender, message_MTV_description;
+        MaterialTextView message_item_MTV_date,message_item_MTV_title, message_item_MTV_item_name, message_item_MTV_user_name, message_item_MTV_description, message_MTV_sender, message_MTV_description;
         ShapeableImageView message_item_IMG_status;
         MaterialButton message_item_BTN_approve, message_item_BTN_reject;
         View layoutButtons;
         LinearLayoutCompat detail_layout;
+
+
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -185,6 +200,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
             message_item_BTN_reject = itemView.findViewById(R.id.message_item_BTN_reject);
             message_MTV_sender = itemView.findViewById(R.id.message_MTV_sender);
             message_MTV_description = itemView.findViewById(R.id.message_MTV_description);
+            message_item_MTV_date= itemView.findViewById(R.id.message_item_MTV_date);
             detail_layout = itemView.findViewById(R.id.detail_layout);
         }
 

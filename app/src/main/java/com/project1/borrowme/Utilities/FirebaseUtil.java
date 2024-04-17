@@ -147,18 +147,21 @@ public class FirebaseUtil {
     public static void addBorrowToFirestore(Borrow borrow, CallbackCheckUsers checkUsers) {
         // Convert the Borrow object into a Map
         Map<String, Object> borrowMap = new HashMap<>();
-        borrowMap.put("isSucceeded", borrow.isSucceeded());
+        borrowMap.put("id", borrow.getId());
+        borrowMap.put("senderId", borrow.getSenderId());
         borrowMap.put("senderName", borrow.getSenderName());
-        borrowMap.put("isOpenBorrow", borrow.isOpenBorrow());
-        borrowMap.put("borrowComplete", borrow.isBorrowComplete());
         borrowMap.put("itemName", borrow.getItemName());
         borrowMap.put("description", borrow.getDescription());
-        borrowMap.put("categories", borrow.getCategories());
-        borrowMap.put("distance", borrow.getRadiusKm());
-        borrowMap.put("numOfSending", borrow.getNumOfSending());
-        borrowMap.put("numOfAnswers", borrow.getNumOfAnswers());
         borrowMap.put("lat", borrow.getLat());
         borrowMap.put("lon", borrow.getLon());
+        borrowMap.put("radiusKm", borrow.getRadiusKm());
+        borrowMap.put("numOfSending", borrow.getNumOfSending());
+        borrowMap.put("numOfAnswers", borrow.getNumOfAnswers());
+        borrowMap.put("OpenBorrow", borrow.getOpenBorrow());
+        borrowMap.put("borrowComplete", borrow.getBorrowComplete());
+        borrowMap.put("Succeeded", borrow.getSucceeded());
+        borrowMap.put("categories", borrow.getCategories());
+
 
         // Update the borrowMap in Firestore for the current user
         DocumentReference userDocRef = currentUserFirestore();
@@ -191,11 +194,13 @@ public class FirebaseUtil {
     public static void addReceivedBorrowToFirestore(ReceivedBorrow receivedBorrow, String theMap, CallbackAddFirebase callbackAddFirebase, String userId) {
         // Convert the Borrow object into a Map
         Map<String, Object> theMapType = new HashMap<>();
+
         theMapType.put("id", receivedBorrow.getId());
-        theMapType.put("borrow", receivedBorrow.getBorrow());
+        theMapType.put("createdAt", receivedBorrow.getCreatedAt());
         theMapType.put("receiveUserId", receivedBorrow.getReceiveUserId());
         theMapType.put("Approved", receivedBorrow.getApproved());
         theMapType.put("answer", receivedBorrow.getAnswer());
+        theMapType.put("borrow", receivedBorrow.getBorrow());
 
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
         // Update the borrowMap in Firestore for the current user

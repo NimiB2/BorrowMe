@@ -1,45 +1,43 @@
 package com.project1.borrowme.models;
 
-import com.project1.borrowme.adpters.UserAdapter;
-
 import java.util.ArrayList;
 import java.util.UUID;
 
 public class Borrow {
     private String id;
     private String senderId;
-    private boolean isOpenBorrow;
+    private boolean OpenBorrow;
     private boolean borrowComplete;
     private String itemName;
     private String description;
-    private ArrayList<String> categories =new ArrayList<>();;
+    private ArrayList<String> categories = new ArrayList<>();
     private int radiusKm;
     private int numOfSending;
     private int numOfAnswers;
     private double lat;
     private double lon;
-    private boolean isSucceeded;
+    private boolean Succeeded;
     private String senderName;
 
     public Borrow() {
         this.id = generateUniqueId();
-        this.isOpenBorrow = true;
+        this.OpenBorrow = true;
         this.borrowComplete = false;
         this.numOfSending = 0;
         this.numOfAnswers = 0;
-        this.isSucceeded=false;
+        this.Succeeded = false;
     }
 
 
-    public Borrow( String senderName,String senderId,String itemName, String description, ArrayList<String> categories, int radiusKm, double lat, double lon) {
+    public Borrow(String senderName, String senderId, String itemName, String description, ArrayList<String> categories, int radiusKm, double lat, double lon) {
         this.id = generateUniqueId();
-        this.isOpenBorrow = true;
+        this.OpenBorrow = true;
         this.borrowComplete = false;
         this.numOfSending = 0;
         this.numOfAnswers = 0;
-        this.isSucceeded=false;
+        this.Succeeded = false;
 
-        this.senderName=senderName;
+        this.senderName = senderName;
         this.senderId = senderId;
         this.itemName = itemName;
         this.description = description;
@@ -71,21 +69,24 @@ public class Borrow {
         return this;
     }
 
-    public boolean isOpenBorrow() {
-        return isOpenBorrow;
+    public boolean getOpenBorrow() {
+        return OpenBorrow;
     }
 
     public Borrow setOpenBorrow(boolean openBorrow) {
-        isOpenBorrow = openBorrow;
+        OpenBorrow = openBorrow;
         return this;
     }
 
-    public boolean isBorrowComplete() {
+    public boolean getBorrowComplete() {
         return borrowComplete;
     }
 
     public Borrow setBorrowComplete(boolean borrowComplete) {
         this.borrowComplete = borrowComplete;
+        if(borrowComplete){
+            setSucceeded(true);
+        }
         return this;
     }
 
@@ -161,12 +162,12 @@ public class Borrow {
         return this;
     }
 
-    public boolean isSucceeded() {
-        return isSucceeded;
+    public boolean getSucceeded() {
+        return Succeeded;
     }
 
     public Borrow setSucceeded(boolean succeeded) {
-        isSucceeded = succeeded;
+        Succeeded = succeeded;
         return this;
     }
 
@@ -179,23 +180,25 @@ public class Borrow {
         return this;
     }
 
-    public void updateNumOfSending(){
+    public void updateNumOfSending() {
         this.numOfSending++;
     }
-    public void updateNumOfAnswers(){
+
+    public void updateNumOfAnswers() {
         this.numOfAnswers++;
     }
 
-    public boolean checkForClosed(){
-        if(this.numOfAnswers==this.numOfSending){
+    public boolean checkForClosed() {
+
+        if (this.getBorrowComplete()) {
+            setOpenBorrow(false);
+            return true;
+
+        } else if (this.numOfAnswers == this.numOfSending) {
             setOpenBorrow(false);
             return true;
         }
-        else if(this.isBorrowComplete()){
-            setOpenBorrow(false);
-            setSucceeded(true);
-            return true;
-        }
+
         return false;
     }
 

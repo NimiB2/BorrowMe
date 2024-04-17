@@ -14,12 +14,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textview.MaterialTextView;
+import com.google.firebase.Timestamp;
 import com.project1.borrowme.R;
 import com.project1.borrowme.Utilities.FirebaseUtil;
 import com.project1.borrowme.models.Borrow;
 import com.project1.borrowme.models.ReceivedBorrow;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -47,6 +51,10 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         ReceivedBorrow receivedBorrow = getItem(position);
         Borrow borrow = receivedBorrow.getBorrow();
 
+        Timestamp timestamp = receivedBorrow.getCreatedAt();
+        LocalDateTime localDateTime = timestamp.toDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+        holder.borrow_item_MTV_date.setText(localDateTime.format(DateTimeFormatter.ofPattern("dd-MM-yy HH:mm")));
+
         holder.borrow_item_MTV_item_name.setText(borrow.getItemName());
         String categoriesText = "[" + TextUtils.join(", ", borrow.getCategories()) + "]";
         holder.borrow_item_MTV_categories.setText(categoriesText);
@@ -61,8 +69,8 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
             holder.title_sender.setVisibility(View.GONE);
             holder.borrow_item_MTV_sender.setVisibility(View.GONE);
             setAddress(holder, borrow);
-            if (borrow.isBorrowComplete()) {
-                if (borrow.isSucceeded()) {
+            if (borrow.getBorrowComplete()) {
+                if (borrow.getSucceeded()) {
                     holder.borrow_item_SIV_statusIcon.setImageResource(R.drawable.approve);
                 } else {
                     holder.borrow_item_SIV_statusIcon.setImageResource(R.drawable.rejected);
@@ -130,7 +138,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        MaterialTextView borrow_item_MTV_item_name, borrow_item_MTV_sender, borrow_item_MTV_categories, borrow_item_MTV_address, borrow_item_MTV_radius, borrow_item_MTV_description, title_description, borrow_item_MTV_status, title_sender, title_address;
+        MaterialTextView borrow_item_MTV_date,borrow_item_MTV_item_name, borrow_item_MTV_sender, borrow_item_MTV_categories, borrow_item_MTV_address, borrow_item_MTV_radius, borrow_item_MTV_description, title_description, borrow_item_MTV_status, title_sender, title_address;
         ShapeableImageView borrow_item_SIV_statusIcon;
         LinearLayout detailLayout;
 
@@ -146,6 +154,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
             borrow_item_MTV_description = itemView.findViewById(R.id.borrow_item_MTV_description);
             borrow_item_MTV_status = itemView.findViewById(R.id.borrow_item_MTV_status);
             borrow_item_SIV_statusIcon = itemView.findViewById(R.id.borrow_item_SIV_statusIcon);
+            borrow_item_MTV_date= itemView.findViewById(R.id.borrow_item_MTV_date);
             title_sender = itemView.findViewById(R.id.title_sender);
             title_address = itemView.findViewById(R.id.title_address);
             title_description = itemView.findViewById(R.id.title_description);
