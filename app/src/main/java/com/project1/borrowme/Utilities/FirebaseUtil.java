@@ -159,7 +159,6 @@ public class FirebaseUtil {
         borrowMap.put("numOfAnswers", borrow.getNumOfAnswers());
         borrowMap.put("OpenBorrow", borrow.getOpenBorrow());
         borrowMap.put("borrowComplete", borrow.getBorrowComplete());
-        borrowMap.put("Succeeded", borrow.getSucceeded());
         borrowMap.put("categories", borrow.getCategories());
 
 
@@ -200,6 +199,7 @@ public class FirebaseUtil {
         theMapType.put("receiveUserId", receivedBorrow.getReceiveUserId());
         theMapType.put("Approved", receivedBorrow.getApproved());
         theMapType.put("answer", receivedBorrow.getAnswer());
+        theMapType.put("returnAnswer", receivedBorrow.getReturnAnswer());
         theMapType.put("borrow", receivedBorrow.getBorrow());
 
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();

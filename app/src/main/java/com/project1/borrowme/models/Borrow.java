@@ -16,7 +16,6 @@ public class Borrow {
     private int numOfAnswers;
     private double lat;
     private double lon;
-    private boolean Succeeded;
     private String senderName;
 
     public Borrow() {
@@ -25,7 +24,7 @@ public class Borrow {
         this.borrowComplete = false;
         this.numOfSending = 0;
         this.numOfAnswers = 0;
-        this.Succeeded = false;
+
     }
 
 
@@ -35,7 +34,7 @@ public class Borrow {
         this.borrowComplete = false;
         this.numOfSending = 0;
         this.numOfAnswers = 0;
-        this.Succeeded = false;
+
 
         this.senderName = senderName;
         this.senderId = senderId;
@@ -84,9 +83,6 @@ public class Borrow {
 
     public Borrow setBorrowComplete(boolean borrowComplete) {
         this.borrowComplete = borrowComplete;
-        if(borrowComplete){
-            setSucceeded(true);
-        }
         return this;
     }
 
@@ -159,15 +155,6 @@ public class Borrow {
 
     public Borrow setLon(double lon) {
         this.lon = lon;
-        return this;
-    }
-
-    public boolean getSucceeded() {
-        return Succeeded;
-    }
-
-    public Borrow setSucceeded(boolean succeeded) {
-        Succeeded = succeeded;
         return this;
     }
 

@@ -12,6 +12,7 @@ public class ReceivedBorrow {
     private String receiveUserId;
     private boolean Approved;
     private boolean answer;
+    private boolean returnAnswer;
 
     public ReceivedBorrow() {
         Approved =false;
@@ -78,6 +79,15 @@ public class ReceivedBorrow {
 
     public ReceivedBorrow setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
+        return this;
+    }
+
+    public boolean getReturnAnswer() {
+        return returnAnswer;
+    }
+
+    public ReceivedBorrow setReturnAnswer(boolean returnAnswer) {
+        this.returnAnswer = returnAnswer;
         return this;
     }
 }

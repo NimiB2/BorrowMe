@@ -56,13 +56,13 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
         findViews();
-
+        initViews();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        initViews();
+
         initFragments();
     }
 

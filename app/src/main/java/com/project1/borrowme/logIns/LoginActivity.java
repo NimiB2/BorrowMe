@@ -43,16 +43,11 @@ public class LoginActivity extends AppCompatActivity {
         });
         auth = FirebaseAuth.getInstance();
         findViews();
-
-
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
         setupViewListeners();
         redirectIfLoggedIn();
+
     }
+
 
     private void redirectIfLoggedIn() {
         FirebaseUser authCurrentUser = auth.getCurrentUser();
