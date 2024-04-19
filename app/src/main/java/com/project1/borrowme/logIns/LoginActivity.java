@@ -126,7 +126,7 @@ public class LoginActivity extends AppCompatActivity {
             login(email, password);
         }
     }
-    
+
     private void setupViewListeners() {
         LogIn_BTN_LOGIN.setOnClickListener(v -> attemptLogin());
 

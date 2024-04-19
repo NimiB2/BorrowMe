@@ -86,8 +86,6 @@ public class RegistrationActivity extends AppCompatActivity {
         Map<String, Object> userMap = new HashMap<>();
         userMap.put("uid", authUid);
         userMap.put("userDetails", userDetailsMap);
-        userMap.put("borrowMap", new HashMap<>());
-        userMap.put("receivedBorrowMap", new HashMap<>());
         userMap.put("history", new HashMap<>());
         userMap.put("Messages", new HashMap<>());
 

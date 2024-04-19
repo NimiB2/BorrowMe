@@ -12,12 +12,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textview.MaterialTextView;
-import com.google.firebase.Timestamp;
 import com.project1.borrowme.R;
 import com.project1.borrowme.Utilities.FirebaseUtil;
 import com.project1.borrowme.interfaces.CallbackAddFirebase;
 import com.project1.borrowme.models.ReceivedBorrow;
-import com.project1.borrowme.models.TheUser;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -82,6 +80,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     private void configureSenderView(ViewHolder holder, ReceivedBorrow message) {
         // Check if the sender has made a final return answer
         if (message.getReturnAnswer()) {
+            holder.detail_layout.setVisibility(View.GONE);
             holder.message_item_BTN_approve.setVisibility(View.GONE);
             holder.message_item_BTN_reject.setVisibility(View.GONE);
             holder.message_item_MTV_title.setText(message.getBorrow().getBorrowComplete() ? "There was a deal" : "You rejected the deal");
@@ -89,6 +88,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         } else {
             holder.message_item_BTN_approve.setVisibility(View.VISIBLE);
             holder.message_item_BTN_reject.setVisibility(View.VISIBLE);
+            holder.message_item_MTV_title.setText("Someone approved the request");
             holder.message_item_BTN_approve.setText("Approve Deal");
             holder.message_item_BTN_reject.setText("Reject Deal");
         }
@@ -97,6 +97,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     private void configureReceiverView(ViewHolder holder, ReceivedBorrow message) {
         // Receiver handling based on whether they have responded
         if (message.getAnswer()) {
+            holder.detail_layout.setVisibility(View.GONE);
             holder.message_item_BTN_approve.setVisibility(View.GONE);
             holder.message_item_BTN_reject.setVisibility(View.GONE);
             if (message.getApproved()) {
@@ -125,59 +126,55 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
         if (FirebaseUtil.currentUserId().equals(message.getBorrow().getSenderId())) {
             // This block is executed if the current user is the sender and is responding to the receiver's initial answer.
-            message.setReturnAnswer(true); // Indicating that the sender has responded to the receiver's answer.
-
+            message.setReturnAnswer(true);
+            String receiverId= message.getReceiveUserId();
             if (isApproved) {
                 message.getBorrow().setBorrowComplete(true); // The deal is confirmed/closed.
                 holder.message_item_MTV_title.setText("There was a deal");
                 holder.message_item_IMG_status.setImageResource(R.drawable.approve);
+                updateHistory(message,receiverId);
+
             } else {
                 message.getBorrow().setBorrowComplete(false); // The deal is rejected.
                 holder.message_item_MTV_title.setText("The request is closed");
                 holder.message_item_IMG_status.setImageResource(R.drawable.closed);
             }
-            updateFirestore(message, "history"); // Update Firestore, assuming 'history' means finalized deals.
+            updateMessages(message,receiverId);
+            updateHistory(message,FirebaseUtil.currentUserId());
+
         } else {
             // This block is executed if the current user is the receiver and is making an initial answer to the sender's request.
+            message.getBorrow().updateNumOfAnswers();
             message.setApproved(isApproved);
-            message.setAnswer(true); // Marking that the receiver has provided an answer.
-
+            message.setAnswer(true);
+            String senderId= message.getBorrow().getSenderId();
             if (isApproved) {
                 holder.message_item_IMG_status.setImageResource(R.drawable.approve);
+                updateMessages(message,senderId);
             } else {
                 holder.message_item_IMG_status.setImageResource(R.drawable.rejected);
+                updateHistory(message,senderId);
             }
-            updateFirestore(message, "Messages"); // Update Firestore, assuming 'Messages' stores ongoing negotiations.
+            updateMessages(message,FirebaseUtil.currentUserId());
         }
     }
 
-    private void updateFirestore(ReceivedBorrow message, String collectionPath) {
+
+
+    private void updateMessages(ReceivedBorrow message, String id) {
         CallbackAddFirebase callbackAddFirebase = new CallbackAddFirebase() {
             @Override
             public void onAddToFirebase(ReceivedBorrow message) {
-                // Additional actions after adding to Firestore could be placed here,
-                // such as notifications to users or updating user ratings.
-            }
-        };
-        FirebaseUtil.addReceivedBorrowToFirestore(message, collectionPath, callbackAddFirebase, FirebaseUtil.currentUserId());
-    }
-
-
-
-    private void sendAnswer(ReceivedBorrow message) {
-        CallbackAddFirebase callbackAddFirebase = new CallbackAddFirebase() {
-            @Override
-            public void onAddToFirebase(ReceivedBorrow message) {
-               updateHistory(message);
+               updateHistory(message,id);
             }
         };
 
-        String senderId= message.getBorrow().getSenderId();
-        FirebaseUtil.addReceivedBorrowToFirestore(message,"Messages",callbackAddFirebase,senderId);
+
+        FirebaseUtil.addReceivedBorrowToFirestore(message,"Messages",callbackAddFirebase,id);
 
     }
 
-    private void updateHistory(ReceivedBorrow message) {
+    private void updateHistory(ReceivedBorrow message, String id) {
 
         CallbackAddFirebase callbackAddFirebase = new CallbackAddFirebase() {
             @Override
@@ -185,8 +182,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
             }
         };
-        String senderId= message.getBorrow().getSenderId();
-        FirebaseUtil.addReceivedBorrowToFirestore(message,"history",callbackAddFirebase,senderId);
+        FirebaseUtil.addReceivedBorrowToFirestore(message,"history",callbackAddFirebase,id);
 
     }
 

@@ -44,7 +44,6 @@ public class InboxFragment extends Fragment {
         findViews(view);
         initViews();
         setupRecyclerView();
-        loadMessages();
 
         return view;
     }
@@ -89,7 +88,6 @@ public class InboxFragment extends Fragment {
             if (filteredMessages.isEmpty()) {
                 Toast.makeText(getContext(), "No messages found for " + searchQuery, Toast.LENGTH_SHORT).show();
             }
-           // adapter.updateData(filteredMessages);
         }
     }
 
@@ -104,9 +102,4 @@ public class InboxFragment extends Fragment {
         inbox_RECYCLER_users_list.setAdapter(adapter);
     }
 
-
-    private void loadMessages() {
-
-       // adapter.updateData(messages);
-    }
 }

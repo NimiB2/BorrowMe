@@ -285,7 +285,7 @@ public class NewBorrowingFragment extends Fragment {
                     lat,
                     lon
             );
-            theUser.addBorrow(newBorrow.getId(), newBorrow);
+           // theUser.addBorrow(newBorrow.getId(), newBorrow);
 
             checkOtherUsers(myId,newBorrow);
         }

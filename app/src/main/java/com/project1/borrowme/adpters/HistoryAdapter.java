@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder> {
+public class HistoryAdapter extends  RecyclerView.Adapter<HistoryAdapter.ViewHolder> {
     private Context context;
 
     private List<ReceivedBorrow> history;
@@ -37,6 +37,10 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
     public HistoryAdapter(Context context, List<ReceivedBorrow> receivedBorrows) {
         this.context = context;
         this.history = receivedBorrows;
+    }
+
+    public void updateData(List<ReceivedBorrow> newHistory) {
+        this.history = newHistory;
     }
 
     @NonNull

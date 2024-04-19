@@ -8,14 +8,11 @@ public class TheUser {
     private static volatile TheUser instance;
     private String uid;
     private UserDetails userDetails;
-    private Map<String, Borrow> borrowMap;
-    private Map<String, ReceivedBorrow> receivedBorrowMap;
     private Map<String, ReceivedBorrow> history;
     private Map<String, ReceivedBorrow> Messages;
 
     private TheUser() {
         userDetails = new UserDetails();
-        receivedBorrowMap = new LinkedHashMap<>();
         history = new LinkedHashMap<>();
         Messages = new LinkedHashMap<>();
     }
@@ -46,32 +43,6 @@ public class TheUser {
 
     public TheUser setUserDetails(UserDetails userDetails) {
         this.userDetails = userDetails;
-        return this;
-    }
-
-    public Map<String, Borrow> getBorrowMap() {
-        return borrowMap;
-    }
-
-    public TheUser setBorrowMap(Map<String, Borrow> borrowMap) {
-        this.borrowMap = borrowMap;
-        return this;
-    }
-
-    public void addBorrow(String key, Borrow borrow) {
-        borrowMap.put(key, borrow);
-    }
-
-    public void removeBorrow(String key) {
-        borrowMap.remove(key);
-    }
-
-    public Map<String, ReceivedBorrow> getReceivedBorrowMap() {
-        return receivedBorrowMap;
-    }
-
-    public TheUser setReceivedBorrowMap(Map<String, ReceivedBorrow> receivedBorrowMap) {
-        this.receivedBorrowMap = receivedBorrowMap;
         return this;
     }
 
@@ -109,8 +80,6 @@ public class TheUser {
 
         uid = null;
         userDetails.resetUserDetails();
-        borrowMap.clear();
-        receivedBorrowMap.clear();
         history.clear();
         Messages.clear();
 
