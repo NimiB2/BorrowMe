@@ -60,6 +60,7 @@ public class HomeFragment extends Fragment {
     private void updateUI() {
         if (!theUser.getHistory().isEmpty()) {
             history = theUser.getHistory();
+
             FirebaseUtil.currentUserFirestore().collection("history")
                     .addSnapshotListener(new EventListener<QuerySnapshot>() {
                         @Override

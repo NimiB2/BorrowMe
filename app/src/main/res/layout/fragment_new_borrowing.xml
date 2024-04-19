@@ -60,7 +60,7 @@
                 android:paddingStart="@dimen/margin_xsmall"
                 android:paddingTop="@dimen/margin_xsmall"
                 android:textColor="@color/text_color"
-                android:textSize="@dimen/text_size_small" />
+                android:textSize="@dimen/text_size_main_button_s" />
             <!-- Description Input -->
 
             <com.google.android.material.textfield.TextInputEditText
@@ -75,8 +75,7 @@
                 android:paddingStart="@dimen/margin_xsmall"
                 android:paddingTop="@dimen/margin_xsmall"
                 android:textColor="@color/text_color"
-
-                android:textSize="@dimen/text_size_xsmall" />
+                android:textSize="@dimen/text_size_main_button_s" />
             <!-- Category Input -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/newBorrow_CARD_categories"

@@ -47,122 +47,121 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ReceivedBorrow message = getItem(position);
 
-        Timestamp timestamp = message.getCreatedAt();
-        LocalDateTime localDateTime = timestamp.toDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-        holder.message_item_MTV_date.setText(localDateTime.format(DateTimeFormatter.ofPattern("dd-MM-yy HH:mm")));
+        configureDateTime(holder, message);
+        configureTextFields(holder, message);
+        configureButtonListeners(holder, message);
+        configureViewVisibility(holder, message);
+    }
 
+    private void configureDateTime(ViewHolder holder, ReceivedBorrow message) {
+        LocalDateTime localDateTime = message.getCreatedAt().toDate().toInstant()
+                .atZone(ZoneId.systemDefault()).toLocalDateTime();
+        holder.message_item_MTV_date.setText(localDateTime.format(DateTimeFormatter.ofPattern("dd-MM-yy HH:mm")));
+    }
+
+    private void configureTextFields(ViewHolder holder, ReceivedBorrow message) {
         holder.message_item_MTV_item_name.setText(message.getBorrow().getItemName());
         holder.message_MTV_sender.setText(message.getBorrow().getSenderName());
         holder.message_MTV_description.setText(message.getBorrow().getDescription());
+    }
 
+    private void configureButtonListeners(ViewHolder holder, ReceivedBorrow message) {
         holder.message_item_BTN_approve.setOnClickListener(v -> updateUIForStatus(holder, true, message));
         holder.message_item_BTN_reject.setOnClickListener(v -> updateUIForStatus(holder, false, message));
         holder.itemView.setOnClickListener(v -> holder.toggleVisibility());
+    }
 
+    private void configureViewVisibility(ViewHolder holder, ReceivedBorrow message) {
         if (message.getBorrow().getSenderId().equals(FirebaseUtil.currentUserId())) {
-            // current user is the sender
-            if(message.getReturnAnswer()){
-                holder.message_item_BTN_approve.setVisibility(View.GONE);
-                holder.message_item_BTN_reject.setVisibility(View.GONE);
-                if(message.getBorrow().getBorrowComplete()){
-                    holder.message_item_MTV_title.setText("There was a deal");
-                    holder.message_item_IMG_status.setImageResource(R.drawable.approve);
-                }else{
-                    //sender reject the approved
-                    holder.message_item_MTV_title.setText("You rejected");
-                    holder.message_item_IMG_status.setImageResource(R.drawable.closed);
-                }
+            configureSenderView(holder, message);
+        } else {
+            configureReceiverView(holder, message);
+        }
+    }
 
-            }else{
-                // sender did not answer
-                if (message.getApproved()) {
-                    holder.message_item_MTV_title.setText("Borrow Approved");
-                    holder.message_item_BTN_approve.setText("CLOSE THE DEAL");
-                    holder.message_item_BTN_reject.setText("NO THANKS");
-                } else {
-                    holder.message_item_MTV_title.setText("Borrow Rejected");
-                    holder.message_item_BTN_approve.setVisibility(View.GONE);
-                    holder.message_item_BTN_reject.setVisibility(View.GONE);
-                }
+    private void configureSenderView(ViewHolder holder, ReceivedBorrow message) {
+        // Check if the sender has made a final return answer
+        if (message.getReturnAnswer()) {
+            holder.message_item_BTN_approve.setVisibility(View.GONE);
+            holder.message_item_BTN_reject.setVisibility(View.GONE);
+            holder.message_item_MTV_title.setText(message.getBorrow().getBorrowComplete() ? "There was a deal" : "You rejected the deal");
+            holder.message_item_IMG_status.setImageResource(message.getBorrow().getBorrowComplete() ? R.drawable.approve : R.drawable.closed);
+        } else {
+            holder.message_item_BTN_approve.setVisibility(View.VISIBLE);
+            holder.message_item_BTN_reject.setVisibility(View.VISIBLE);
+            holder.message_item_BTN_approve.setText("Approve Deal");
+            holder.message_item_BTN_reject.setText("Reject Deal");
+        }
+    }
+
+    private void configureReceiverView(ViewHolder holder, ReceivedBorrow message) {
+        // Receiver handling based on whether they have responded
+        if (message.getAnswer()) {
+            holder.message_item_BTN_approve.setVisibility(View.GONE);
+            holder.message_item_BTN_reject.setVisibility(View.GONE);
+            if (message.getApproved()) {
+                holder.message_item_MTV_title.setText("Waiting for final approval");
+                holder.message_item_IMG_status.setImageResource(R.drawable.approve);
+            } else {
+                holder.message_item_MTV_title.setText("Borrow Rejected");
+                holder.message_item_IMG_status.setImageResource(R.drawable.rejected);
             }
         } else {
-            // user is receiver
-            if(message.getAnswer() || message.getReturnAnswer()){
-                // the user already answered or the borrow is closed
-
-                holder.detail_layout.setVisibility(View.GONE);
-                holder.message_item_BTN_approve.setVisibility(View.GONE);
-                holder.message_item_BTN_reject.setVisibility(View.GONE);
-
-                if(message.getReturnAnswer()&& !message.getApproved()){
-                    holder.message_item_MTV_title.setText("The request is closed");
-                    holder.message_item_IMG_status.setImageResource(R.drawable.closed);
-                }else if (message.getApproved()) {
-                    holder.message_item_MTV_title.setText("Waiting");
-                    holder.message_item_IMG_status.setImageResource(R.drawable.approve);
-                } else {
-                    holder.message_item_MTV_title.setText("You rejected");
-                    holder.message_item_IMG_status.setImageResource(R.drawable.rejected);
-                }
-            }else{
-                holder.message_item_MTV_title.setText("New Borrow");
-            }
+            // Allow receiver to respond
+            holder.message_item_BTN_approve.setVisibility(View.VISIBLE);
+            holder.message_item_BTN_reject.setVisibility(View.VISIBLE);
+            holder.message_item_BTN_approve.setText("Approve Borrow");
+            holder.message_item_BTN_reject.setText("Reject Borrow");
+            holder.message_item_MTV_title.setText("New Borrow Request");
         }
-
     }
 
 
     private void updateUIForStatus(@NonNull ViewHolder holder, boolean isApproved, ReceivedBorrow message) {
+        // Always hide these UI elements as a part of updating status
         holder.detail_layout.setVisibility(View.GONE);
         holder.message_item_BTN_reject.setVisibility(View.GONE);
         holder.message_item_BTN_approve.setVisibility(View.GONE);
 
-        if(message.getAnswer()){
-            // user is the sender
-            message.setReturnAnswer(true);
-            // return message
-            if(isApproved){
-                // there was a deal
-                message.getBorrow().setBorrowComplete(true);
-                CallbackAddFirebase callbackAddFirebase = new CallbackAddFirebase() {
-                    @Override
-                    public void onAddToFirebase(ReceivedBorrow message) {
-                        // update rating
-                        //update the other user
+        if (FirebaseUtil.currentUserId().equals(message.getBorrow().getSenderId())) {
+            // This block is executed if the current user is the sender and is responding to the receiver's initial answer.
+            message.setReturnAnswer(true); // Indicating that the sender has responded to the receiver's answer.
 
-                    }
-                };
-                FirebaseUtil.addReceivedBorrowToFirestore(message,"history",callbackAddFirebase,FirebaseUtil.currentUserId());
+            if (isApproved) {
+                message.getBorrow().setBorrowComplete(true); // The deal is confirmed/closed.
                 holder.message_item_MTV_title.setText("There was a deal");
-            }else{
+                holder.message_item_IMG_status.setImageResource(R.drawable.approve);
+            } else {
+                message.getBorrow().setBorrowComplete(false); // The deal is rejected.
                 holder.message_item_MTV_title.setText("The request is closed");
+                holder.message_item_IMG_status.setImageResource(R.drawable.closed);
             }
+            updateFirestore(message, "history"); // Update Firestore, assuming 'history' means finalized deals.
+        } else {
+            // This block is executed if the current user is the receiver and is making an initial answer to the sender's request.
+            message.setApproved(isApproved);
+            message.setAnswer(true); // Marking that the receiver has provided an answer.
 
-            holder.message_item_IMG_status.setImageResource(R.drawable.closed);
-        }else{
-            // the user is the receiver
             if (isApproved) {
                 holder.message_item_IMG_status.setImageResource(R.drawable.approve);
-                message.setApproved(true);
             } else {
                 holder.message_item_IMG_status.setImageResource(R.drawable.rejected);
-                message.setApproved(false);
             }
-            message.setAnswer(true);
-
-            CallbackAddFirebase callbackAddFirebase = new CallbackAddFirebase() {
-                @Override
-                public void onAddToFirebase(ReceivedBorrow message) {
-
-                    sendAnswer(message);
-                }
-            };
-            message.getBorrow().updateNumOfAnswers();
-
-            FirebaseUtil.addReceivedBorrowToFirestore(message,"Messages",callbackAddFirebase,FirebaseUtil.currentUserId());
+            updateFirestore(message, "Messages"); // Update Firestore, assuming 'Messages' stores ongoing negotiations.
         }
-
     }
+
+    private void updateFirestore(ReceivedBorrow message, String collectionPath) {
+        CallbackAddFirebase callbackAddFirebase = new CallbackAddFirebase() {
+            @Override
+            public void onAddToFirebase(ReceivedBorrow message) {
+                // Additional actions after adding to Firestore could be placed here,
+                // such as notifications to users or updating user ratings.
+            }
+        };
+        FirebaseUtil.addReceivedBorrowToFirestore(message, collectionPath, callbackAddFirebase, FirebaseUtil.currentUserId());
+    }
+
 
 
     private void sendAnswer(ReceivedBorrow message) {
