@@ -28,3 +28,5 @@ After launching the application, follow these steps to utilize its features:
 4. *Initiate a Borrow*: Send a borrow request to an item's owner or respond to requests from others.
 5. *Messaging*: Use the messaging feature to discuss and arrange the final details.
 
+<img src="[https://github.com/Noam0/Homie-App/assets/101128914/74d896e2-5aef-4f0a-8021-71c213e9d198](https://github.com/NimiB2/BorrowMe/assets/131991393/d0063b61-0ced-4660-9492-5a7d55426f14)" alt="Homepage" width="215" height="430">
+
