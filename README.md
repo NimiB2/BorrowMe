@@ -29,32 +29,35 @@ After launching the application, follow these steps to utilize its features:
 5. *Messaging*: Use the messaging feature to discuss and arrange the final details.
 
 
-## Welcome Screen
-<img src="https://github.com/NimiB2/BorrowMe/assets/131991393/fa4b5cd5-e3ce-47ac-8464-c7f03cbab357" width="200" alt="welcome" style="margin: 20px;">
+## Welcome and Sign Up Screens
+<div style="display: flex; justify-content: space-around; align-items: center; margin-bottom: 20px;">
+  <div>
+    <img src="https://github.com/NimiB2/BorrowMe/assets/131991393/fa4b5cd5-e3ce-47ac-8464-c7f03cbab357" width="200" alt="welcome" style="margin-right: 20px;">
+    <img src="https://github.com/NimiB2/BorrowMe/assets/131991393/adcf7263-f179-45bc-b03b-76a476db49d2" width="200" alt="singUp">
+  </div>
+  <img src="https://github.com/NimiB2/BorrowMe/assets/131991393/f6f25ee7-a4c0-4757-b3b1-bdbbc9a466ac" width="200" alt="singUp2">
+</div>
 
-## Sign Up Screen
-<img src="https://github.com/NimiB2/BorrowMe/assets/131991393/adcf7263-f179-45bc-b03b-76a476db49d2" width="200" alt="singUp" style="margin: 20px;">
+## Home and New Borrow Screens
+<div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+  <img src="https://github.com/NimiB2/BorrowMe/assets/131991393/12cee091-ad2c-4415-ac4c-7da513443b11" width="200" alt="home" style="margin-right: 20px;">
+  <div>
+    <img src="https://github.com/NimiB2/BorrowMe/assets/131991393/12462f44-1f73-468f-9aa5-fa73b66a0ac9" width="200" alt="newBorrow" style="margin-right: 20px;">
+    <img src="https://github.com/NimiB2/BorrowMe/assets/131991393/1aa32b79-f1fb-488b-802c-3c01ad961c81" width="200" alt="newBorrow2">
+  </div>
+</div>
 
-<img src="https://github.com/NimiB2/BorrowMe/assets/131991393/f6f25ee7-a4c0-4757-b3b1-bdbbc9a466ac" width="200" alt="singUp2" style="margin: 20px;">
-
-## Home Screen
-<img src="https://github.com/NimiB2/BorrowMe/assets/131991393/12cee091-ad2c-4415-ac4c-7da513443b11" width="200" alt="home" style="margin: 20px;">
-
-## New Borrow Screen
-<img src="https://github.com/NimiB2/BorrowMe/assets/131991393/12462f44-1f73-468f-9aa5-fa73b66a0ac9" width="200" alt="newBorrow" style="margin: 20px;">
-
-<img src="https://github.com/NimiB2/BorrowMe/assets/131991393/1aa32b79-f1fb-488b-802c-3c01ad961c81" width="200" alt="newBorrow2" style="margin: 20px;">
-
-## Profile Screen
-<img src="https://github.com/NimiB2/BorrowMe/assets/131991393/9b28caf5-d968-4eac-a14b-8499e9582c1b" width="200" alt="profile" style="margin: 20px;">
-
-## Settings Screen
-<img src="https://github.com/NimiB2/BorrowMe/assets/131991393/009202e2-58d7-4d2f-920f-b3baa1af7c28" width="200" alt="settings1" style="margin: 20px;">
-
-<img src="https://github.com/NimiB2/BorrowMe/assets/131991393/8f96cbff-e333-4995-b2cc-252123aea397" width="200" alt="settings2" style="margin: 20px;">
+## Profile and Settings Screens
+<div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+  <img src="https://github.com/NimiB2/BorrowMe/assets/131991393/9b28caf5-d968-4eac-a14b-8499e9582c1b" width="200" alt="profile" style="margin-right: 20px;">
+  <div>
+    <img src="https://github.com/NimiB2/BorrowMe/assets/131991393/009202e2-58d7-4d2f-920f-b3baa1af7c28" width="200" alt="settings1" style="margin-right: 20px;">
+    <img src="https://github.com/NimiB2/BorrowMe/assets/131991393/8f96cbff-e333-4995-b2cc-252123aea397" width="200" alt="settings2">
+  </div>
+</div>
 
 ## Inbox Screen
-<img src="https://github.com/NimiB2/BorrowMe/assets/131991393/4fbe7cc9-448f-4b84-a226-7de0ac8d25eb" width="200" alt="inbox" style="margin: 20px;">
+<img src="https://github.com/NimiB2/BorrowMe/assets/131991393/4fbe7cc9-448f-4b84-a226-7de0ac8d25eb" width="200" alt="inbox" style="display: block; margin: 20px auto;">
 
 
 
