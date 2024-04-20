@@ -35,7 +35,6 @@ After launching the application, follow these steps to utilize its features:
 ## Sign Up Screen
 <img src="https://github.com/NimiB2/BorrowMe/assets/131991393/adcf7263-f179-45bc-b03b-76a476db49d2" width="200" alt="singUp" style="margin: 20px;">
 
-## Sign Up Screen (Variant 2)
 <img src="https://github.com/NimiB2/BorrowMe/assets/131991393/f6f25ee7-a4c0-4757-b3b1-bdbbc9a466ac" width="200" alt="singUp2" style="margin: 20px;">
 
 ## Home Screen
@@ -44,7 +43,6 @@ After launching the application, follow these steps to utilize its features:
 ## New Borrow Screen
 <img src="https://github.com/NimiB2/BorrowMe/assets/131991393/12462f44-1f73-468f-9aa5-fa73b66a0ac9" width="200" alt="newBorrow" style="margin: 20px;">
 
-## New Borrow Screen (Variant 2)
 <img src="https://github.com/NimiB2/BorrowMe/assets/131991393/1aa32b79-f1fb-488b-802c-3c01ad961c81" width="200" alt="newBorrow2" style="margin: 20px;">
 
 ## Profile Screen
@@ -53,7 +51,6 @@ After launching the application, follow these steps to utilize its features:
 ## Settings Screen
 <img src="https://github.com/NimiB2/BorrowMe/assets/131991393/009202e2-58d7-4d2f-920f-b3baa1af7c28" width="200" alt="settings1" style="margin: 20px;">
 
-## Settings Screen (Variant 2)
 <img src="https://github.com/NimiB2/BorrowMe/assets/131991393/8f96cbff-e333-4995-b2cc-252123aea397" width="200" alt="settings2" style="margin: 20px;">
 
 ## Inbox Screen
