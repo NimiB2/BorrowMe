@@ -78,10 +78,12 @@ public class HistoryAdapter extends  RecyclerView.Adapter<HistoryAdapter.ViewHol
 
             if (receivedBorrow.getAnswer()) {
                 if (receivedBorrow.getReturnAnswer()) {
-                    if (borrow.getBorrowComplete()) {
+                    if (receivedBorrow.getDeal()) {
                         holder.borrow_item_SIV_statusIcon.setImageResource(R.drawable.approve);
-                    } else {
+                    }else if(receivedBorrow.getBorrow().getNumOfSending()==receivedBorrow.getBorrow().getNumOfAnswers()){
                         holder.borrow_item_SIV_statusIcon.setImageResource(R.drawable.rejected);
+                    }else{
+                        holder.borrow_item_SIV_statusIcon.setImageResource(R.drawable.sand_clock);
                     }
                 } else {
                     holder.borrow_item_SIV_statusIcon.setImageResource(R.drawable.sand_clock);

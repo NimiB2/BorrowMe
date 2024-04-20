@@ -75,5 +75,5 @@
     <string name="sender">Sender:</string>
     <string name="approve">APPROVE</string>
     <string name="reject">REJECT</string>
-    <string name="title">title</string>
+    <string name="title">New Borrow</string>
 </resources>

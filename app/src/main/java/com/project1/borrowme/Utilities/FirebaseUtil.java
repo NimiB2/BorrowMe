@@ -6,6 +6,7 @@ import android.util.Log;
 import android.util.Patterns;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -21,8 +22,10 @@ import com.project1.borrowme.models.Borrow;
 import com.project1.borrowme.models.Category;
 import com.project1.borrowme.models.ReceivedBorrow;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -46,7 +49,7 @@ public class FirebaseUtil {
         return FirebaseFirestore.getInstance().collection("users").document(currentUserId());
     }
 
-    public static CollectionReference getHistoryReference(){
+    public static CollectionReference getHistoryReference() {
         return currentUserFirestore().collection("history");
     }
 
@@ -55,7 +58,7 @@ public class FirebaseUtil {
         FirebaseUtil.currentUserFirestore().get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
 
                     TheUser fetchedUser = task.getResult().toObject(TheUser.class);
                     setUser(fetchedUser);
@@ -65,10 +68,10 @@ public class FirebaseUtil {
     }
 
     private static void setUser(TheUser fetchedUser) {
-        TheUser theUser= TheUser.getInstance();
+        TheUser theUser = TheUser.getInstance();
 
         if (fetchedUser != null && fetchedUser.getUserDetails() != null) {
-            UserDetails fetchedUserDetails =fetchedUser.getUserDetails();
+            UserDetails fetchedUserDetails = fetchedUser.getUserDetails();
 
             if (theUser.getUserDetails() == null) {
                 theUser.setUserDetails(new UserDetails());
@@ -77,7 +80,7 @@ public class FirebaseUtil {
             theUser.setHistory(fetchedUser.getHistory());
             theUser.setMessages(fetchedUser.getMessages());
 
-            UserDetails userDetails= theUser.getUserDetails();
+            UserDetails userDetails = theUser.getUserDetails();
             userDetails.setuName(fetchedUserDetails.getuName());
             userDetails.setuEmail(fetchedUserDetails.getuEmail());
             userDetails.setLat(fetchedUserDetails.getLat());
@@ -99,7 +102,6 @@ public class FirebaseUtil {
                     userDetails.setProfileImageUri(null);
                 });
     }
-
 
 
     public static boolean validateUserName(TextInputEditText userNameEditText) {
@@ -146,38 +148,6 @@ public class FirebaseUtil {
                 .child(FirebaseUtil.currentUserId());
     }
 
-
-//    public static void addBorrowToFirestore(Borrow borrow, CallbackCheckUsers checkUsers) {
-//        // Convert the Borrow object into a Map
-//        Map<String, Object> borrowHashMap = new HashMap<>();
-//        borrowHashMap.put("id", borrow.getId());
-//        borrowHashMap.put("senderId", borrow.getSenderId());
-//        borrowHashMap.put("senderName", borrow.getSenderName());
-//        borrowHashMap.put("itemName", borrow.getItemName());
-//        borrowHashMap.put("description", borrow.getDescription());
-//        borrowHashMap.put("lat", borrow.getLat());
-//        borrowHashMap.put("lon", borrow.getLon());
-//        borrowHashMap.put("radiusKm", borrow.getRadiusKm());
-//        borrowHashMap.put("numOfSending", borrow.getNumOfSending());
-//        borrowHashMap.put("numOfAnswers", borrow.getNumOfAnswers());
-//        borrowHashMap.put("OpenBorrow", borrow.getOpenBorrow());
-//        borrowHashMap.put("borrowComplete", borrow.getBorrowComplete());
-//        borrowHashMap.put("categories", borrow.getCategories());
-//
-//
-//        // Update the borrowHashMap in Firestore for the current user
-//        DocumentReference userDocRef = currentUserFirestore();
-//
-//        userDocRef.update("borrowHashMap." + borrow.getId(), borrowHashMap)
-//                .addOnSuccessListener(aVoid -> {
-//                    if (checkUsers != null) {
-//                        checkUsers.checkUsers(borrow);
-//                    }
-//                })
-//                .addOnFailureListener(e -> Log.w("Firestore", "Error adding borrow", e));
-//    }
-
-
     public static void addReceivedBorrowToFirestore(ReceivedBorrow receivedBorrow, String theMap, CallbackAddFirebase callbackAddFirebase, String userId) {
         // Convert the Borrow object into a Map
         Map<String, Object> theMapType = new HashMap<>();
@@ -186,6 +156,7 @@ public class FirebaseUtil {
         theMapType.put("createdAt", receivedBorrow.getCreatedAt());
         theMapType.put("receiveUserId", receivedBorrow.getReceiveUserId());
         theMapType.put("Approved", receivedBorrow.getApproved());
+        theMapType.put("deal", receivedBorrow.getDeal());
         theMapType.put("answer", receivedBorrow.getAnswer());
         theMapType.put("returnAnswer", receivedBorrow.getReturnAnswer());
         theMapType.put("borrow", receivedBorrow.getBorrow());
@@ -194,7 +165,7 @@ public class FirebaseUtil {
 
         DocumentReference userDocRef = firestore.collection("users").document(userId);
 
-        userDocRef.update(theMap+ "." + receivedBorrow.getId(), theMapType)
+        userDocRef.update(theMap + "." + receivedBorrow.getId(), theMapType)
                 .addOnSuccessListener(aVoid -> {
                     if (callbackAddFirebase != null) {
                         callbackAddFirebase.onAddToFirebase(receivedBorrow);
@@ -203,39 +174,113 @@ public class FirebaseUtil {
                 .addOnFailureListener(e -> Log.w("Firestore", "Error adding borrow", e));
     }
 
-//    public void removeReceivedBorrowFromFirestore(String borrowId) {
-//        // Get the document reference for the current user from Firestore
-//        DocumentReference userDocRef = currentUserFirestore();
-//
-//        // Remove the borrow from the borrowMap
-//        Map<String, Object> updates = new HashMap<>();
-//
-//        updates.put("receivedBorrowMap." + borrowId, FieldValue.delete());
-//
-//        userDocRef.update(updates)
-//                .addOnSuccessListener(aVoid -> Log.d("Firestore", "Borrow removed successfully!"))
-//                .addOnFailureListener(e -> Log.w("Firestore", "Error removing borrow", e));
-//    }
+    public static void getReceivedBorrowFromFirestore(String theMap, String userId, String borrowId, CallbackGetFirebase callbackGetFirebase) {
+        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
 
-    public static void fetchCollectionAsMap(String collectionName, CallbackGetFirebase<Map<String, ReceivedBorrow>> callback) {
-        FirebaseFirestore.getInstance().collection(collectionName).get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    Map<String, ReceivedBorrow> resultMap = new HashMap<>();
-                    for (DocumentSnapshot snapshot : queryDocumentSnapshots.getDocuments()) {
-                        ReceivedBorrow receivedBorrow = snapshot.toObject(ReceivedBorrow.class);
-                        resultMap.put(snapshot.getId(), receivedBorrow);
+        // Access the user document directly
+        DocumentReference userDocRef = firestore.collection("users").document(userId);
+
+        userDocRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot userDocument = task.getResult();
+                if (userDocument.exists()) {
+                    Map<String, Object> allHistory = (Map<String, Object>) userDocument.get(theMap);
+                    if (allHistory != null) {
+                        Map<String, Object> borrowData = (Map<String, Object>) allHistory.get(borrowId);
+                        if (borrowData != null) {
+                            // Create ReceivedBorrow object manually or use a conversion method if appropriate
+                            ReceivedBorrow receivedBorrow = createReceivedBorrowFromMap(borrowData);
+                            if (receivedBorrow != null && callbackGetFirebase != null) {
+                                callbackGetFirebase.onGetFromFirebase(receivedBorrow);
+                            } else {
+                                Log.w("Firestore", "Failed to convert map to ReceivedBorrow");
+                                if (callbackGetFirebase != null) {
+                                    callbackGetFirebase.onFailure(new Exception("Document conversion failure"));
+                                }
+                            }
+                        } else {
+                            Log.w("Firestore", "No such borrow document in the history map");
+                            if (callbackGetFirebase != null) {
+                                callbackGetFirebase.onFailure(new Exception("No document found in the map"));
+                            }
+                        }
+                    } else {
+                        Log.w("Firestore", "History map is empty or null");
+                        if (callbackGetFirebase != null) {
+                            callbackGetFirebase.onFailure(new Exception("History data is missing"));
+                        }
                     }
-                    if (callback != null) {
-                        callback.onGet(resultMap);
+                } else {
+                    Log.w("Firestore", "No such user document");
+                    if (callbackGetFirebase != null) {
+                        callbackGetFirebase.onFailure(new Exception("No user document found"));
                     }
-                })
-                .addOnFailureListener(e -> {
-                    Log.w("Firestore", "Error fetching collection: " + collectionName, e);
-                    if (callback != null) {
-                        callback.onGet(null);
-                    }
-                });
+                }
+            } else {
+                Log.w("Firestore", "Get failed with ", task.getException());
+                if (callbackGetFirebase != null) {
+                    callbackGetFirebase.onFailure(task.getException());
+                }
+            }
+        });
     }
 
 
+    public static ReceivedBorrow createReceivedBorrowFromMap(Map<String, Object> borrowData) {
+        if (borrowData == null) {
+            return null;
+        }
+
+        ReceivedBorrow receivedBorrow = new ReceivedBorrow();
+
+        receivedBorrow.setId((String) borrowData.get("id"));
+
+        Object createdAtObj = borrowData.get("createdAt");
+        if (createdAtObj instanceof Timestamp) {
+            receivedBorrow.setCreatedAt((Timestamp) createdAtObj);
+        }
+
+        receivedBorrow.setReceiveUserId((String) borrowData.get("receiveUserId"));
+        receivedBorrow.setApproved((Boolean) borrowData.get("Approved"));
+        receivedBorrow.setDeal((Boolean) borrowData.get("deal"));
+        receivedBorrow.setAnswer((Boolean) borrowData.get("answer"));
+        receivedBorrow.setReturnAnswer((Boolean) borrowData.get("returnAnswer"));
+
+        Map<String, Object> borrowMap = (Map<String, Object>) borrowData.get("borrow");
+        if (borrowMap != null) {
+            Borrow borrow = createBorrowFromMap(borrowMap);
+            receivedBorrow.setBorrow(borrow);
+        } else {
+            System.out.println("Borrow data is missing or null");
+        }
+
+        return receivedBorrow;
+    }
+
+    private static Borrow createBorrowFromMap(Map<String, Object> borrowMap) {
+        Borrow borrow = new Borrow();
+        borrow.setId((String) borrowMap.get("id"));
+        borrow.setSenderId((String) borrowMap.get("senderId"));
+        borrow.setOpenBorrow((Boolean) borrowMap.get("openBorrow"));
+        borrow.setBorrowComplete((Boolean) borrowMap.get("borrowComplete"));
+        borrow.setItemName((String) borrowMap.get("itemName"));
+        borrow.setDescription((String) borrowMap.get("description"));
+        borrow.setCategories((ArrayList<String>) borrowMap.get("categories"));
+        borrow.setLat((Double) borrowMap.get("lat"));
+        borrow.setLon((Double) borrowMap.get("lon"));
+        borrow.setSenderName((String) borrowMap.get("senderName"));
+
+        borrow.setNumOfSending(convertToInt(borrowMap.get("numOfSending")));
+        borrow.setNumOfAnswers(convertToInt(borrowMap.get("numOfAnswers")));
+        borrow.setRadiusKm(convertToInt(borrowMap.get("radiusKm")));
+
+        return borrow;
+    }
+
+    private static Integer convertToInt(Object value) {
+        if (value instanceof Number) {
+            return ((Number) value).intValue();
+        }
+        return null;
+    }
 }

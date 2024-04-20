@@ -11,6 +11,7 @@ public class ReceivedBorrow {
     private Borrow borrow;
     private String receiveUserId;
     private boolean Approved;
+    private boolean deal;
     private boolean answer;
     private boolean returnAnswer;
 
@@ -23,10 +24,8 @@ public class ReceivedBorrow {
         this.id = borrow.getId();
         this.receiveUserId = receiveUserId;
         this.Approved = false;
+        this.deal= false;
         this.createdAt = createdAt;
-    }
-    private static String generateUniqueId() {
-        return UUID.randomUUID().toString();
     }
 
     public String getId() {
@@ -88,6 +87,15 @@ public class ReceivedBorrow {
 
     public ReceivedBorrow setReturnAnswer(boolean returnAnswer) {
         this.returnAnswer = returnAnswer;
+        return this;
+    }
+
+    public boolean getDeal() {
+        return deal;
+    }
+
+    public ReceivedBorrow setDeal(boolean deal) {
+        this.deal = deal;
         return this;
     }
 }
